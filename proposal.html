@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BioSense × Build | What We Can Ship</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap');
+
+    :root {
+      --bg: #05080c;
+      --bg2: #0c1520;
+      --surface: rgba(18, 28, 40, 0.65);
+      --surface2: rgba(255, 255, 255, 0.03);
+      --border: rgba(120, 180, 200, 0.12);
+      --text: #f0f6fa;
+      --muted: #8aa3b5;
+      --cyan: #5eead4;
+      --cyan-glow: rgba(94, 234, 212, 0.15);
+      --violet: #a78bfa;
+      --amber: #fbbf24;
+      --font: "Instrument Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --serif: "DM Serif Display", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 17px;
+      min-height: 100vh;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 120% 80% at 50% -30%, rgba(94, 234, 212, 0.14), transparent 55%),
+        radial-gradient(ellipse 80% 50% at 100% 20%, rgba(167, 139, 250, 0.1), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 0% 80%, rgba(251, 191, 36, 0.06), transparent 45%),
+        linear-gradient(180deg, var(--bg2) 0%, var(--bg) 40%, #030506 100%);
+      background-attachment: fixed;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.5rem 1.35rem 4.5rem;
+    }
+
+    .hero {
+      padding: 2.25rem 0 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 2rem;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.1rem, 6.5vw, 3rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      margin: 0 0 1.25rem;
+      background: linear-gradient(135deg, #fff 0%, #c8dde8 45%, #7eb8c8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lede {
+      font-size: 1.2rem;
+      color: var(--muted);
+      max-width: 40em;
+      margin: 0 0 1.75rem;
+      font-weight: 400;
+    }
+
+    .lede strong {
+      color: #c5d8e4;
+      font-weight: 600;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 520px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+    .stat {
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: var(--serif);
+      font-size: 1.65rem;
+      color: var(--cyan);
+      line-height: 1.1;
+    }
+    .stat-lbl {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .pill {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: #9db5c4;
+    }
+    .pill.glow {
+      border-color: rgba(94, 234, 212, 0.35);
+      color: var(--cyan);
+      box-shadow: 0 0 24px var(--cyan-glow);
+    }
+
+    h2 {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--violet);
+      margin: 2.75rem 0 1.1rem;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 1.65rem 0 0.65rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    p { margin: 0 0 1rem; color: #b4c4d2; }
+    ul {
+      margin: 0 0 1.35rem;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      position: relative;
+      padding-left: 1.35rem;
+      margin-bottom: 0.65rem;
+      color: #b4c4d2;
+    }
+    li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.5);
+    }
+    li strong { color: var(--text); }
+
+    .card {
+      background: var(--surface);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      margin: 1.15rem 0;
+    }
+    .card.punch {
+      border-color: rgba(94, 234, 212, 0.25);
+      background: linear-gradient(155deg, rgba(94, 234, 212, 0.08), transparent 60%);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+    .card.punch p { margin: 0; font-size: 1.08rem; line-height: 1.55; color: #d0dde6; }
+    .card.punch .big {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      color: var(--text);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .phase-grid {
+      display: grid;
+      gap: 0.85rem;
+    }
+    .phase-card {
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      border: 1px solid var(--border);
+      background: rgba(12, 18, 28, 0.5);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .phase-card:hover {
+      border-color: rgba(167, 139, 250, 0.35);
+      transform: translateY(-2px);
+    }
+    .phase-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      margin-bottom: 0.4rem;
+    }
+    .phase-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+      color: var(--text);
+    }
+    .tagline {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .pullquote {
+      margin: 2.25rem 0;
+      padding: 1.75rem 1.5rem 1.75rem 1.75rem;
+      border-left: 3px solid;
+      border-image: linear-gradient(180deg, var(--cyan), var(--violet)) 1;
+      background: linear-gradient(90deg, rgba(94, 234, 212, 0.06), transparent);
+      border-radius: 0 14px 14px 0;
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-style: italic;
+      line-height: 1.45;
+      color: #c5d5df;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding: 2rem 0 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    footer .cta {
+      color: var(--cyan);
+      font-weight: 600;
+      margin-top: 0.5rem;
+      display: block;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .noise { display: none; }
+      h1 { -webkit-text-fill-color: #0a1620; color: #0a1620; background: none; }
+      .stat-val, h2, .phase-num { color: #0d6b5c; }
+      p, li, .lede, .tagline, .pullquote { color: #333; }
+      .card, .phase-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="hero">
+      <div class="eyebrow">BioSense · Build proposal</div>
+      <h1>Ship a health product that feels inevitable, not experimental.</h1>
+      <p class="lede">
+        <strong>Zero fluff.</strong> This is the build story: an AI-native platform that pulls labs into structure,
+        explains results like a top tier clinician, remembers who the user actually is, and gets smarter every time they come back.
+        Same ambition you signalled next to Function Health. Same bar on clarity and trust.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val">End to end</div>
+          <div class="stat-lbl">Ingest to insight</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">Profile first</div>
+          <div class="stat-lbl">No dumb defaults</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">Phased</div>
+          <div class="stat-lbl">Value early</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <span class="pill glow">Lab intelligence</span>
+        <span class="pill">Living profile</span>
+        <span class="pill">Agent + reports</span>
+        <span class="pill">Dashboard spine</span>
+        <span class="pill">UAE-ready architecture</span>
+      </div>
+      <p style="margin-top:1.75rem;">
+        <a href="/biosense/" style="display:inline-flex;align-items:center;gap:0.5rem;color:var(--cyan);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(94,234,212,0.4);padding-bottom:2px;">
+          Open interactive POC (full demo UI)
+        </a>
+        <span style="display:block;margin-top:0.35rem;font-size:0.85rem;color:var(--muted);">Run the app locally or deploy, then visit /biosense/</span>
+      </p>
+    </header>
+
+    <section>
+      <h2>The one-liner that sells</h2>
+      <div class="card punch">
+        <p>
+          <span class="big">BioSense is the system that knows your biology, your goals, and your limits.</span>
+          It explains your panels with patience and precision, tracks what changed between draws, and only recommends moves that fit
+          <em>you</em>: allergies, training load, family risk, the objectives you said matter.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>What we actually build</h2>
+
+      <h3>1. Lab brain (the engine)</h3>
+      <ul>
+        <li><strong>Structured ingest</strong> for your chosen biomarker panels: PDF or structured feeds, with a written spec so labs and software never drift apart.</li>
+        <li><strong>Dashboard analysis</strong> people read: prioritised, contextual, tied to reference and optimal bands, not a wall of abbreviations.</li>
+        <li><strong>Longitudinal intelligence</strong>: second and later draws versus baseline. What moved, why it matters, what to watch before the next test.</li>
+        <li><strong>Hard guardrails</strong>: recommendations filtered through <em>Your profile &amp; objectives</em> so the product never suggests what you already ruled out.</li>
+      </ul>
+
+      <h3>2. Profile &amp; objectives (non-negotiable)</h3>
+      <ul>
+        <li>Visual sections: allergies, exercise, family history, goals, lifestyle, all editable any time.</li>
+        <li>Not decoration: those fields <strong>steer the model</strong> (athlete vs general ranges, stress on liver markers, and more).</li>
+      </ul>
+
+      <h3>3. AI agent (depth + speed)</h3>
+      <ul>
+        <li><strong>Conversational onboarding</strong> and adaptive questionnaires so day one is not a forty-field form.</li>
+        <li><strong>Roadmap logic</strong>: the agent knows what it needs to propose a credible improvement path and asks for it in plain language.</li>
+        <li><strong>Smart reports</strong> (auto from labs + profile, e.g. fastest wins) and <strong>custom reports</strong> on demand (“top five biomarkers I can move first, give me the plan”).</li>
+        <li><strong>Navigation</strong>: “Show my reports” resolves to the right screen. Small for UX, huge for retention.</li>
+        <li><strong>Business answers</strong>: subscriptions, regions, how to book. Table stakes for a consumer brand.</li>
+      </ul>
+
+      <h3>4. Dashboard (the home screen)</h3>
+      <ul>
+        <li>Upcoming home draw, biological age, biomarkers, actionable reports, “How am I doing?” journey, upgrade path: the full spine from your brief.</li>
+        <li><strong>“How am I doing?”</strong> as motivation: trajectory, milestones, framing you agree with your clinical lead so numbers stay defensible.</li>
+      </ul>
+
+      <h3>5. Trust, ops, scale</h3>
+      <ul>
+        <li><strong>Sample sanity signals</strong> when a panel looks internally inconsistent or duplicated, routed to BioSense ops. Support for the lab, not a replacement.</li>
+        <li><strong>Data residency</strong> for UAE and neighbours: named cloud regions and vendor options on paper, not vibes.</li>
+        <li><strong>Email PDF</strong> of actionable summaries: shareable, high trust.</li>
+        <li><strong>Proactive nudges</strong>: monthly rhythm, tone and cadence owned by you, powered by the same intelligence layer.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Rollout (you see wins before “done”)</h2>
+      <div class="phase-grid">
+        <div class="phase-card">
+          <div class="phase-num">PHASE 01</div>
+          <div class="phase-title">Foundation / the “wow” MVP</div>
+          <div class="tagline">Ingest, dashboard, profile-aware explanations, two-draw comparison, smart report skeleton, agent v1.</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 02</div>
+          <div class="phase-title">Depth</div>
+          <div class="tagline">Custom reports, richer roadmaps, “How am I doing?” analytics, notifications, upsell logic, PDF email.</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-num">PHASE 03</div>
+          <div class="phase-title">Scale &amp; network effects</div>
+          <div class="tagline">Population benchmarks where data and consent allow, cross-user insight, continuous improvement.</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Straight talk (builds credibility)</h2>
+      <ul>
+        <li><strong>A marketed “success rate vs doctors”</strong> is a clinical and legal claim, not a GitHub ticket. Engineering follows the validation path you and counsel set.</li>
+        <li><strong>Population lines</strong> like “X% less likely to develop Y” need real data or licensed baselines. We can ship the experience; the numbers need a source of truth.</li>
+        <li><strong>Function Health tier polish</strong> is absolutely in play as a parallel track: UX, content, and design system, not only models.</li>
+      </ul>
+    </section>
+
+    <p class="pullquote">
+      BioSense can be buildable, differentiated, and aligned with what premium buyers expect now: clarity at every step, continuity across tests, and an AI that demonstrably knows the person behind the panel.
+    </p>
+
+    <footer>
+      Prepared for Neil. Aligned to the BioSense AI Development Plan.<br />
+      <span class="cta">Next step: milestones, stack, and timeline on your signal.</span>
+    </footer>
+  </div>
+</body>
+</html>

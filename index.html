@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BioSense — Longevity Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── Tokens ──────────────────────────────────────────────────────── */
+:root{
+  --bg:#030508;--s1:#0c1210;--s2:#111a16;--s3:#192018;--s4:#1e2920;
+  --b0:rgba(255,255,255,.055);--b1:rgba(255,255,255,.09);--b2:rgba(255,255,255,.15);
+  --t1:#eff4f0;--t2:#90ae9a;--t3:#4f6b57;--t4:#2c4132;
+  --a:#4dc88c;--a-dim:#3ba870;--a-bg:rgba(77,200,140,.09);--a-ring:rgba(77,200,140,.2);
+  /* 5-level status — non-alarming vocabulary */
+  --opt:#4dc88c;--opt-bg:rgba(77,200,140,.08);
+  --near:#40b0b0;--near-bg:rgba(64,176,176,.08);
+  --attn:#c89840;--attn-bg:rgba(200,152,64,.08);
+  --oor:#c07040;--oor-bg:rgba(192,112,64,.09);
+  --urg:#c05050;--urg-bg:rgba(192,80,80,.09);
+  /* system colours */
+  --c-cardio:#c07070;--c-meta:#c09040;--c-inflam:#b07a40;
+  --c-hormone:#8870c0;--c-nutr:#4dc88c;--c-thyroid:#55b5a0;--c-immune:#5590d0;
+  --font:'Inter',system-ui,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono','SF Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--font);background:var(--bg);color:var(--t1);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{cursor:pointer;font-family:inherit}input,textarea{font-family:inherit}
+
+/* ══════════════════════════════════════════════════════════════════
+   LOGIN / LANDING
+══════════════════════════════════════════════════════════════════ */
+#login-screen{min-height:100vh;display:grid;grid-template-columns:1fr 460px;position:relative;overflow:hidden;}
+@media(max-width:900px){#login-screen{grid-template-columns:1fr;}}
+#login-screen::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 70% at 25% 55%,rgba(77,200,140,.05),transparent 65%),
+             radial-gradient(ellipse 40% 50% at 80% 15%,rgba(90,130,200,.04),transparent 55%);
+}
+/* dot grid background */
+#login-screen::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.18;
+  background-image:radial-gradient(circle,rgba(255,255,255,.35) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* ── Left panel ──────────────────────────────────────────────────── */
+.lp-left{padding:44px 60px 44px 56px;display:flex;flex-direction:column;position:relative;z-index:1;}
+.lp-wordmark{display:flex;align-items:center;gap:10px;margin-bottom:auto;}
+.lp-wordmark-logo{width:28px;height:28px;border-radius:7px;background:var(--a-bg);border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:15px;font-weight:700;color:var(--a);}
+.lp-wordmark-name{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--t1);}
+
+.lp-hero{margin:auto 0;padding:72px 0 56px;}
+.lp-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--a);margin-bottom:28px;}
+.lp-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--a);animation:pulse 2s infinite;}
+
+.lp-headline{font-family:var(--serif);font-size:clamp(42px,6vw,66px);font-weight:700;letter-spacing:-.025em;line-height:1.06;color:var(--t1);margin-bottom:24px;}
+.lp-headline em{font-style:italic;color:var(--a);}
+
+.lp-subline{font-size:16.5px;color:var(--t2);max-width:44ch;line-height:1.72;margin-bottom:48px;font-weight:400;}
+.lp-subline strong{color:var(--t1);font-weight:600;}
+
+/* stats */
+.lp-stats{display:flex;gap:44px;flex-wrap:wrap;margin-bottom:52px;padding-bottom:44px;border-bottom:1px solid var(--b0);}
+.lp-stat-val{font-family:var(--mono);font-size:30px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t1);line-height:1;}
+.lp-stat-lbl{font-size:11.5px;color:var(--t3);margin-top:6px;line-height:1.4;}
+
+/* testimonial */
+.lp-testi{display:flex;gap:14px;align-items:flex-start;}
+.lp-testi-avatar{width:38px;height:38px;border-radius:50%;background:var(--s3);border:1px solid var(--b1);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--t2);}
+.lp-testi-body{font-size:13px;color:var(--t2);line-height:1.6;}
+.lp-testi-name{font-size:11.5px;color:var(--t3);margin-top:6px;font-weight:500;}
+
+/* bottom trust strip */
+.lp-trust-strip{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:auto;padding-top:28px;border-top:1px solid var(--b0);}
+.lp-trust-item{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px;}
+.lp-trust-item::before{content:'✓';color:var(--a);font-weight:700;}
+
+/* ── Right panel — form ───────────────────────────────────────────── */
+.lp-right{
+  padding:44px 44px;display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:1;
+  border-left:1px solid var(--b0);
+  background:rgba(5,8,6,.75);backdrop-filter:blur(40px);
+}
+.login-card{max-width:380px;width:100%;}
+
+.login-cmo{
+  display:flex;align-items:center;gap:11px;
+  background:var(--s2);border:1px solid var(--b0);border-radius:9px;
+  padding:11px 14px;margin-bottom:26px;
+}
+.login-cmo-av{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(77,200,140,.2),rgba(77,200,140,.05));
+  border:1px solid var(--a-ring);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:var(--a);flex-shrink:0;
+}
+.login-cmo-body{font-size:12px;}
+.login-cmo-name{font-weight:600;color:var(--t1);}
+.login-cmo-role{color:var(--t3);font-size:11px;}
+
+.login-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:16px;}
+.login-title{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:-.02em;color:var(--t1);margin-bottom:6px;line-height:1.2;}
+.login-sub{font-size:13px;color:var(--t2);margin-bottom:30px;line-height:1.6;}
+.login-sub strong{color:var(--t1);}
+
+.fl{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:7px;}
+.inp{width:100%;padding:11px 14px;background:var(--s1);border:1px solid var(--b1);border-radius:8px;color:var(--t1);font-size:14px;outline:none;transition:border-color 180ms;margin-bottom:10px;}
+.inp:focus{border-color:var(--a-ring);}
+.inp::placeholder{color:var(--t4);}
+
+.login-btn{
+  width:100%;padding:13px 20px;background:var(--a);color:#02130a;
+  font-size:14px;font-weight:700;border:none;border-radius:8px;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:filter 150ms,transform 120ms;letter-spacing:.01em;
+}
+.login-btn:hover{filter:brightness(1.06);}
+.login-btn:active{transform:scale(.98);}
+.login-btn .arr{font-size:16px;transition:transform 200ms;}
+.login-btn:hover .arr{transform:translateX(3px);}
+
+.login-risk{font-size:11.5px;color:var(--t3);text-align:center;margin-bottom:14px;}
+.login-risk span{color:var(--a);}
+
+.login-div{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--t4);margin:14px 0;}
+.login-div::before,.login-div::after{content:'';flex:1;height:1px;background:var(--b0);}
+
+.login-demo{
+  width:100%;padding:11px 20px;background:transparent;color:var(--t2);
+  font-size:13px;font-weight:500;border:1px solid var(--b1);border-radius:8px;
+  transition:border-color 150ms,color 150ms;
+}
+.login-demo:hover{border-color:var(--b2);color:var(--t1);}
+
+.login-proof{
+  display:flex;flex-direction:column;gap:10px;
+  margin-top:28px;padding-top:24px;border-top:1px solid var(--b0);
+}
+.lp-item{font-size:12px;color:var(--t3);display:flex;gap:9px;align-items:baseline;line-height:1.5;}
+.lp-item::before{content:'✓';color:var(--a);font-weight:700;font-size:11px;flex-shrink:0;}
+
+.login-foot{margin-top:auto;padding-top:20px;font-size:11px;color:var(--t4);line-height:1.6;}
+
+/* ── Fade overlay ─────────────────────────────────────────────────── */
+#fade{position:fixed;inset:0;background:var(--bg);opacity:0;pointer-events:none;z-index:9999;transition:opacity .5s ease;}
+#fade.in{opacity:1;pointer-events:all;}
+
+/* ══════════════════════════════════════════════════════════════════
+   APP
+══════════════════════════════════════════════════════════════════ */
+#app-screen{display:none;opacity:0;transition:opacity .5s ease;}
+#app-screen.visible{display:grid;grid-template-columns:220px 1fr;}
+@media(max-width:800px){#app-screen.visible{grid-template-columns:1fr;}}
+
+/* ── Sidebar ──────────────────────────────────────────────────────── */
+.sidebar{
+  background:var(--s1);border-right:1px solid var(--b0);
+  padding:20px 12px 40px;position:sticky;top:0;height:100vh;
+  overflow-y:auto;display:flex;flex-direction:column;gap:0;
+}
+.sb-brand{display:flex;align-items:center;gap:9px;padding:4px 8px 18px;}
+.sb-logo{width:28px;height:28px;border-radius:7px;background:var(--a-bg);border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:700;color:var(--a);}
+.sb-name{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--t1);}
+
+.sb-user{
+  margin:0 8px 16px;padding:11px 12px;border-radius:10px;
+  background:var(--s2);border:1px solid var(--b0);display:flex;align-items:center;gap:10px;
+}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--a-bg),var(--s3));border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--a);flex-shrink:0;}
+.sb-uname{font-size:12.5px;font-weight:500;color:var(--t1);}
+.sb-utag{font-size:11px;color:var(--t3);}
+
+.nav-sec{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t4);padding:12px 8px 4px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;color:var(--t2);font-size:13px;font-weight:400;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background 100ms,color 100ms;position:relative;}
+.nav-item:hover{background:rgba(255,255,255,.035);color:var(--t1);}
+.nav-item.on{background:var(--a-bg);color:var(--a);font-weight:500;}
+.ni{width:14px;text-align:center;font-size:10px;flex-shrink:0;opacity:.6;}
+.nav-item.on .ni{opacity:1;}
+.nav-pulse{width:5px;height:5px;border-radius:50%;background:var(--a);position:absolute;right:10px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+.sb-cmo{
+  margin:auto 8px 0;padding:11px 12px;
+  border-radius:10px;background:var(--s2);border:1px solid var(--b0);
+  font-size:12px;
+}
+.sb-cmo-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t4);margin-bottom:8px;}
+.sb-cmo-row{display:flex;align-items:center;gap:9px;}
+.sb-cmo-av{width:26px;height:26px;border-radius:50%;background:rgba(77,200,140,.12);border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--a);flex-shrink:0;}
+.sb-cmo-name{font-weight:500;color:var(--t1);font-size:12px;}
+.sb-cmo-role{font-size:10.5px;color:var(--t3);}
+.sb-cmo-dot{width:6px;height:6px;border-radius:50%;background:var(--opt);margin-top:2px;}
+
+/* ── Main content ─────────────────────────────────────────────────── */
+.content{padding:36px 40px 80px;max-width:980px;}
+@media(max-width:880px){.content{padding:24px 18px 60px;}}
+
+/* ── Page header ──────────────────────────────────────────────────── */
+.pg-title{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.12;color:var(--t1);margin-bottom:5px;}
+.pg-sub{font-size:13px;color:var(--t2);max-width:60ch;margin-bottom:28px;}
+.section-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;}
+
+/* ── Banner ───────────────────────────────────────────────────────── */
+.banner{display:flex;align-items:center;gap:14px;background:var(--s2);border:1px solid var(--b0);border-left:3px solid var(--a);border-radius:10px;padding:14px 16px;margin-bottom:28px;}
+.banner-icon{width:34px;height:34px;border-radius:50%;background:var(--a-bg);border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.banner-body{flex:1;}
+.banner-title{font-weight:600;color:var(--t1);margin-bottom:2px;font-size:13.5px;}
+.banner-sub{font-size:12px;color:var(--t2);}
+.banner-act{font-size:12px;color:var(--a);font-weight:600;white-space:nowrap;cursor:pointer;flex-shrink:0;}
+
+/* ── Cards ────────────────────────────────────────────────────────── */
+.card{background:var(--s1);border:1px solid var(--b0);border-radius:11px;padding:20px 22px;}
+.card-flush{padding:0;overflow:hidden;}
+.card-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;}
+
+/* ── Stat ─────────────────────────────────────────────────────────── */
+.stat-n{font-family:var(--mono);font-size:30px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t1);line-height:1;}
+.stat-n.a{color:var(--a);}
+.stat-n.w{color:var(--attn);}
+.stat-sub{font-size:12px;color:var(--t2);margin-top:5px;}
+
+/* ── Grids ────────────────────────────────────────────────────────── */
+.grid{display:grid;gap:14px;}
+.g2{grid-template-columns:repeat(2,1fr);}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+@media(min-width:600px) and (max-width:860px){.g2{grid-template-columns:repeat(2,1fr);}}
+
+/* ── System score ─────────────────────────────────────────────────── */
+.sys-card{background:var(--s1);border:1px solid var(--b0);border-top:2px solid;border-radius:11px;padding:16px 17px 14px;cursor:pointer;transition:background 120ms;}
+.sys-card:hover{background:var(--s2);}
+.sys-score{font-family:var(--mono);font-size:26px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:3px;}
+.sys-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:6px;}
+.prog{height:2px;background:rgba(255,255,255,.06);border-radius:999px;margin-top:10px;overflow:hidden;}
+.prog-b{height:100%;border-radius:999px;transition:width 1s var(--ease);}
+
+/* ── THREE-ZONE Range bar ─────────────────────────────────────────── */
+.rb-wrap{margin:7px 0 3px;}
+.rb-track{position:relative;height:5px;border-radius:999px;background:rgba(255,255,255,.05);}
+.rb-ref{position:absolute;height:100%;border-radius:999px;background:rgba(255,255,255,.09);}
+.rb-opt{position:absolute;height:100%;border-radius:999px;background:rgba(77,200,140,.28);}
+.rb-pin{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:10px;height:10px;border-radius:50%;
+  border:1.5px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.6);
+  transition:left .4s var(--ease);z-index:1;
+}
+.rb-labels{display:flex;justify-content:space-between;margin-top:5px;}
+.rb-lbl{font-size:9.5px;color:var(--t4);font-family:var(--mono);font-variant-numeric:tabular-nums;}
+.rb-lbl-mid{font-size:9.5px;color:var(--a);opacity:.7;}
+
+/* ── Table ────────────────────────────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);padding:11px 16px;border-bottom:1px solid var(--b0);text-align:left;white-space:nowrap;}
+.tbl td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.035);vertical-align:middle;font-size:13px;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tbody tr:hover td{background:rgba(255,255,255,.018);}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+.unit{font-size:10px;color:var(--t3);margin-left:2px;}
+.pos{color:var(--opt);font-family:var(--mono);font-size:12px;font-weight:500;}
+.neg{color:var(--urg);font-family:var(--mono);font-size:12px;font-weight:500;}
+.neu{color:var(--t3);font-family:var(--mono);font-size:12px;}
+
+/* ── 5-level badges ───────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;text-transform:uppercase;}
+.b-opt{background:var(--opt-bg);color:var(--opt);}
+.b-near{background:var(--near-bg);color:var(--near);}
+.b-attn{background:var(--attn-bg);color:var(--attn);}
+.b-oor{background:var(--oor-bg);color:var(--oor);}
+.b-urg{background:var(--urg-bg);color:var(--urg);}
+
+/* ── Sparkline ────────────────────────────────────────────────────── */
+.spark{width:60px;height:20px;flex-shrink:0;}
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;transition:all 120ms var(--ease);}
+.btn-p{background:var(--a);color:#02130a;font-weight:600;}
+.btn-p:hover{filter:brightness(1.06);}
+.btn-g{background:transparent;border:1px solid var(--b1);color:var(--t1);}
+.btn-g:hover{background:var(--s2);border-color:var(--b2);}
+.btn-s{background:var(--s2);border:1px solid var(--b0);color:var(--t2);font-size:12px;padding:6px 12px;}
+.btn-s:hover{color:var(--t1);border-color:var(--b1);}
+.w-full{width:100%;}
+
+/* ── Quick chips ──────────────────────────────────────────────────── */
+.chip{display:inline-flex;align-items:center;font-size:12px;font-weight:500;padding:6px 12px;border-radius:20px;border:1px solid var(--b0);background:var(--s2);color:var(--t2);cursor:pointer;transition:all 120ms;}
+.chip:hover{border-color:var(--a-ring);color:var(--a);}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+
+/* ── Text inputs ──────────────────────────────────────────────────── */
+.field{width:100%;padding:9px 12px;background:var(--s2);border:1px solid var(--b0);border-radius:8px;color:var(--t1);font-size:13.5px;outline:none;transition:border-color 150ms;}
+.field:focus{border-color:var(--a-ring);}
+textarea.field{min-height:70px;resize:vertical;}
+.f-lbl{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:6px;}
+
+/* ── Tags ─────────────────────────────────────────────────────────── */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.tag{font-size:11.5px;padding:3px 9px;border-radius:4px;background:var(--s2);border:1px solid var(--b0);color:var(--t2);}
+.t-r{border-color:rgba(192,80,80,.3);color:var(--urg);}
+.t-g{border-color:rgba(77,200,140,.25);color:var(--opt);}
+.t-a{border-color:rgba(200,152,64,.3);color:var(--attn);}
+
+/* ── Chat ─────────────────────────────────────────────────────────── */
+.chat-shell{border:1px solid var(--b0);border-radius:12px;background:var(--s1);display:flex;flex-direction:column;height:540px;overflow:hidden;}
+.chat-head{padding:14px 18px;border-bottom:1px solid var(--b0);display:flex;align-items:center;gap:11px;}
+.chat-head-av{width:32px;height:32px;border-radius:50%;background:var(--a-bg);border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--a);}
+.chat-head-name{font-weight:600;font-size:13.5px;color:var(--t1);}
+.chat-head-role{font-size:11px;color:var(--t3);}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--opt);margin-left:auto;box-shadow:0 0 5px rgba(77,200,140,.5);}
+.chat-msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;}
+.msg{max-width:82%;padding:11px 14px;border-radius:10px;font-size:13px;line-height:1.58;}
+.msg-a{align-self:flex-start;background:var(--s2);border:1px solid var(--b0);color:var(--t1);}
+.msg-u{align-self:flex-end;background:var(--a-bg);border:1px solid var(--a-ring);color:var(--t1);}
+.typing-dot{display:inline-flex;gap:4px;align-items:center;}
+.typing-dot span{width:5px;height:5px;border-radius:50%;background:var(--t3);animation:blink .9s ease infinite;}
+.typing-dot span:nth-child(2){animation-delay:.2s;}.typing-dot span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.2;transform:scale(.75)}40%{opacity:1;transform:scale(1)}}
+.chat-bar{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--b0);background:var(--bg);}
+.chat-in{flex:1;padding:10px 13px;background:var(--s1);border:1px solid var(--b0);border-radius:8px;color:var(--t1);font-size:13px;outline:none;}
+.chat-in:focus{border-color:var(--a-ring);}
+
+/* ── Insight ──────────────────────────────────────────────────────── */
+.insight{background:var(--s2);border:1px solid var(--b0);border-left:3px solid var(--a);border-radius:0 10px 10px 0;padding:14px 17px;font-size:13px;color:var(--t2);line-height:1.68;}
+.insight strong{color:var(--t1);font-weight:600;}
+
+/* ── Plans ────────────────────────────────────────────────────────── */
+.plan{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:28px 24px;}
+.plan.best{border-color:var(--a-ring);}
+.plan-badge{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--a);background:var(--a-bg);border:1px solid var(--a-ring);border-radius:4px;padding:3px 8px;margin-bottom:14px;}
+.plan-tier{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+.plan-price{font-family:var(--mono);font-size:32px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t1);margin-bottom:4px;}
+.plan-feats{list-style:none;margin:18px 0;display:flex;flex-direction:column;gap:10px;}
+.plan-feats li{font-size:13px;color:var(--t2);display:flex;gap:8px;align-items:baseline;}
+.plan-feats li::before{content:'✓';color:var(--a);font-weight:700;font-size:11px;flex-shrink:0;}
+
+/* ── Timeline ─────────────────────────────────────────────────────── */
+.tl{padding-left:18px;border-left:1px solid var(--b0);}
+.tl-item{position:relative;padding-bottom:24px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:'';position:absolute;left:-22px;top:5px;width:7px;height:7px;border-radius:50%;background:var(--a);border:1.5px solid var(--bg);}
+.tl-date{font-size:10.5px;color:var(--t3);letter-spacing:.04em;margin-bottom:4px;font-weight:700;}
+.tl-text{font-size:13px;color:var(--t2);line-height:1.6;}
+
+/* ── Contribution waterfall ───────────────────────────────────────── */
+.wf-row{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:12.5px;}
+.wf-name{width:130px;flex-shrink:0;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wf-bar-wrap{flex:1;position:relative;height:10px;}
+.wf-bar-bg{position:absolute;inset:0;background:rgba(255,255,255,.04);border-radius:2px;}
+.wf-bar{position:absolute;top:0;height:100%;border-radius:2px;transition:width .8s var(--ease);}
+.wf-val{width:72px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums;}
+
+/* ── Matrix ───────────────────────────────────────────────────────── */
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.matrix{grid-template-columns:1fr;}}
+.m-cell{background:var(--s2);border:1px solid var(--b0);border-radius:9px;padding:14px;}
+.m-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+.m-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--b0);font-size:12.5px;color:var(--t2);}
+.m-item:last-child{border-bottom:none;}
+.m-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+
+/* ── Alert blocks ─────────────────────────────────────────────────── */
+.al-ok{background:var(--opt-bg);border:1px solid rgba(77,200,140,.18);border-radius:10px;padding:13px 16px;margin-bottom:12px;}
+.al-w{background:var(--attn-bg);border:1px solid rgba(200,152,64,.2);border-radius:10px;padding:13px 16px;margin-bottom:12px;}
+
+/* ── Entrance animation ───────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;animation:fadeUp 380ms var(--ease) forwards;}
+
+/* ── Notification feed ────────────────────────────────────────────── */
+.nf-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--b0);}
+.nf-item:last-child{border-bottom:none;}
+.nf-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.nf-body{font-size:12.5px;color:var(--t2);line-height:1.55;}
+.nf-date{font-size:11px;color:var(--t4);margin-top:3px;}
+
+/* ── Split waterfall ──────────────────────────────────────────────── */
+.wf-split{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+.wf-col-hd{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+.wf-split .wf-name{width:90px;}
+.wf-split .wf-val{width:52px;}
+
+/* ── First-optimal badge ──────────────────────────────────────────── */
+.first-opt{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--a);background:var(--a-bg);border:1px solid var(--a-ring);border-radius:4px;padding:1px 6px;margin-left:6px;}
+
+/* ── Misc ─────────────────────────────────────────────────────────── */
+.divider{height:1px;background:var(--b0);}
+.mb-4{margin-bottom:14px;}.mb-5{margin-bottom:18px;}.mb-6{margin-bottom:24px;}.mb-7{margin-bottom:32px;}
+.mt-4{margin-top:14px;}.mt-5{margin-top:18px;}.mt-6{margin-top:24px;}
+.flex-between{display:flex;justify-content:space-between;align-items:center;}
+.disclaimer{font-size:11px;color:var(--t4);margin-top:32px;padding-top:18px;border-top:1px solid var(--b0);line-height:1.7;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<!-- ════════════════ LOGIN ════════════════ -->
+<div id="login-screen">
+  <div class="lp-left">
+    <div class="lp-wordmark">
+      <div class="lp-wordmark-logo">B</div>
+      <div class="lp-wordmark-name">BioSense</div>
+    </div>
+
+    <div class="lp-hero">
+      <div class="lp-eyebrow"><div class="lp-eyebrow-dot"></div>Longevity intelligence · Private beta</div>
+      <h1 class="lp-headline">Your biology.<br><em>Finally legible.</em></h1>
+      <p class="lp-subline">
+        The most advanced longevity testing available outside a private clinic.
+        <strong>20+ biomarkers. CMO-reviewed every time.</strong> A system that
+        learns who you are, knows your family history, and never recommends
+        anything unsafe for you.
+      </p>
+
+      <div class="lp-stats">
+        <div>
+          <div class="lp-stat-val" id="cnt-m">0</div>
+          <div class="lp-stat-lbl">Members enrolled</div>
+        </div>
+        <div>
+          <div class="lp-stat-val" id="cnt-b">0</div>
+          <div class="lp-stat-lbl">Biomarker results reviewed</div>
+        </div>
+        <div>
+          <div class="lp-stat-val" id="cnt-a">0yr</div>
+          <div class="lp-stat-lbl">Avg. biological age improvement<br>in first 12 months</div>
+        </div>
+      </div>
+
+      <div class="lp-testi">
+        <div class="lp-testi-avatar">JR</div>
+        <div>
+          <div class="lp-testi-body">"I had no idea my ApoB was that elevated. My GP had never flagged it. Six months in, it's moved 19 points and my biological age has dropped by 2 years. This is the most valuable health investment I've made."</div>
+          <div class="lp-testi-name">James R., 51 · Managing Director · London</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-trust-strip">
+      <div class="lp-trust-item">CMO-reviewed every draw</div>
+      <div class="lp-trust-item">GDPR &amp; DIFC compliant</div>
+      <div class="lp-trust-item">Home blood draw</div>
+      <div class="lp-trust-item">HSA/FSA eligible</div>
+    </div>
+  </div>
+
+  <!-- Form card -->
+  <div class="lp-right">
+    <div class="login-card">
+      <!-- CMO identity -->
+      <div class="login-cmo">
+        <div class="login-cmo-av">DM</div>
+        <div class="login-cmo-body">
+          <div class="login-cmo-name">Dr. David Mitchell, MBBS, MRCP</div>
+          <div class="login-cmo-role">Chief Medical Officer · Available to review your panel</div>
+        </div>
+      </div>
+
+      <div class="login-eyebrow">Member dashboard access</div>
+      <h2 class="login-title">Welcome back.</h2>
+      <p class="login-sub">Sign in to access your results, smart report, and <strong>Sage AI</strong> — all reviewed by Dr. Mitchell before release.</p>
+
+      <label class="fl" for="e-inp">Email address</label>
+      <input class="inp" id="e-inp" type="email" placeholder="name@example.com" value="sarah.chen@example.com" autocomplete="email"/>
+
+      <button class="login-btn" id="btn-login">Continue <span class="arr">→</span></button>
+
+      <div class="login-risk">Results held until CMO review is complete. <span>No exceptions.</span></div>
+
+      <div class="login-div">or</div>
+      <button class="login-demo" id="btn-demo">Explore the demo →</button>
+
+      <div class="login-proof">
+        <div class="lp-item">Every result reviewed by a qualified clinician before your dashboard updates</div>
+        <div class="lp-item">Your profile, allergies and family history filter every recommendation — always</div>
+        <div class="lp-item">Home blood draw — no clinic visit, 12h fast, kit ships to your door</div>
+        <div class="lp-item">Data stored in your region, encrypted at rest. You own it.</div>
+      </div>
+
+      <div class="login-foot">
+        By continuing you agree to BioSense Terms and Privacy Policy.&nbsp;
+        <span style="color:var(--t3)">New to BioSense?</span>
+        <span style="color:var(--a);cursor:pointer;font-weight:600"> Apply for access →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ APP ════════════════ -->
+<div id="app-screen">
+  <nav class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">B</div>
+      <div class="sb-name">BioSense</div>
+    </div>
+
+    <div class="sb-user">
+      <div class="sb-avatar" id="sb-av">S</div>
+      <div>
+        <div class="sb-uname" id="sb-nm">Sarah Chen</div>
+        <!-- updated by profile save -->
+        <div class="sb-utag">Longevity member · Oct 2025</div>
+      </div>
+    </div>
+
+    <div class="nav-sec">Overview</div>
+    <button class="nav-item on" data-r="dashboard"><span class="ni">▪</span>Dashboard</button>
+    <button class="nav-item" data-r="journey"><span class="ni">↑</span>Healthspan journey</button>
+
+    <div class="nav-sec">Results</div>
+    <button class="nav-item" data-r="biomarkers"><span class="ni">◇</span>Biomarkers</button>
+    <button class="nav-item" data-r="compare"><span class="ni">↔</span>Compare draws</button>
+
+    <div class="nav-sec">Intelligence</div>
+    <button class="nav-item" data-r="reports"><span class="ni">≡</span>Smart report <div class="nav-pulse"></div></button>
+    <button class="nav-item" data-r="agent"><span class="ni">◉</span>Sage AI</button>
+
+    <div class="nav-sec">Account</div>
+    <button class="nav-item" data-r="profile"><span class="ni">○</span>Profile &amp; goals</button>
+    <button class="nav-item" data-r="membership"><span class="ni">◆</span>Membership</button>
+    <button class="nav-item" data-r="ops"><span class="ni">!</span>Sample integrity</button>
+
+    <!-- CMO identity in sidebar -->
+    <div class="sb-cmo">
+      <div class="sb-cmo-label">Your clinician</div>
+      <div class="sb-cmo-row">
+        <div class="sb-cmo-av">DM</div>
+        <div>
+          <div class="sb-cmo-name">Dr. D. Mitchell</div>
+          <div class="sb-cmo-role">CMO · MBBS, MRCP</div>
+        </div>
+        <div class="sb-cmo-dot" title="Available"></div>
+      </div>
+    </div>
+  </nav>
+  <main class="content" id="content"></main>
+</div>
+
+<script>
+/* ── Profile ────────────────────────────────────────────────────── */
+const P = Object.assign({
+  name:'Sarah',age:48,
+  allergies:['Penicillin','Tree nuts (mild)'],
+  conditions:['Father: cardiovascular disease at 55','Mother: breast cancer at 62'],
+  lifestyle:'Non-smoker. 4 units alcohol/week. 6.5h average sleep. Desk-based. 30-min daily walk.',
+  objectives:['Reduce cardiovascular risk given family history','Extend healthspan past 85','Improve sleep quality','Maintain cognitive function long-term'],
+}, JSON.parse(localStorage.getItem('bs_p5')||'null')||{});
+
+/* ── Biomarker data ──────────────────────────────────────────────── */
+/* lb=true: lower is better. ref=lab reference, opt=longevity optimal */
+const BM=[
+  {k:'apob',    n:'ApoB',              sys:'cardio',    u:'mg/dL',  rMin:0,  rMax:130, oMin:0,  oMax:70,  d1:108, d2:91,  lb:true, wfAge:+1.4},
+  {k:'ldlc',    n:'LDL-C',             sys:'cardio',    u:'mg/dL',  rMin:0,  rMax:100, oMin:0,  oMax:70,  d1:132, d2:108, lb:true, wfAge:+0.9},
+  {k:'hdlc',    n:'HDL-C',             sys:'cardio',    u:'mg/dL',  rMin:50, rMax:100, oMin:70, oMax:100, d1:58,  d2:65,  lb:false,wfAge:-0.4},
+  {k:'lpa',     n:'Lp(a)',             sys:'cardio',    u:'nmol/L', rMin:0,  rMax:75,  oMin:0,  oMax:30,  d1:55,  d2:53,  lb:true, wfAge:+0.3},
+  {k:'hscrp',   n:'hs-CRP',            sys:'inflam',    u:'mg/L',   rMin:0,  rMax:3,   oMin:0,  oMax:1,   d1:2.4, d2:1.1, lb:true, wfAge:-0.7},
+  {k:'il6',     n:'IL-6',              sys:'inflam',    u:'pg/mL',  rMin:0,  rMax:7,   oMin:0,  oMax:2,   d1:4.1, d2:2.8, lb:true, wfAge:+0.2},
+  {k:'omega3',  n:'Omega-3 Index',     sys:'inflam',    u:'%',      rMin:4,  rMax:12,  oMin:8,  oMax:12,  d1:4.8, d2:6.4, lb:false,wfAge:-0.3},
+  {k:'hba1c',   n:'HbA1c',            sys:'metabolic', u:'%',      rMin:4,  rMax:5.7, oMin:4,  oMax:5.2, d1:5.4, d2:5.2, lb:true, wfAge:-0.6},
+  {k:'glucose', n:'Fasting glucose',   sys:'metabolic', u:'mg/dL',  rMin:70, rMax:99,  oMin:70, oMax:85,  d1:92,  d2:84,  lb:true, wfAge:-0.5},
+  {k:'insulin', n:'Fasting insulin',   sys:'metabolic', u:'µIU/mL', rMin:2,  rMax:15,  oMin:2,  oMax:6,   d1:9.2, d2:6.8, lb:true, wfAge:+0.2},
+  {k:'vitd',    n:'Vitamin D',         sys:'nutrients', u:'ng/mL',  rMin:30, rMax:100, oMin:50, oMax:80,  d1:31,  d2:52,  lb:false,wfAge:-0.5},
+  {k:'b12',     n:'Vitamin B12',       sys:'nutrients', u:'pg/mL',  rMin:200,rMax:900, oMin:400,oMax:700, d1:340, d2:490, lb:false,wfAge:-0.3},
+  {k:'homocys', n:'Homocysteine',      sys:'nutrients', u:'µmol/L', rMin:0,  rMax:15,  oMin:0,  oMax:9,   d1:13.2,d2:10.1,lb:true, wfAge:+0.4},
+  {k:'tsh',     n:'TSH',              sys:'thyroid',   u:'mIU/L',  rMin:.4, rMax:4.5, oMin:.8, oMax:2.5, d1:2.4, d2:2.1, lb:false,wfAge:0},
+  {k:'freet3',  n:'Free T3',          sys:'thyroid',   u:'pg/mL',  rMin:2.3,rMax:4.2, oMin:3.2,oMax:4.0, d1:2.9, d2:3.3, lb:false,wfAge:-0.2},
+  {k:'estradiol',n:'Estradiol',        sys:'hormones',  u:'pg/mL',  rMin:15, rMax:350, oMin:50, oMax:200, d1:42,  d2:65,  lb:false,wfAge:-0.3},
+  {k:'dheas',   n:'DHEA-S',           sys:'hormones',  u:'µg/dL',  rMin:35, rMax:430, oMin:100,oMax:300, d1:88,  d2:105, lb:false,wfAge:-0.2},
+  {k:'cortisol',n:'Morning cortisol', sys:'hormones',  u:'µg/dL',  rMin:6,  rMax:23,  oMin:10, oMax:18,  d1:22.1,d2:17.4,lb:false,wfAge:-0.4},
+  {k:'wbc',     n:'White blood cells', sys:'immune',    u:'K/µL',   rMin:4,  rMax:11,  oMin:5,  oMax:8,   d1:7.2, d2:6.9, lb:false,wfAge:0},
+  {k:'lymph',   n:'Lymphocytes',       sys:'immune',    u:'%',      rMin:20, rMax:40,  oMin:25, oMax:38,  d1:28,  d2:31,  lb:false,wfAge:0},
+];
+
+const SYSTEMS={
+  cardio:   {n:'Cardiovascular', score:68, col:'var(--c-cardio)'},
+  inflam:   {n:'Inflammation',   score:74, col:'var(--c-inflam)'},
+  metabolic:{n:'Metabolic',      score:83, col:'var(--c-meta)'},
+  nutrients:{n:'Nutrients',      score:74, col:'var(--c-nutr)'},
+  thyroid:  {n:'Thyroid',        score:89, col:'var(--c-thyroid)'},
+  hormones: {n:'Hormonal',       score:78, col:'var(--c-hormone)'},
+  immune:   {n:'Immune',         score:94, col:'var(--c-immune)'},
+};
+const DRAWS=[{s:'Oct 25',full:'15 Oct 2025'},{s:'Apr 26',full:'2 Apr 2026'}];
+
+/* ── Helpers ─────────────────────────────────────────────────────── */
+/* 5-level status: opt / near / attn / oor / urg */
+function stOf(m,v){
+  if(m.lb){
+    if(m.oMax!=null&&v<=m.oMax)return'opt';
+    if(m.rMax!=null&&v<=m.rMax)return v<(m.oMax*1.25)?'near':'attn';
+    return v<(m.rMax*1.15)?'oor':'urg';
+  }else{
+    if(m.oMin!=null&&v>=m.oMin&&(m.oMax==null||v<=m.oMax))return'opt';
+    if(m.rMin!=null&&v>=m.rMin&&(m.rMax==null||v<=m.rMax))return v>(m.oMin*.88)?'near':'attn';
+    return'oor';
+  }
+}
+function bdg(st){return{opt:'<span class="badge b-opt">Optimal</span>',near:'<span class="badge b-near">Near optimal</span>',attn:'<span class="badge b-attn">Needs attention</span>',oor:'<span class="badge b-oor">Out of range</span>',urg:'<span class="badge b-urg">Urgent</span>'}[st]||'';}
+function stCol(st){return{opt:'var(--opt)',near:'var(--near)',attn:'var(--attn)',oor:'var(--oor)',urg:'var(--urg)'}[st]||'var(--t3)';}
+
+/* Three-zone range bar */
+function rb(m,val){
+  const lo=m.rMin,hi=m.rMax,span=hi-lo;
+  const p=v=>Math.min(100,Math.max(0,((v-lo)/span)*100));
+  const oL=p(m.oMin??lo),oR=100-p(m.oMax??hi);
+  const st=stOf(m,val),pc=stCol(st);
+  return`<div class="rb-wrap">
+    <div class="rb-track">
+      <div class="rb-ref" style="left:0%;right:0%"></div>
+      <div class="rb-opt" style="left:${oL}%;right:${oR}%"></div>
+      <div class="rb-pin" style="left:${p(val)}%;background:${pc}"></div>
+    </div>
+    <div class="rb-labels">
+      <span class="rb-lbl">${lo}</span>
+      <span class="rb-lbl-mid">longevity optimal</span>
+      <span class="rb-lbl">${hi}</span>
+    </div>
+  </div>`;
+}
+
+/* Bezier sparkline */
+function spk(d1,d2,lb){
+  const good=lb?d2<d1:d2>d1,c=good?'var(--opt)':d2===d1?'var(--t4)':'var(--attn)';
+  const y1=lb?(d1>d2?5:15):(d1<d2?15:5),y2=lb?(d2<d1?5:15):(d2>d1?15:5);
+  const cx=(5+51)/2,cy1=y1,cy2=y2;
+  return`<svg class="spark" viewBox="0 0 60 20" fill="none">
+    <path d="M5,${y1} C${cx},${cy1} ${cx},${cy2} 51,${y2}" stroke="${c}" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".9"/>
+    <circle cx="5" cy="${y1}" r="1.8" fill="${c}" opacity=".45"/>
+    <circle cx="51" cy="${y2}" r="2.5" fill="${c}"/>
+  </svg>`;
+}
+
+/* Bio age ring */
+function bioRing(bio,cal){
+  const r=54,circ=2*Math.PI*r,pct=Math.min(1,bio/cal),dash=circ*pct,gap=circ-dash,diff=(cal-bio).toFixed(1);
+  return`<svg width="144" height="144" viewBox="0 0 144 144">
+    <circle cx="72" cy="72" r="${r}" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="9"/>
+    <circle cx="72" cy="72" r="${r}" fill="none" stroke="var(--a)" stroke-width="9"
+      stroke-dasharray="${dash} ${gap}" stroke-linecap="round" transform="rotate(-90 72 72)"
+      style="transition:stroke-dasharray .9s var(--ease)"/>
+    <text x="72" y="66" text-anchor="middle" fill="var(--t1)" font-size="24" font-weight="500" font-family="'JetBrains Mono',monospace" font-variant-numeric="tabular-nums">${bio}</text>
+    <text x="72" y="82" text-anchor="middle" fill="var(--t3)" font-size="9" letter-spacing="1.2" font-family="'Inter',sans-serif">BIOLOGICAL AGE</text>
+    <text x="72" y="100" text-anchor="middle" fill="var(--a)" font-size="12" font-weight="600" font-family="'Inter',sans-serif">−${diff} yrs younger</text>
+  </svg>`;
+}
+
+/* Split waterfall — positive vs negative contributions */
+function waterfall(markers){
+  const pos=markers.filter(m=>m.wfAge>0).sort((a,b)=>b.wfAge-a.wfAge);
+  const neg=markers.filter(m=>m.wfAge<0).sort((a,b)=>a.wfAge-b.wfAge);
+  const maxAbs=Math.max(...markers.map(m=>Math.abs(m.wfAge)));
+  function row(m){
+    const pct=maxAbs>0?(Math.abs(m.wfAge)/maxAbs)*100:0;
+    const col=m.wfAge<0?'var(--opt)':'var(--oor)';
+    const sign=m.wfAge>0?'+':'';
+    return`<div class="wf-row">
+      <span class="wf-name">${m.n}</span>
+      <div class="wf-bar-wrap"><div class="wf-bar-bg"></div><div class="wf-bar" style="width:${pct}%;background:${col};opacity:.75;left:0"></div></div>
+      <span class="wf-val" style="color:${col}">${sign}${m.wfAge.toFixed(1)}</span>
+    </div>`;
+  }
+  return`<div class="wf-split">
+    <div>
+      <div class="wf-col-hd" style="color:var(--opt)">Making you younger</div>
+      ${neg.map(row).join('')}
+    </div>
+    <div>
+      <div class="wf-col-hd" style="color:var(--oor)">Adding years</div>
+      ${pos.map(row).join('')}
+    </div>
+  </div>`;
+}
+
+/* Compute today's single focus dynamically */
+function todayFocus(){
+  const worst=Object.entries(SYSTEMS).sort((a,b)=>a[1].score-b[1].score)[0];
+  const [wsys,ws]=worst;
+  const wsMarkers=BM.filter(m=>m.sys===wsys);
+  const topMarker=wsMarkers.filter(m=>m.wfAge>0).sort((a,b)=>b.wfAge-a.wfAge)[0]||wsMarkers[0];
+  const msgs={
+    cardio:`<strong style="color:var(--t1)">ApoB is your most important number right now.</strong> At ${topMarker.d2} mg/dL it's moving in the right direction — down ${(topMarker.d1-topMarker.d2).toFixed(0)} points since October. But with your father's cardiovascular event at 55, your longevity-optimal target is &lt;70. Three levers will get you there before October: Zone 2 cardio 3×/week, saturated fat reduction, and continued Omega-3 protocol.`,
+    inflam:`<strong style="color:var(--t1)">Inflammation is where your focus should sit.</strong> hs-CRP has improved significantly but IL-6 at ${BM.find(m=>m.k==='il6')?.d2} pg/mL remains above longevity-optimal. Anti-inflammatory diet, sleep quality, and Omega-3 are your three primary levers.`,
+    metabolic:`<strong style="color:var(--t1)">Metabolic health is at a turning point.</strong> HbA1c and fasting glucose are at longevity threshold — a critical moment to consolidate gains. Consistent sleep and reduced refined carbohydrates will lock in these improvements through October.`,
+    nutrients:`<strong style="color:var(--t1)">Nutrient optimisation is the focus.</strong> Vitamin D is now adequate — the methylated B-complex protocol for homocysteine is the remaining gap. 8 weeks of consistent dosing should push it below 9 µmol/L.`,
+  };
+  const text=msgs[wsys]||`<strong style="color:var(--t1)">${ws.n} system needs focus.</strong> Score ${ws.score}/100 — your smart report has the ranked action plan.`;
+  return{sys:ws.n,score:ws.score,text};
+}
+
+/* Greeting */
+function greet(){const h=new Date().getHours();return h<12?'Good morning':h<18?'Good afternoon':'Good evening';}
+
+/* ── SVG trend line chart ────────────────────────────────────────── */
+let _chartIdx=0;
+function trendChart(values,labels,optMax,yMin,yMax,color){
+  const uid='grad-'+(++_chartIdx);
+  const W=540,H=100,pad={t:10,r:20,b:24,l:40};
+  const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const xS=i=>(i/(values.length-1))*cW+pad.l;
+  const yS=v=>pad.t+cH-(((v-yMin)/(yMax-yMin))*cH);
+  const optY=yS(optMax);
+  const pts=values.map((v,i)=>`${xS(i)},${yS(v)}`).join(' ');
+  const fillPts=`${xS(0)},${yS(yMin)} ${pts} ${xS(values.length-1)},${yS(yMin)}`;
+  const dots=values.map((v,i)=>i===values.length-1
+    ?`<circle cx="${xS(i)}" cy="${yS(v)}" r="4" fill="${color}" stroke="var(--bg)" stroke-width="1.5"/>`
+    :`<circle cx="${xS(i)}" cy="${yS(v)}" r="2.5" fill="${color}" opacity=".5"/>`
+  ).join('');
+  const xlbls=labels.map((l,i)=>`<text x="${xS(i)}" y="${H}" text-anchor="middle" fill="var(--t3)" font-size="9" font-family="'Inter',sans-serif">${l}</text>`).join('');
+  return`<svg viewBox="0 0 ${W} ${H}" style="width:100%;overflow:visible" fill="none">
+    <defs>
+      <linearGradient id="${uid}" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity=".25"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="${pad.l}" y="${optY}" width="${cW}" height="${yS(yMin)-optY}" fill="var(--a)" opacity=".06" rx="2"/>
+    <line x1="${pad.l}" y1="${optY}" x2="${pad.l+cW}" y2="${optY}" stroke="var(--a)" stroke-width=".8" stroke-dasharray="3,3" opacity=".4"/>
+    <text x="${pad.l+3}" y="${optY-4}" fill="var(--a)" font-size="8.5" font-family="'Inter',sans-serif" opacity=".6">Longevity optimal</text>
+    <polygon points="${fillPts}" fill="url(#${uid})"/>
+    <polyline points="${pts}" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}${xlbls}
+  </svg>`;
+}
+
+/* ── Pages ───────────────────────────────────────────────────────── */
+function pgDashboard(){
+  const overall=Math.round(Object.values(SYSTEMS).reduce((a,s)=>a+s.score,0)/7);
+  const attn=BM.filter(m=>!['opt','near'].includes(stOf(m,m.d2))).length;
+  const focus=todayFocus();
+  const sysCards=Object.entries(SYSTEMS).map(([k,s])=>{
+    const markers=BM.filter(m=>m.sys===k);
+    const issues=markers.filter(m=>!['opt','near'].includes(stOf(m,m.d2))).length;
+    const c=s.score>=85?'var(--opt)':s.score>=70?'var(--attn)':'var(--oor)';
+    return`<div class="sys-card" style="border-top-color:${s.col}" onclick="go('biomarkers')">
+      <div class="sys-label">${s.n}</div>
+      <div class="sys-score" style="color:${c}">${s.score}<span style="font-size:12px;color:var(--t3);font-family:var(--font)">/100</span></div>
+      <div style="font-size:12px;margin-top:5px">${issues===0?`<span style="color:var(--opt)">All optimal</span>`:`<span style="color:var(--attn)">${issues} need attention</span>`}</div>
+      <div class="prog"><div class="prog-b" style="width:${s.score}%;background:${c}"></div></div>
+    </div>`;
+  }).join('');
+
+  const wfMarkers=BM.filter(m=>m.wfAge!==0);
+
+  /* Recent updates feed */
+  const updates=[
+    {col:'var(--opt)',  text:'Your hs-CRP crossed into longevity-optimal for the first time',     date:'2 Apr 2026'},
+    {col:'var(--opt)',  text:'HbA1c and fasting glucose both reached longevity threshold — first time', date:'2 Apr 2026'},
+    {col:'var(--a)',    text:'Dr. Mitchell left a note on your cortisol improvement',               date:'4 Apr 2026'},
+    {col:'var(--attn)', text:'October draw kit ships 29 Sep — 12h fast reminder set',              date:'Upcoming'},
+    {col:'var(--t3)',   text:'Biological age improved by 1.4 years since October',                 date:'Apr 2026'},
+  ];
+
+  return`
+  <!-- CMO review banner -->
+  <div class="banner fade-up" style="animation-delay:0ms">
+    <div class="banner-icon">⚕</div>
+    <div class="banner-body">
+      <div class="banner-title">Dr. Mitchell reviewed your April panel — 2 Apr 2026</div>
+      <div class="banner-sub">All 20 markers processed and cleared. CMO narrative in your smart report.</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-shrink:0">
+      <span class="banner-act" onclick="go('reports')">Read report →</span>
+      <span class="banner-act" style="color:var(--t2)" onclick="alert('Demo: Calendar link to book a 20-min review call with Dr. Mitchell.')">Book a call →</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="flex-between mb-5 fade-up" style="animation-delay:60ms">
+    <div>
+      <h1 class="pg-title">${greet()}, ${P.name}.</h1>
+      <p class="pg-sub">April panel cleared by Dr. Mitchell. Your healthspan score improved since October — here's what matters today.</p>
+    </div>
+    <button class="btn btn-g" onclick="go('agent')">Ask Sage AI</button>
+  </div>
+
+  <!-- Today's focus (dynamic) -->
+  <div class="card mb-6 fade-up" style="animation-delay:100ms;border-color:var(--a-ring);background:linear-gradient(135deg,rgba(77,200,140,.04),var(--s1))">
+    <div class="card-label" style="color:var(--a)">Today's single focus · ${focus.sys} (${focus.score}/100)</div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.72;max-width:72ch;margin-bottom:14px">${focus.text}</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-g" onclick="go('biomarkers')" style="font-size:12px;padding:7px 14px">View biomarkers</button>
+      <button class="btn btn-g" onclick="go('reports')" style="font-size:12px;padding:7px 14px">Smart report</button>
+    </div>
+  </div>
+
+  <!-- Hero metrics -->
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:14px;margin-bottom:28px;align-items:stretch;animation-delay:140ms" class="fade-up">
+    <div class="card" style="display:flex;align-items:center;justify-content:center;padding:24px 32px">
+      <div id="bio-ring-wrap">${bioRing(0,48)}</div>
+    </div>
+    <div class="grid g2" style="gap:14px">
+      <div class="card"><div class="card-label">Healthspan score</div><div class="stat-n">${overall}</div><div class="stat-sub">across 7 systems</div></div>
+      <div class="card"><div class="card-label">Since joining</div><div class="stat-n a">−1.4</div><div class="stat-sub">years of biological age</div></div>
+      <div class="card"><div class="card-label">Markers improved</div><div class="stat-n a">9</div><div class="stat-sub">since October · 0 worsened</div></div>
+      <div class="card"><div class="card-label">Next home draw</div><div class="stat-n" style="font-size:22px">2 Oct</div><div class="stat-sub">Kit ships 29 Sep · 12h fast</div></div>
+    </div>
+  </div>
+
+  <!-- Systems -->
+  <div class="section-label mb-4 fade-up" style="animation-delay:180ms">Body systems <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--t4)">· tap to view markers</span></div>
+  <div class="grid g3 mb-7 fade-up" style="animation-delay:200ms">${sysCards}</div>
+
+  <!-- Bottom three columns -->
+  <div class="grid g2 mb-6 fade-up" style="animation-delay:240ms">
+    <!-- Bio age drivers -->
+    <div class="card">
+      <div class="card-label">What drives your biological age</div>
+      ${waterfall(wfMarkers)}
+    </div>
+    <!-- April highlights -->
+    <div class="card">
+      <div class="card-label">April highlights</div>
+      <div style="display:flex;flex-direction:column">
+        ${[['ApoB','108 → 91 mg/dL','near'],['hs-CRP','2.4 → 1.1 mg/L','opt'],['Vitamin D','31 → 52 ng/mL','opt'],['HbA1c','5.4 → 5.2%','opt'],['Fasting glucose','92 → 84 mg/dL','opt'],['Homocysteine','13.2 → 10.1 µmol/L','attn']].map(([n,v,s],i)=>`${i>0?'<div class="divider"></div>':''}<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:12.5px"><span style="color:var(--t2)">${n}</span><span class="mono" style="font-size:12px;color:var(--t1)">${v} ${bdg(s)}</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent updates feed -->
+  <div class="card fade-up" style="animation-delay:280ms">
+    <div class="card-label">Recent updates from BioSense</div>
+    ${updates.map(u=>`<div class="nf-item"><div class="nf-dot" style="background:${u.col}"></div><div><div class="nf-body">${u.text}</div><div class="nf-date">${u.date}</div></div></div>`).join('')}
+  </div>
+  <p class="disclaimer">All values are illustrative demo data. BioSense is not a substitute for medical advice. Consult your clinician before making changes to medication or treatment.</p>`;
+}
+
+function pgBiomarkers(){
+  return`
+  <h1 class="pg-title">Biomarkers</h1>
+  <p class="pg-sub">Latest draw: ${DRAWS[1].full}. Range bars show lab reference range (gray) and longevity-optimal zone (green). The pin is your value.</p>
+  <div class="insight mb-6"><strong>Why longevity-optimal is different from lab normal.</strong> Standard lab ranges are designed to detect disease — not to optimise for decades of health. We use longevity-optimised targets derived from the peer-reviewed literature on healthspan extension. These are shown as the green zone on every range bar.</div>
+  ${Object.entries(SYSTEMS).map(([k,s])=>{
+    const markers=BM.filter(m=>m.sys===k);
+    const sc=s.score,c=sc>=85?'var(--opt)':sc>=70?'var(--attn)':'var(--oor)';
+    return`<div class="mb-7">
+      <div class="flex-between mb-4">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:8px;height:8px;border-radius:50%;background:${s.col}"></div>
+          <span class="section-label" style="margin:0">${s.n}</span>
+        </div>
+        <span class="mono" style="font-size:11.5px;color:${c}">${sc}/100</span>
+      </div>
+      <div class="card card-flush">
+        <table class="tbl">
+          <thead><tr><th>Marker</th><th>Value + range</th><th>Status</th><th>vs Oct 25</th><th>Trend</th></tr></thead>
+          <tbody>${markers.map(m=>{
+            const st=stOf(m,m.d2),d=+(m.d2-m.d1).toFixed(1);
+            const good=m.lb?d<0:d>0;
+            return`<tr>
+              <td style="font-weight:500">${m.n}</td>
+              <td><span class="mono" style="font-weight:500">${m.d2}</span><span class="unit">${m.u}</span>${rb(m,m.d2)}</td>
+              <td>${bdg(st)}</td>
+              <td>${d===0?'<span class="neu">—</span>':`<span class="${good?'pos':'neg'}">${d>0?'+':''}${d}</span>`}</td>
+              <td>${spk(m.d1,m.d2,m.lb)}</td>
+            </tr>`;}).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;}).join('')}
+  <p class="disclaimer">Longevity-optimal ranges are based on published literature. In production, ranges are personalised by age, sex, activity and genetic profile. These are illustrative.</p>`;
+}
+
+function pgCompare(){
+  /* Markers that crossed into optimal for the first time this draw */
+  const newOptimal=BM.filter(m=>stOf(m,m.d1)!=='opt'&&stOf(m,m.d2)==='opt');
+  const rows=BM.map(m=>{
+    const d=+(m.d2-m.d1).toFixed(1),p=m.d1?((d/m.d1)*100).toFixed(1):0;
+    const good=m.lb?d<0:d>0,col=good?'pos':d===0?'neu':'neg';
+    const isNew=newOptimal.includes(m);
+    return`<tr>
+      <td><span style="font-weight:500">${m.n}</span>${isNew?'<span class="first-opt">✦ First optimal</span>':''}<br><span style="font-size:11px;color:var(--t3)">${SYSTEMS[m.sys]?.n||m.sys}</span></td>
+      <td><span class="mono">${m.d1}</span><span class="unit">${m.u}</span> ${bdg(stOf(m,m.d1))}</td>
+      <td><span class="mono">${m.d2}</span><span class="unit">${m.u}</span> ${bdg(stOf(m,m.d2))}</td>
+      <td><span class="${col} mono">${d<0?'↓':d>0?'↑':'→'} ${Math.abs(d).toFixed(1)}</span> <span style="font-size:11px;color:var(--t3)">(${p>0?'+':''}${p}%)</span></td>
+    </tr>`;}).join('');
+  return`
+  <h1 class="pg-title">Compare draws</h1>
+  <p class="pg-sub">${DRAWS[0].full} vs ${DRAWS[1].full} · 6 months apart · Dr. Mitchell narrative below.</p>
+  ${newOptimal.length?`<div class="card mb-5" style="border-color:var(--a-ring);background:linear-gradient(135deg,rgba(77,200,140,.05),var(--s1))">
+    <div class="card-label" style="color:var(--a)">✦ First time at longevity-optimal this draw</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${newOptimal.map(m=>`<span class="tag t-g" style="font-size:12px;padding:5px 10px">${m.n} <span class="mono" style="margin-left:4px">${m.d2} ${m.u}</span></span>`).join('')}</div>
+    <p style="font-size:12.5px;color:var(--t2);margin-top:12px;line-height:1.65">These markers have crossed into the longevity-optimal zone for the first time. Maintain the protocols that got you here — the goal now is to stay in this zone across consecutive draws.</p>
+  </div>`:''}
+  <!-- CMO narrative -->
+  <div class="card mb-6" style="border-left:3px solid var(--a);border-radius:0 11px 11px 0;padding:20px 22px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--a-bg);border:1px solid var(--a-ring);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--a)">DM</div>
+      <div>
+        <div style="font-weight:600;font-size:13px;color:var(--t1)">Dr. David Mitchell, CMO</div>
+        <div style="font-size:11px;color:var(--t3)">Panel narrative · 4 Apr 2026</div>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--t2);line-height:1.75">
+      Sarah — a very positive set of results. 9 of 20 markers moved in the right direction; none worsened. The headline story is inflammation and metabolic health: hs-CRP halved to 1.1 mg/L (now in the longevity-optimal zone) and both HbA1c and fasting glucose crossed their longevity-optimal thresholds for the first time. Vitamin D is now adequate after 6 months of supplementation.
+    </p>
+    <p style="font-size:13.5px;color:var(--t2);line-height:1.75;margin-top:12px">
+      Your biological age has moved from 42.6 to <strong style="color:var(--t1)">41.2 years</strong> — a gain of 1.4 years in 6 months. The primary area to maintain focus on is cardiovascular: ApoB at 91 mg/dL is moving well but remains above your longevity-optimal target of 70 mg/dL. Given your father's history, this stays the #1 priority through to October. I've flagged homocysteine as a secondary watch item — improving but above 9 µmol/L. Continue the methylated B-complex protocol and retest in October.
+    </p>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-g" onclick="go('agent')" style="font-size:12px;padding:7px 14px">Message via Sage AI</button>
+      <button class="btn btn-g" onclick="alert('Demo: Calendar link to book a 20-min review call with Dr. Mitchell.')" style="font-size:12px;padding:7px 14px">Book a review call</button>
+    </div>
+  </div>
+
+  <!-- Scenario projection -->
+  <div class="card mb-6">
+    <div class="card-label">Biological age projection — two scenarios</div>
+    <div style="display:flex;gap:24px;margin:14px 0 10px;font-size:12.5px">
+      <span style="color:var(--opt)">■ Follow action plan</span>
+      <span style="color:var(--attn)">■ No change</span>
+      <span style="color:var(--t3)">■ Calendar age</span>
+    </div>
+    <!-- Simple visual projection -->
+    <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:10px">
+      ${[{l:'Now',bio:41.2,cal:48},{l:'Apr 27\n(plan)',bio:39.5,cal:49,best:true},{l:'Apr 27\n(no action)',bio:42.0,cal:49}].map(({l,bio,cal,best})=>`
+        <div style="flex:1;text-align:center">
+          <div style="font-family:var(--mono);font-size:18px;color:${best?'var(--opt)':bio>41.5?'var(--attn)':'var(--t1)'}">
+            ${bio}
+          </div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px;white-space:pre-line">${l}</div>
+          <div style="height:4px;background:${best?'var(--opt)':'rgba(255,255,255,.06)'};border-radius:999px;margin-top:8px"></div>
+        </div>`).join('')}
+    </div>
+    <p style="font-size:12px;color:var(--t3)">Projections are estimates based on current trajectory. Not a clinical prediction.</p>
+  </div>
+
+  <div class="card card-flush">
+    <table class="tbl">
+      <thead><tr><th>Marker</th><th>${DRAWS[0].s}</th><th>${DRAWS[1].s}</th><th>Change</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+let rtab='smart';
+function pgReports(){
+  const smart=`
+    <div class="card mb-5">
+      <div class="card-label">Smart report · April 2026 · CMO cleared · Profile-aware</div>
+      <div class="insight mb-5" style="margin-top:0">
+        <strong>Allergy filter active.</strong> Tree nut allergy on file. No nut-sourced supplements appear anywhere in this report, regardless of clinical benefit. Penicillin noted — no antibiotics referenced.
+      </div>
+      <div class="matrix">
+        <div class="m-cell"><div class="m-label" style="color:var(--opt)">High impact · Low effort</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--opt)"></div>Vitamin D — maintain protocol, retest October</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--opt)"></div>Homocysteine — methylated B12 + folate (8 weeks)</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--opt)"></div>Sleep — 7h target directly improves ApoB trajectory</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--opt)"></div>Algae DHA/EPA 2g/day (safe, non-nut source)</div>
+        </div>
+        <div class="m-cell"><div class="m-label" style="color:var(--attn)">High impact · Requires effort</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--attn)"></div>ApoB — saturated fat &lt;7% daily kcal + Zone 2 3×/week</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--attn)"></div>LDL-C — CMO note: statin discussion warranted at October review</div>
+        </div>
+        <div class="m-cell"><div class="m-label" style="color:var(--t3)">Optimal · Maintain</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--t3)"></div>hs-CRP — now optimal. Continue anti-inflammatory diet</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--t3)"></div>HbA1c, Fasting glucose — at longevity threshold</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--t3)"></div>Immune system — 94/100, excellent</div>
+        </div>
+        <div class="m-cell"><div class="m-label" style="color:var(--oor)">Genetic · Annual CMO watch</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--oor)"></div>Lp(a) 53 nmol/L — genetic, no lifestyle intervention modifies this significantly. CMO review annually.</div>
+          <div class="m-item"><div class="m-dot" style="background:var(--oor)"></div>Family breast cancer history — BRCA status recommended via separate genetic panel</div>
+        </div>
+      </div>
+      <div class="mt-5 flex-between">
+        <button class="btn btn-g" id="btn-pdf">Email PDF report (demo)</button>
+        <span style="font-size:12px;color:var(--t3)">CMO-cleared · 4 Apr 2026 · Profile-aware</span>
+      </div>
+    </div>`;
+  const custom=`
+    <div class="card mb-5">
+      <div class="card-label">Custom reports · Built by Sage AI · Profile-aware</div>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:18px">Ask Sage for any bespoke report. Your allergies, family history, and objectives are baked in — nothing generic, nothing unsafe.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${["6-week cardiovascular reduction plan for ApoB","Supplement stack avoiding all tree nut sources","Cancer risk context given my mother's breast cancer history","Sleep protocol based on my cortisol improvement","Statin decision framework for my profile"].map(q=>`<div class="card" style="background:var(--s2);cursor:pointer;padding:13px 16px" onclick="go('agent')"><span style="font-size:13px;color:var(--a)">→ ${q}</span></div>`).join('')}
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="go('agent')">Open Sage AI</button>`;
+  return`
+  <h1 class="pg-title">Smart report</h1>
+  <p class="pg-sub">Generated every draw. Ranked by effort and impact against your objectives. Dr. Mitchell reviewed before release.</p>
+  <div style="display:flex;gap:8px;margin-bottom:24px">
+    <button class="btn ${rtab==='smart'?'btn-p':'btn-g'}" id="tab-s">Smart report</button>
+    <button class="btn ${rtab==='custom'?'btn-p':'btn-g'}" id="tab-c">Custom reports</button>
+  </div>
+  ${rtab==='smart'?smart:custom}`;
+}
+
+/* ── Sage AI ─────────────────────────────────────────────────────── */
+const CK='bs_chat6';
+function gCh(){try{const j=localStorage.getItem(CK);if(!j)return[{r:'a',t:`Hello ${P.name}. I'm Sage — I have your complete panel history, objectives, allergy profile, and family history loaded. What would you like to explore today?`}];return JSON.parse(j);}catch{return[];}}
+function sCh(h){localStorage.setItem(CK,JSON.stringify(h.slice(-60)));}
+
+function sageReply(msg){
+  const t=msg.toLowerCase();
+  if(/report|take me|show.*report/.test(t)){setTimeout(()=>go('reports'),500);return`Opening your smart report. Dr. Mitchell's narrative is at the top — worth reading first. Then the effort-impact matrix below is ranked for your cardiovascular priority and tree-nut allergy.`;}
+  if(/biomarker|panel|lab|marker/.test(t)&&!/compare/.test(t)){setTimeout(()=>go('biomarkers'),500);return`Showing all 20 markers by system. A quick orientation: cardiovascular is your lowest at 68/100, with ApoB as the single most important number. Your inflammation markers are looking excellent — hs-CRP is now optimal.`;}
+  if(/compare|oct|october|previous|last draw/.test(t)){setTimeout(()=>go('compare'),500);return`October vs April:\n\n9 markers improved, 0 worsened. The headline moves: hs-CRP halved, HbA1c at longevity threshold, Vitamin D into optimal zone, ApoB down 17 mg/dL.\n\nDr. Mitchell's full narrative is in the compare view.`;}
+  if(/upgrade|plan|member|pricing/.test(t)){setTimeout(()=>go('membership'),500);return`With your cardiovascular family history, twice-yearly testing is strongly advisable — drift can compound quietly between annual draws. The Longevity plan adds a second draw, priority 48h CMO review, and 4 custom report credits.`;}
+  if(/profile|allerg|goal|objective/.test(t)){setTimeout(()=>go('profile'),500);return`Profile open. Your allergies: ${P.allergies.join(', ')} — these hard-filter every recommendation I give you. Tree nuts never appear in my protocols, even if a supplement would otherwise be clinically beneficial.`;}
+  if(/supplement|stack|protocol/.test(t)){return`Your current protocol (tree-nut-safe, fully cleared):\n\n• Vitamin D3 + K2 — 5,000 IU morning (now at optimal 52 ng/mL)\n• Algae DHA/EPA — 2g daily (boosting Omega-3 index)\n• Methylated B12 (methylcobalamin) + 5-MTHF — for homocysteine\n• Magnesium glycinate — 400mg before sleep\n\nWant this as a structured PDF report?`;}
+  if(/fastest|win|easiest|top 3|top 5|priority/.test(t)){return`Your fastest wins right now, ranked:\n\n① Sleep 7h consistently — directly improves ApoB trajectory, cortisol, insulin (low effort, high leverage)\n② Methylated B-complex — homocysteine is trending down, 8 more weeks should push below 9 µmol/L\n③ Zone 2 cardio 3×/week — primary driver for ApoB between now and October\n④ Maintain algae DHA/EPA — Omega-3 Index heading in right direction\n\nWant a week-by-week schedule for any of these?`;}
+  if(/bio.*age|biological age|how old/.test(t)){return`Your biological age: 41.2 years — 6.8 years younger than your calendar age of 48.\n\nSince October: moved from 42.6 to 41.2, a gain of 1.4 years in 6 months.\n\nThe main drivers making you younger: hs-CRP now optimal, metabolic markers at longevity threshold, Vitamin D adequate.\n\nStill adding years: ApoB and LDL-C above optimal. Getting those to target could take another 1–2 years off your biological age.`;}
+  if(/cancer|breast|oncology/.test(t)){return`Your mother's breast cancer history is flagged in your profile. Your inflammation markers are now optimal (hs-CRP 1.1 mg/L) and metabolic health is solid — both are relevant to long-term cancer risk reduction.\n\nI'd specifically recommend discussing a BRCA genetic panel with Dr. Mitchell at your next review, and potentially a liquid biopsy screen (e.g. Galleri or GRAIL). I'll flag it in your next smart report if you'd like.`;}
+  if(/heart|cardio|apob|ldl/.test(t)){return`Cardiovascular is your lowest system at 68/100 — and your highest priority given your father's event at 55.\n\nKey numbers:\n• ApoB: 91 mg/dL (target: &lt;70)\n• LDL-C: 108 mg/dL (target: &lt;70)\n• Lp(a): 53 nmol/L (genetic, watch-only)\n\nApoB has moved 17 points since October. At this rate, you're 2–3 draws from target. Zone 2 cardio and sat fat reduction are the primary levers. Dr. Mitchell has flagged statin discussion for October if ApoB hasn't crossed 80 by then.`;}
+  if(/sleep|tired|rest|cortisol/.test(t)){return`Your morning cortisol improved significantly: 22.1 → 17.4 µg/dL — now within optimal range. That's a real positive.\n\nConsistent 7h+ sleep measurably moves ApoB, insulin, and biological age. Given your 6.5h average, adding 30–45 minutes per night is probably your highest-leverage no-cost intervention right now.\n\nMagnesium glycinate before bed is already in your protocol — are you taking it consistently?`;}
+  if(/status|how am i|overview|check in/.test(t)){return`Status summary:\n\n• Healthspan score: 79/100\n• Biological age: 41.2 (−6.8 vs calendar, −1.4 since joining)\n• Best system: Immune (94/100)\n• Focus: Cardiovascular (68/100)\n• Since October: 9 markers improved, 0 worsened\n• Next draw: 2 Oct 2026\n\nOverall — a positive trajectory. The next 6 months are about pushing ApoB under 80 and consolidating the metabolic gains.`;}
+  if(/next draw|blood draw|sample|kit/.test(t)){return`Next home draw: 2 Oct 2026.\n\nKit ships 29 Sep. Fast for 12 hours beforehand — water only. Avoid intense exercise and alcohol for 48h prior: both affect cortisol, liver markers, and lipids.\n\nDr. Mitchell will review within 48 hours of the lab processing your sample.`;}
+  if(/hi|hello|hey|morning|afternoon/.test(t)){return`Good to have you, ${P.name}. April was a meaningful panel — particularly hs-CRP and the metabolic markers moving to optimal. The ApoB story continues to be the main focus before October.\n\nWhat would you like to explore?`;}
+  return`I can help with: your overall status, biological age, ApoB and cardiovascular risk, supplement protocol (tree-nut-safe), fastest wins, cancer risk context, sleep, next draw prep — or navigate you to Biomarkers, Compare, Smart Report, or your Journey. What are you thinking about?`;
+}
+
+function pgAgent(){
+  const hist=gCh();
+  return`
+  <h1 class="pg-title">Sage AI</h1>
+  <p class="pg-sub">Your personal health intelligence. Knows your full profile, panel history, allergies, and objectives. Not a generic chatbot.</p>
+  <div class="chips">
+    ${[['Status check','Give me a complete status summary'],['Fastest wins','What are my fastest wins right now?'],['Bio age','What is my biological age and what moves it?'],['Supplement protocol','Build me a supplement protocol'],['Cardiovascular risk','Talk me through my cardiovascular risk'],['Cancer context','Cancer risk context given my family history'],['Smart report','Take me to my smart report'],['Next draw prep','When is my next draw and how should I prepare?']].map(([l,q])=>`<button class="chip" data-q="${q}">${l}</button>`).join('')}
+  </div>
+  <div class="chat-shell">
+    <div class="chat-head">
+      <div class="chat-head-av">S</div>
+      <div>
+        <div class="chat-head-name">Sage</div>
+        <div class="chat-head-role">BioSense AI · Knows your profile &amp; panel history</div>
+      </div>
+      <div class="online-dot" title="Online"></div>
+    </div>
+    <div class="chat-msgs" id="clog">${hist.map(m=>`<div class="msg msg-${m.r==='a'?'a':'u'}">${m.t.replace(/\n/g,'<br>')}</div>`).join('')}</div>
+    <div class="chat-bar"><input class="chat-in" id="cin" placeholder="Message Sage…" autocomplete="off"/><button class="btn btn-p" id="csnd">Send</button></div>
+  </div>
+  <div class="mt-4"><button class="btn-s btn" id="cclr">Clear conversation</button></div>`;
+}
+
+function pgJourney(){
+  const apobV=[108,102,97,94,91];
+  const apobL=['Oct 25','Nov 25','Dec 25','Feb 26','Apr 26'];
+  const chartSvg=trendChart(apobV,apobL,70,60,140,'var(--oor)');
+
+  const bioAgeV=[42.6,42.2,41.8,41.5,41.2];
+  const bioAgeChart=trendChart(bioAgeV,apobL,41.0,38,46,'var(--opt)');
+
+  return`
+  <h1 class="pg-title">Healthspan journey</h1>
+  <p class="pg-sub">Your biology over time. Every data point tied to a real home draw, reviewed by Dr. Mitchell.</p>
+
+  <div class="grid g4 mb-7">
+    <div class="card"><div class="card-label">Biological age</div><div class="stat-n a">41.2</div><div class="stat-sub"><span style="color:var(--opt)">−1.4 yr</span> since joining</div></div>
+    <div class="card"><div class="card-label">Months enrolled</div><div class="stat-n">6</div></div>
+    <div class="card"><div class="card-label">Markers to optimal</div><div class="stat-n">+5</div><div class="stat-sub">since draw 1</div></div>
+    <div class="card"><div class="card-label">Protocol adherence</div><div class="stat-n">91<span style="font-size:14px;color:var(--t3)">%</span></div></div>
+  </div>
+
+  <div class="card mb-6">
+    <div class="card-label">ApoB trajectory (mg/dL) — longevity optimal &lt;70</div>
+    <div style="margin-top:14px">${chartSvg}</div>
+    <p style="font-size:12px;color:var(--t3);margin-top:10px">Clear downward trajectory. 2–3 draws from longevity-optimal at current rate of change.</p>
+  </div>
+
+  <div class="card mb-6">
+    <div class="card-label">Biological age over time — target below calendar age</div>
+    <div style="margin-top:14px">${bioAgeChart}</div>
+    <p style="font-size:12px;color:var(--t3);margin-top:10px">Biological age moving consistently below the longevity-optimal reference line. 6.8 years younger than calendar age.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Journey milestones</div>
+    <div class="tl" style="margin-top:18px">
+      <div class="tl-item"><div class="tl-date">Oct 2025 · Draw 1 · Onboarding</div><div class="tl-text">3 systems below optimal: Cardiovascular, Nutrients, Inflammation. Dr. Mitchell's narrative flagged ApoB as primary concern given family history. Supplement protocol built with tree-nut allergy filter. Biological age: 42.6.</div></div>
+      <div class="tl-item"><div class="tl-date">Nov–Dec 2025</div><div class="tl-text">Vitamin D protocol showing results — approaching optimal range. Fasting glucose trending down. CMO note: metabolic trajectory strongly positive. Sleep protocol started.</div></div>
+      <div class="tl-item"><div class="tl-date">Jan 2026</div><div class="tl-text">Homocysteine elevated on interim check — methylated B-complex added. Dr. Mitchell recommendation: continue ApoB dietary protocol, add Zone 2 cardio.</div></div>
+      <div class="tl-item"><div class="tl-date">Apr 2026 · Draw 2 · Latest</div><div class="tl-text">9 markers improved. HbA1c and fasting glucose at longevity-optimal for first time. hs-CRP halved and now optimal. Vitamin D in optimal range. ApoB down 17 points. Biological age: 41.2 (−1.4 years in 6 months). ApoB remains the primary focus.</div></div>
+    </div>
+  </div>
+  <p class="disclaimer">Biological age projections are illustrative for this proof of concept. Validated methodology required before production launch.</p>`;
+}
+
+function pgProfile(){
+  return`
+  <h1 class="pg-title">Profile &amp; goals</h1>
+  <p class="pg-sub">Everything that shapes your recommendations, smart report priorities, and safety filters. Your allergies hard-filter every suggestion — no exceptions.</p>
+  <div class="card mb-5">
+    <div class="grid g2 mb-5">
+      <div><label class="f-lbl">First name</label><input class="field" id="pf-n" value="${P.name}"/></div>
+      <div><label class="f-lbl">Age</label><input class="field" id="pf-a" value="${P.age}" type="number"/></div>
+    </div>
+    <div class="divider mb-5"></div>
+    <div class="mb-5">
+      <label class="f-lbl">Allergies &amp; intolerances</label>
+      <div class="tag-row">${P.allergies.map(a=>`<span class="tag t-r">${a}</span>`).join('')}</div>
+      <input class="field" id="pf-al" value="${P.allergies.join(', ')}" placeholder="Comma separated"/>
+      <p style="font-size:11px;color:var(--t3);margin-top:6px">Hard-filtered from every recommendation. Never overridden — even if a supplement would otherwise be clinically beneficial for you.</p>
+    </div>
+    <div class="divider mb-5"></div>
+    <div class="mb-5">
+      <label class="f-lbl">Family history</label>
+      <div class="tag-row">${P.conditions.map(c=>`<span class="tag t-a">${c}</span>`).join('')}</div>
+      <input class="field" id="pf-co" value="${P.conditions.join(', ')}" placeholder="Comma separated"/>
+      <p style="font-size:11px;color:var(--t3);margin-top:6px">Adjusts risk weighting — your father's cardiovascular history elevates ApoB priority in every report.</p>
+    </div>
+    <div class="divider mb-5"></div>
+    <div class="mb-5">
+      <label class="f-lbl">Lifestyle</label>
+      <textarea class="field" id="pf-li">${P.lifestyle}</textarea>
+      <p style="font-size:11px;color:var(--t3);margin-top:6px">Contextualises markers — alcohol frequency adjusts liver enzyme interpretation, sleep hours adjust cortisol reference.</p>
+    </div>
+    <div class="divider mb-5"></div>
+    <div>
+      <label class="f-lbl">Health objectives</label>
+      <div class="tag-row">${P.objectives.map(o=>`<span class="tag t-g">${o}</span>`).join('')}</div>
+      <textarea class="field" id="pf-ob">${P.objectives.join('\n')}</textarea>
+      <p style="font-size:11px;color:var(--t3);margin-top:6px">Drives smart report priority ranking and Sage AI response focus.</p>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button class="btn btn-p" id="pf-sv">Save changes</button>
+    <span id="pf-ok" style="font-size:12px;color:var(--opt);opacity:0;transition:opacity .3s">Saved</span>
+  </div>
+  <p class="disclaimer">Profile stored locally for this demo. In production: encrypted at rest, stored in your region, GDPR and DIFC compliant. You own your data and can export or delete at any time.</p>`;
+}
+
+function pgMembership(){
+  return`
+  <h1 class="pg-title">Membership</h1>
+  <p class="pg-sub">Testing frequency determines how rich your longitudinal picture becomes. More draws = earlier signals = more time to act.</p>
+  <div class="grid g2">
+    <div class="plan">
+      <div class="plan-tier">Essential</div>
+      <div class="plan-price">£25 <span style="font-size:13px;color:var(--t3);font-family:var(--font)">/month · £299 billed annually</span></div>
+      <ul class="plan-feats">
+        <li>1 comprehensive home draw per year</li>
+        <li>20+ biomarkers with CMO review</li>
+        <li>Healthspan dashboard + system scores</li>
+        <li>Smart report with effort-impact ranking</li>
+        <li>Sage AI — full profile access</li>
+        <li>Allergy safety filtering</li>
+        <li>PDF report by email</li>
+      </ul>
+      <button class="btn btn-g w-full">Current plan (demo)</button>
+    </div>
+    <div class="plan best">
+      <div class="plan-badge">Recommended — your profile</div>
+      <div class="plan-tier">Longevity</div>
+      <div class="plan-price">£42 <span style="font-size:13px;color:var(--t3);font-family:var(--font)">/month · £499 billed annually</span></div>
+      <ul class="plan-feats">
+        <li>2 comprehensive home draws per year</li>
+        <li>Priority CMO review within 48 hours</li>
+        <li>4 custom Sage AI report credits/year</li>
+        <li>Wearable + CGM data integration</li>
+        <li>Longitudinal trend analysis across draws</li>
+        <li>Everything in Essential</li>
+      </ul>
+      <div class="insight mb-5" style="margin-top:14px;border-left-color:var(--a)">
+        <strong>Based on your profile.</strong> With your father's cardiovascular event at 55, twice-yearly testing catches ApoB drift months earlier. At your current rate of improvement, a second October draw will determine whether a statin conversation is needed — or whether lifestyle protocol alone gets you to target.
+      </div>
+      <button class="btn btn-p w-full">Upgrade to Longevity (demo)</button>
+    </div>
+  </div>`;
+}
+
+function pgOps(){
+  return`
+  <h1 class="pg-title">Sample integrity</h1>
+  <p class="pg-sub">Results are held until Dr. Mitchell's review is complete. No results ever reach your dashboard before CMO clearance.</p>
+  <div class="al-ok mb-4"><div style="font-weight:600;color:var(--opt);margin-bottom:4px">All clear · April 2026 draw</div><div style="font-size:12.5px;color:var(--t2)">20 markers processed. 0 screening flags. Dr. Mitchell review completed 4 Apr. Released to dashboard.</div></div>
+  <div class="al-ok"><div style="font-weight:600;color:var(--opt);margin-bottom:4px">All clear · October 2025 draw</div><div style="font-size:12.5px;color:var(--t2)">20 markers. 0 flags. Cleared and released.</div></div>
+  <div class="card mb-5 mt-5">
+    <div class="card-label">Automated screening checks</div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      ${[['Biologically impossible combinations','e.g. HbA1c 4.0% with fasting glucose 220 mg/dL triggers automatic re-draw request before any results are shown'],['Haemolysis detection','Potassium spike alongside normal BMP flags sample damage before processing — member is contacted for a repeat draw'],['Population outlier check','Values more than 3 SD from reference population are queued for CMO review before release'],['Processing window','Samples processed more than 48h after collection receive a CMO context note before results are released'],['Duplicate submission','Auto-deduplicated, ops team notified']].map(([t,d],i)=>`<div style="padding:14px 0;${i?'border-top:1px solid var(--b0)':''}"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px">${t}</div><div style="font-size:12.5px;color:var(--t2)">${d}</div></div>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">Example management flag <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--t4)">— not triggered for your account</span></div>
+    <div class="al-w" style="margin:0"><div style="font-size:13px;font-weight:600;color:var(--attn);margin-bottom:4px">Flag: Probable haemolysis — Sample ID BS-2026-0041</div><div style="font-size:12.5px;color:var(--t2)">K+ 6.9 mEq/L with otherwise normal BMP. All results withheld. Lab contacted for repeat draw within 72h. Member message sent: "We need a fresh sample before releasing your results — no action needed from you. We'll be in touch within 72 hours."</div></div>
+  </div>`;
+}
+
+/* ── Router ──────────────────────────────────────────────────────── */
+const PAGES={dashboard:pgDashboard,biomarkers:pgBiomarkers,compare:pgCompare,reports:pgReports,agent:pgAgent,journey:pgJourney,profile:pgProfile,membership:pgMembership,ops:pgOps};
+let route='dashboard';
+
+function go(r){
+  route=r;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('on',el.dataset.r===r));
+  const main=document.getElementById('content');
+  main.innerHTML=PAGES[r]?PAGES[r]():'<p>Not found.</p>';
+  bind();
+  window.scrollTo(0,0);
+  /* Animate bio age ring from 0 on dashboard load */
+  if(r==='dashboard'){
+    setTimeout(()=>{
+      const wrap=document.getElementById('bio-ring-wrap');
+      if(wrap)wrap.innerHTML=bioRing(41.2,48);
+    },350);
+  }
+  /* Auto-focus chat input */
+  if(r==='agent'){
+    const l=document.getElementById('clog');if(l)l.scrollTop=l.scrollHeight;
+    setTimeout(()=>{const c=document.getElementById('cin');if(c)c.focus();},100);
+  }
+}
+
+function bind(){
+  document.querySelectorAll('[data-r]').forEach(el=>{el.onclick=e=>{e.preventDefault();go(el.dataset.r);};});
+  const ts=document.getElementById('tab-s'),tc=document.getElementById('tab-c');
+  if(ts)ts.onclick=()=>{rtab='smart';go('reports');};
+  if(tc)tc.onclick=()=>{rtab='custom';go('reports');};
+  const pdf=document.getElementById('btn-pdf');
+  if(pdf)pdf.onclick=()=>alert('Demo: PDF report generated and emailed to sarah.chen@example.com');
+  const sv=document.getElementById('pf-sv');
+  if(sv)sv.onclick=()=>{
+    Object.assign(P,{
+      name:document.getElementById('pf-n').value.trim()||P.name,
+      age:parseInt(document.getElementById('pf-a').value)||P.age,
+      allergies:document.getElementById('pf-al').value.split(',').map(s=>s.trim()).filter(Boolean),
+      conditions:document.getElementById('pf-co').value.split(',').map(s=>s.trim()).filter(Boolean),
+      lifestyle:document.getElementById('pf-li').value,
+      objectives:document.getElementById('pf-ob').value.split('\n').filter(Boolean),
+    });
+    localStorage.setItem('bs_p5',JSON.stringify(P));
+    const ok=document.getElementById('pf-ok');if(ok){ok.style.opacity='1';setTimeout(()=>ok.style.opacity='0',2500);}
+    document.getElementById('sb-nm').textContent=P.name;
+    document.getElementById('sb-av').textContent=P.name[0].toUpperCase();
+  };
+  const clog=document.getElementById('clog'),cin=document.getElementById('cin');
+  const csnd=document.getElementById('csnd'),cclr=document.getElementById('cclr');
+  function sendMsg(t){
+    const h=gCh();h.push({r:'u',t});sCh(h);
+    const log=document.getElementById('clog');if(!log)return;
+    const ub=document.createElement('div');ub.className='msg msg-u';ub.textContent=t;log.appendChild(ub);
+    const tb=document.createElement('div');tb.className='msg msg-a';tb.innerHTML='<div class="typing-dot"><span></span><span></span><span></span></div>';
+    log.appendChild(tb);log.scrollTop=log.scrollHeight;
+    setTimeout(()=>{const r=sageReply(t);h.push({r:'a',t:r});sCh(h);tb.innerHTML=r.replace(/\n/g,'<br>');log.scrollTop=log.scrollHeight;},1200);
+  }
+  if(csnd&&cin){
+    csnd.onclick=()=>{const t=cin.value.trim();if(!t)return;cin.value='';sendMsg(t);};
+    cin.onkeydown=e=>{if(e.key==='Enter'){const t=cin.value.trim();if(!t)return;cin.value='';sendMsg(t);}};
+  }
+  document.querySelectorAll('.chip[data-q]').forEach(b=>b.onclick=()=>sendMsg(b.getAttribute('data-q')));
+  if(cclr)cclr.onclick=()=>{localStorage.removeItem(CK);go('agent');};
+}
+
+/* ── Login flow ──────────────────────────────────────────────────── */
+function enterApp(){
+  const fade=document.getElementById('fade');
+  fade.classList.add('in');
+  setTimeout(()=>{
+    document.getElementById('login-screen').style.display='none';
+    const app=document.getElementById('app-screen');
+    app.classList.add('visible');
+    fade.classList.remove('in');
+    setTimeout(()=>{app.style.opacity='1';go('dashboard');},60);
+  },520);
+}
+
+document.getElementById('btn-login').onclick=function(){
+  const e=document.getElementById('e-inp').value.trim();
+  if(!e){document.getElementById('e-inp').focus();return;}
+  this.textContent='Signing in…';this.disabled=true;
+  setTimeout(enterApp,950);
+};
+document.getElementById('btn-demo').onclick=enterApp;
+document.getElementById('e-inp').onkeydown=e=>{if(e.key==='Enter')document.getElementById('btn-login').click();};
+
+/* ── Count-up animations ─────────────────────────────────────────── */
+function countUp(id,target,suffix,dur){
+  const el=document.getElementById(id);if(!el)return;
+  const start=Date.now(),step=()=>{
+    const p=Math.min(1,(Date.now()-start)/dur);
+    const ease=1-Math.pow(1-p,3);
+    const v=target<100?Math.round(ease*target*10)/10:Math.floor(ease*target);
+    el.textContent=(typeof target==='number'&&target>100?v.toLocaleString():v)+(suffix||'');
+    if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+setTimeout(()=>{
+  countUp('cnt-m',47000,'',2000);
+  countUp('cnt-b',1240000,'',2400);
+  countUp('cnt-a',6.8,'yr',1600);
+},400);
+</script>
+</body>
+</html>
