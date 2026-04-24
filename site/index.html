@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BioSense — Your biology, finally making sense.</title>
+<meta name="description" content="BioSense unifies wearables, blood biomarkers, family history and self-reported data into one intelligent system — translating it into clear, real-time guidance to help you feel better, perform stronger, and live longer." />
+<meta name="theme-color" content="#F7F7F7" />
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+
+<!-- Inter only, per brand guidelines -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" />
+<link rel="stylesheet" href="assets/styles.css" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="BioSense — Your biology, finally making sense." />
+<meta property="og:description" content="Preventative health intelligence. One system for every signal your body sends." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://bio-sense.ai/" />
+</head>
+<body>
+
+<!-- ============================================================
+     SHARED SVG DEFS — brand gradient (mark-only) and reusable S
+     ============================================================ -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="biosenseBrandGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F04D4D"/>
+      <stop offset="100%" stop-color="#7625B0"/>
+    </linearGradient>
+    <!--
+      Real brand mark ("ai" ligature). Supplied by brand team:
+      Web/Logo Mark/Full Color/biosense.ai-logo-mark-full-color-rgb.svg.
+      Kept inline so <use href="#biosense-mark"> can pick up the brand
+      gradient defined above (gradient stays mark-only per guidelines).
+    -->
+    <symbol id="biosense-mark" viewBox="0 0 243.367 187.7441">
+      <path d="m235.7728,94.0735c-8.5085-15.8135-22.7169-27.0073-40.0065-31.5192-4.2777-1.1161-8.634-1.7703-12.9951-1.9764l53.8894-34.2889c5.395-3.4325,7.8195-9.8638,6.0314-16.0036C240.9046,4.1448,235.4075.0194,229.0123.0194h-121.041l-.04-.0016c-10.6439-.2813-20.8667,2.7804-29.6698,8.8691-20.8981,14.4496-27.5887,42.2009-15.5628,64.5524,6.6693,12.3951,17.8074,21.1692,31.3629,24.7061,2.0065.5235,4.0351.9126,6.073,1.1795L7.3964,158.332c-6.0345,3.841-8.7458,11.036-6.7455,17.904,2.0002,6.8681,8.1495,11.4822,15.3027,11.4822h162.0679l.0584.0024c.5798.0157,1.1565.0235,1.7339.0235,12.9066,0,25.3582-3.9038,36.1098-11.3376,26.6546-18.4312,35.1874-53.8268,19.8493-82.3331Zm-112.2739-17.7187c-7.4385,4.7319-16.2353,6.1108-24.7659,3.8866-8.5234-2.2242-15.5345-7.7535-19.7401-15.5699-7.4314-13.8116-3.13-31.63,9.7922-40.5652,5.549-3.8371,12.4377-5.7878,19.0881-5.5914l106.5245.0079-90.8989,57.832Zm81.901,84.8323c-7.9491,5.4963-17.1867,8.2626-26.7174,8.0395-.0011,0-153.9167-.0118-153.9209-.0118l130.7193-83.1667c10.6973-6.8053,23.347-8.7898,35.614-5.5898,12.2584,3.1991,22.3382,11.1475,28.3837,22.383,10.6894,19.8665,4.5049,45.495-14.0787,58.3458Z"
+            fill="url(#biosenseBrandGrad)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<header class="nav" id="site-nav">
+  <div class="container nav__inner">
+    <a class="nav__brand logo" href="index.html" aria-label="BioSense — home">
+      <img class="logo__img" src="assets/biosense-logotype.svg" alt="BioSense" width="176" height="30" />
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href="science.html">Science</a>
+      <a href="about.html">About</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav__cta">
+      <a class="btn btn--sm" href="app.html">Sign in <span class="arr" aria-hidden="true">→</span></a>
+    </div>
+
+    <button class="nav__toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav" id="nav-toggle">
+      <span></span>
+    </button>
+  </div>
+
+  <div class="nav__mobile" id="mobile-nav">
+    <a href="science.html">Science</a>
+    <a href="about.html">About</a>
+    <a href="#faq">FAQ</a>
+    <a class="btn btn--sm" href="app.html">Sign in <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero hero--cinematic">
+    <!-- Full-bleed cinematic video loop (runner / forest / ocean). -->
+    <div class="hero__bg" aria-hidden="true">
+      <div class="hero__video-loop" data-video-loop>
+        <video class="hero__video is-active" data-video-loop-item
+               src="assets/video/hero-runner.mp4"
+               autoplay muted loop playsinline preload="auto"></video>
+        <video class="hero__video" data-video-loop-item
+               src="assets/video/hero-forest.mp4"
+               autoplay muted loop playsinline preload="metadata"></video>
+        <video class="hero__video" data-video-loop-item
+               src="assets/video/hero-ocean.mp4"
+               autoplay muted loop playsinline preload="metadata"></video>
+      </div>
+      <div class="hero__overlay"></div>
+      <!-- Shown only if prefers-reduced-motion is active. -->
+      <div class="hero__bg-fallback">
+        <div class="hero__bg-fallback-radials"></div>
+      </div>
+    </div>
+
+    <div class="container hero__grid">
+      <div class="hero__copy reveal">
+        <span class="eyebrow eyebrow--on-dark">Preventative health intelligence</span>
+        <h1 class="display-xxl hero__headline">
+          Your biology,<br/>finally making <em><span class="grad-text">sense</span></em>.
+        </h1>
+        <p class="hero__sub">
+          From heart rate and HRV to family history and blood results, BioSense brings
+          everything together in one intelligent system designed entirely around you.
+          No more guesswork. No more generic advice. Just precise insight tailored
+          to your body and your goals.
+        </p>
+        <div class="hero__ctas">
+          <a class="btn btn--on-dark" href="#waitlist">Request early access <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost btn--on-dark" href="science.html">See how it works</a>
+        </div>
+        <div class="hero__meta">
+          <span class="hero__meta-item">Wearables</span>
+          <span class="hero__meta-item">Blood biomarkers</span>
+          <span class="hero__meta-item">Family history</span>
+          <span class="hero__meta-item">Self-report</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STAT STRIP
+       ============================================================ -->
+  <section class="section section--tight" aria-labelledby="stats-heading">
+    <h2 id="stats-heading" class="visually-hidden" style="position:absolute;left:-9999px;">By the numbers</h2>
+    <div class="container">
+      <div class="stats reveal">
+        <div class="stat">
+          <div class="stat__num mono">120+</div>
+          <div class="stat__lbl">Biomarkers unified</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num mono">24/7</div>
+          <div class="stat__lbl">Continuous signal</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num mono">1</div>
+          <div class="stat__lbl">System, built for you</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num mono">0</div>
+          <div class="stat__lbl">Generic advice</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROBLEM STATEMENT — NIGHT SECTION
+       ============================================================ -->
+  <section class="section section--dark" aria-labelledby="problem-heading">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow eyebrow--on-dark">The problem</span>
+        <h2 id="problem-heading" class="display-xl">
+          Modern health is drowning in data.<br/>
+          <span class="grad-text">Yours should be telling you something.</span>
+        </h2>
+        <p class="subheading u-max-ch">
+          Wearables measure. Clinics test. Apps track. Yet the signals sit in silos,
+          decoupled from the story of you. What you're missing isn't more data —
+          it's the intelligence to make it mean something.
+        </p>
+      </div>
+
+      <div class="stats stats--on-dark reveal">
+        <div class="stat">
+          <div class="stat__num mono">87%</div>
+          <div class="stat__lbl">of health data never used</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num mono">6</div>
+          <div class="stat__lbl">avg. health apps per person</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num mono">0</div>
+          <div class="stat__lbl">that talk to each other</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num mono">∞</div>
+          <div class="stat__lbl">Conflicting advice</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS — 4 FEATURE CARDS
+       ============================================================ -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">The BioSense method</span>
+        <h2 class="display-xl">Four shifts that change everything.</h2>
+        <p class="subheading u-max-ch">
+          BioSense isn't another AI chatbot. It's a system that understands your body
+          — and gets sharper the longer you use it.
+        </p>
+      </div>
+
+      <div class="features reveal">
+        <article class="card">
+          <div class="card__mark" aria-hidden="true"></div>
+          <div class="card__num">01 — Unify</div>
+          <h3 class="card__title">Every signal, one timeline.</h3>
+          <p class="card__body">
+            Wearables, blood results, family history, self-reported inputs — all
+            continuously stitched into a single, coherent picture of you.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card__mark" aria-hidden="true"></div>
+          <div class="card__num">02 — Learn</div>
+          <h3 class="card__title">Trained on you, not averages.</h3>
+          <p class="card__body">
+            Your baseline, your trends, your context. BioSense learns what normal
+            looks like for your body, so deviation actually means something.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card__mark" aria-hidden="true"></div>
+          <div class="card__num">03 — Guide</div>
+          <h3 class="card__title">Real-time, right-sized guidance.</h3>
+          <p class="card__body">
+            The right insight at the right time. Quiet when all is well,
+            precise when something matters. Never noisy, never generic.
+          </p>
+        </article>
+        <article class="card">
+          <div class="card__mark" aria-hidden="true"></div>
+          <div class="card__num">04 — Compound</div>
+          <h3 class="card__title">Small inputs, long lifespan.</h3>
+          <p class="card__body">
+            BioSense turns continuous awareness into compounding outcomes —
+            feeling better this week, performing stronger this year, living longer.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DATA SOURCES — RING DIAGRAM
+       ============================================================ -->
+  <section class="section section--tight" aria-labelledby="sources-heading">
+    <div class="container">
+      <div class="ring-wrap">
+        <div class="reveal">
+          <span class="eyebrow">Data sources</span>
+          <h2 id="sources-heading" class="display" style="margin-top:16px;">One hub. Every signal.</h2>
+          <p class="subheading u-max-ch" style="margin-top:20px;">
+            BioSense unifies the full spectrum of your biology — continuous signals
+            from wearables, episodic markers from your bloods, immutable context from
+            your family history, and the nuance only you can report.
+          </p>
+          <ul class="ring__pills" aria-label="Supported data sources">
+            <li>Apple Watch</li>
+            <li>Whoop</li>
+            <li>Oura</li>
+            <li>Garmin</li>
+            <li>Bloods</li>
+            <li>Genetic tests</li>
+            <li>Family history</li>
+            <li>Self-report</li>
+            <li>Sleep studies</li>
+            <li>Clinical records</li>
+          </ul>
+        </div>
+
+        <div class="ring reveal" aria-hidden="true">
+          <svg viewBox="0 0 600 600">
+            <!-- orbits -->
+            <g fill="none" stroke="rgba(10,10,10,0.10)" stroke-width="1">
+              <circle cx="300" cy="300" r="100"/>
+              <circle cx="300" cy="300" r="170"/>
+              <circle cx="300" cy="300" r="240"/>
+            </g>
+
+            <!-- tick marks on outer ring -->
+            <g stroke="rgba(10,10,10,0.18)" stroke-width="1">
+              <line x1="300" y1="52"  x2="300" y2="68"/>
+              <line x1="548" y1="300" x2="532" y2="300"/>
+              <line x1="300" y1="548" x2="300" y2="532"/>
+              <line x1="52"  y1="300" x2="68"  y2="300"/>
+            </g>
+
+            <!-- orbiting data dots -->
+            <g>
+              <circle cx="300" cy="60"  r="8" fill="url(#biosenseBrandGrad)"/>
+              <circle cx="540" cy="300" r="8" fill="url(#biosenseBrandGrad)"/>
+              <circle cx="300" cy="540" r="8" fill="url(#biosenseBrandGrad)"/>
+              <circle cx="60"  cy="300" r="8" fill="url(#biosenseBrandGrad)"/>
+              <circle cx="130" cy="130" r="5" fill="#0A0A0A"/>
+              <circle cx="470" cy="470" r="5" fill="#0A0A0A"/>
+              <circle cx="470" cy="130" r="5" fill="#0A0A0A"/>
+              <circle cx="130" cy="470" r="5" fill="#0A0A0A"/>
+            </g>
+
+            <!-- labels -->
+            <g font-family="Inter, system-ui" font-size="13" font-weight="500" fill="#2E2E2E">
+              <text x="300" y="38"  text-anchor="middle">WEARABLES</text>
+              <text x="572" y="304" text-anchor="middle">BLOODS</text>
+              <text x="300" y="574" text-anchor="middle">SELF-REPORT</text>
+              <text x="28"  y="304" text-anchor="middle">HISTORY</text>
+            </g>
+
+            <!-- central mark: real brand mark (4:3 aspect), centered inside the ring -->
+            <g transform="translate(252, 269)">
+              <svg viewBox="0 0 243.367 187.7441" width="96" height="74"><use href="#biosense-mark"/></svg>
+            </g>
+            <text x="300" y="390" text-anchor="middle"
+                  font-family="Inter, system-ui" font-weight="500" font-size="12"
+                  letter-spacing="2" fill="#5C5C5C">BIOSENSE INTELLIGENCE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRODUCT PREVIEW
+       ============================================================ -->
+  <section class="section" id="preview">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Your daily advantage</span>
+        <h2 class="display-xl">A dashboard that reads <span class="grad-text">you</span>, not just the numbers.</h2>
+      </div>
+
+      <div class="preview reveal">
+        <!-- Stylised UI card (placeholder) -->
+        <div class="preview__frame" aria-hidden="true">
+          <div class="preview__chrome"><span></span><span></span><span></span></div>
+          <div class="preview__ui">
+            <div class="preview__row">
+              <div class="preview__tile" style="--w:72%;">
+                <div class="preview__tile-lbl">Readiness</div>
+                <div class="preview__tile-val">87</div>
+                <div class="preview__tile-bar"></div>
+              </div>
+              <div class="preview__tile" style="--w:54%;">
+                <div class="preview__tile-lbl">HRV</div>
+                <div class="preview__tile-val">64 ms</div>
+                <div class="preview__tile-bar"></div>
+              </div>
+              <div class="preview__tile" style="--w:38%;">
+                <div class="preview__tile-lbl">Inflammation</div>
+                <div class="preview__tile-val">Low</div>
+                <div class="preview__tile-bar"></div>
+              </div>
+            </div>
+
+            <div class="preview__chart">
+              <svg viewBox="0 0 400 120" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#F04D4D" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#7625B0" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,90 C40,60 80,70 120,50 C160,35 200,55 240,40 C280,28 320,52 360,30 L400,35 L400,120 L0,120 Z"
+                      fill="url(#chartFill)"/>
+                <path d="M0,90 C40,60 80,70 120,50 C160,35 200,55 240,40 C280,28 320,52 360,30 L400,35"
+                      fill="none" stroke="url(#biosenseBrandGrad)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="preview__row">
+              <div class="preview__tile" style="--w:46%;">
+                <div class="preview__tile-lbl">Sleep debt</div>
+                <div class="preview__tile-val">0h 42m</div>
+                <div class="preview__tile-bar"></div>
+              </div>
+              <div class="preview__tile" style="--w:61%;">
+                <div class="preview__tile-lbl">VO₂ max</div>
+                <div class="preview__tile-val">48.2</div>
+                <div class="preview__tile-bar"></div>
+              </div>
+              <div class="preview__tile" style="--w:83%;">
+                <div class="preview__tile-lbl">Recovery</div>
+                <div class="preview__tile-val">Strong</div>
+                <div class="preview__tile-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Highlights -->
+        <div class="preview__highlights">
+          <div class="preview__highlight">
+            <div class="preview__highlight-num mono">01</div>
+            <div>
+              <h3 class="heading" style="margin-bottom:8px;">Context, not scorecards.</h3>
+              <p class="body">
+                A number only matters alongside your baseline, your trend, and what
+                the rest of your body is saying. BioSense shows you the relationship,
+                not the headline.
+              </p>
+            </div>
+          </div>
+          <div class="preview__highlight">
+            <div class="preview__highlight-num mono">02</div>
+            <div>
+              <h3 class="heading" style="margin-bottom:8px;">Real-time, not retrospective.</h3>
+              <p class="body">
+                Guidance arrives while it can still change your day — not a week
+                later in a summary PDF you'll never open.
+              </p>
+            </div>
+          </div>
+          <div class="preview__highlight">
+            <div class="preview__highlight-num mono">03</div>
+            <div>
+              <h3 class="heading" style="margin-bottom:8px;">Quiet when you're well.</h3>
+              <p class="body">
+                The best health tools disappear when they have nothing to say.
+                BioSense surfaces only what's meaningful, and never floods you.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TESTIMONIALS
+       ============================================================ -->
+  <section class="section section--tight" aria-labelledby="voices-heading">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Early voices</span>
+        <h2 id="voices-heading" class="display">From the first members of the pilot.</h2>
+      </div>
+
+      <div class="quotes reveal">
+        <article class="quote">
+          <p class="quote__body">
+            "I've worn devices for years. BioSense is the first thing that made the
+            data feel like it was actually about me."
+          </p>
+          <div class="quote__who">
+            <div class="quote__av" aria-hidden="true">HM</div>
+            <div>
+              <div class="quote__name">H. Matthews</div>
+              <div class="quote__role">Founder, pilot cohort</div>
+            </div>
+          </div>
+        </article>
+        <article class="quote">
+          <p class="quote__body">
+            "It stopped telling me to 'try meditating'. It started telling me what
+            my body had been trying to say for a year."
+          </p>
+          <div class="quote__who">
+            <div class="quote__av" aria-hidden="true">JR</div>
+            <div>
+              <div class="quote__name">J. Rahman</div>
+              <div class="quote__role">Clinician, pilot cohort</div>
+            </div>
+          </div>
+        </article>
+        <article class="quote">
+          <p class="quote__body">
+            "Less noise, more signal. I check it less than any other app, and get
+            more from it than all of them."
+          </p>
+          <div class="quote__who">
+            <div class="quote__av" aria-hidden="true">SL</div>
+            <div>
+              <div class="quote__name">S. Laurent</div>
+              <div class="quote__role">Athlete, pilot cohort</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TEAM PLACEHOLDERS
+       ============================================================ -->
+  <section class="section section--tight" aria-labelledby="team-heading">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Team</span>
+        <h2 id="team-heading" class="display">Built by people who take biology seriously.</h2>
+      </div>
+      <div class="team reveal">
+        <div class="member">
+          <div class="member__portrait"><span class="member__monogram">N</span></div>
+          <div class="member__name">Founder placeholder</div>
+          <div class="member__role">Founder &amp; CEO</div>
+        </div>
+        <div class="member">
+          <div class="member__portrait"><span class="member__monogram">C</span></div>
+          <div class="member__name">Clinical lead placeholder</div>
+          <div class="member__role">Clinical Director</div>
+        </div>
+        <div class="member">
+          <div class="member__portrait"><span class="member__monogram">E</span></div>
+          <div class="member__name">Engineering lead placeholder</div>
+          <div class="member__role">Head of Engineering</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ
+       ============================================================ -->
+  <section class="section" id="faq" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <span class="eyebrow" style="justify-content:center;">Frequently asked</span>
+        <h2 id="faq-heading" class="display-xl">Answers, before you ask.</h2>
+      </div>
+
+      <div class="faq reveal" id="faq-accordion">
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">
+            <span>What exactly is BioSense?</span>
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner"><div>
+            BioSense is a preventative health intelligence platform. It brings together
+            your wearables, blood biomarkers, family history, and self-reported data
+            into one continuously-learning system — and translates it into clear,
+            real-time guidance designed entirely around you.
+          </div></div></div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">
+            <span>How is this different from a health chatbot?</span>
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner"><div>
+            BioSense isn't a conversation looking for a query. It's a system that
+            understands your baseline, your context, and your goals, and proactively
+            surfaces the right insight at the right time — without you having to
+            ask the right question.
+          </div></div></div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">
+            <span>Which data sources does it support?</span>
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner"><div>
+            At launch: Apple Watch, Oura, Whoop, Garmin, and major blood-panel
+            providers. Plus structured inputs for family history, genetic tests,
+            sleep studies, and self-reports. Clinical-record integrations follow.
+          </div></div></div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">
+            <span>How is my data handled?</span>
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner"><div>
+            Your data is yours. It's encrypted in transit and at rest, never sold,
+            and never used to train models on anyone else's behalf. You can export
+            or delete it at any time.
+          </div></div></div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">
+            <span>Is BioSense a medical device?</span>
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner"><div>
+            BioSense provides insight and guidance to help you understand your
+            biology. It is not a substitute for medical advice, diagnosis, or
+            treatment. Where clinical care is needed, BioSense helps you and
+            your clinician have a better-informed conversation.
+          </div></div></div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">
+            <span>How do I get access?</span>
+            <span class="faq__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a"><div class="faq__a-inner"><div>
+            BioSense is currently in an invite-only pilot. Join the waitlist below
+            and we'll be in touch as cohorts open up.
+          </div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINAL CTA
+       ============================================================ -->
+  <section class="cta" id="waitlist" aria-labelledby="waitlist-heading">
+    <div class="container cta__inner reveal">
+      <span class="eyebrow eyebrow--on-dark" style="justify-content:center;">The waitlist</span>
+      <h2 id="waitlist-heading" class="display-xl">
+        Give your biology <span class="grad-text">a voice</span>.
+      </h2>
+      <p class="subheading">Be among the first to experience BioSense. We open access in small cohorts.</p>
+      <form class="cta__form" novalidate onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\u2019re on the list \u2714'; this.querySelector('input').value='';">
+        <label for="cta-email" class="visually-hidden" style="position:absolute;left:-9999px;">Email address</label>
+        <input class="cta__input" id="cta-email" type="email" required placeholder="you@domain.com" autocomplete="email"/>
+        <button class="btn btn--on-dark" type="submit">Join waitlist <span class="arr" aria-hidden="true">→</span></button>
+      </form>
+      <p class="cta__note">No spam. Unsubscribe anytime. By joining you agree to our privacy policy.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo logo--on-dark logo--lg" href="index.html" aria-label="BioSense — home">
+          <img class="logo__img" src="assets/biosense-logotype-white.svg" alt="BioSense" width="220" height="38" />
+        </a>
+        <p class="footer__tag">
+          Your daily advantage and your gateway to a smarter, longer life.
+        </p>
+        <div class="footer__url u-mt-5">
+          <img src="assets/biosense-mark-white.svg" alt="" aria-hidden="true" width="22" height="17" />
+          <span>bio-sense.ai</span>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="science.html">Science</a></li>
+          <li><a href="#preview">Preview</a></li>
+          <li><a href="#how">The method</a></li>
+          <li><a href="#waitlist">Request access</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="mailto:hello@bio-sense.ai">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Data ethics</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__legal">
+      <span>© <span id="year">2026</span> BioSense. All rights reserved.</span>
+      <span>bio-sense.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/main.js" defer></script>
+</body>
+</html>

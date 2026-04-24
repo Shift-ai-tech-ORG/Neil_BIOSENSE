@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Science — BioSense</title>
+<meta name="description" content="How BioSense unifies wearables, blood biomarkers, family history, and self-reports into one intelligent system — with trust and privacy at its core." />
+<meta name="theme-color" content="#F7F7F7" />
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="biosenseBrandGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F04D4D"/>
+      <stop offset="100%" stop-color="#7625B0"/>
+    </linearGradient>
+    <!-- Real brand mark — see index.html for provenance note. -->
+    <symbol id="biosense-mark" viewBox="0 0 243.367 187.7441">
+      <path d="m235.7728,94.0735c-8.5085-15.8135-22.7169-27.0073-40.0065-31.5192-4.2777-1.1161-8.634-1.7703-12.9951-1.9764l53.8894-34.2889c5.395-3.4325,7.8195-9.8638,6.0314-16.0036C240.9046,4.1448,235.4075.0194,229.0123.0194h-121.041l-.04-.0016c-10.6439-.2813-20.8667,2.7804-29.6698,8.8691-20.8981,14.4496-27.5887,42.2009-15.5628,64.5524,6.6693,12.3951,17.8074,21.1692,31.3629,24.7061,2.0065.5235,4.0351.9126,6.073,1.1795L7.3964,158.332c-6.0345,3.841-8.7458,11.036-6.7455,17.904,2.0002,6.8681,8.1495,11.4822,15.3027,11.4822h162.0679l.0584.0024c.5798.0157,1.1565.0235,1.7339.0235,12.9066,0,25.3582-3.9038,36.1098-11.3376,26.6546-18.4312,35.1874-53.8268,19.8493-82.3331Zm-112.2739-17.7187c-7.4385,4.7319-16.2353,6.1108-24.7659,3.8866-8.5234-2.2242-15.5345-7.7535-19.7401-15.5699-7.4314-13.8116-3.13-31.63,9.7922-40.5652,5.549-3.8371,12.4377-5.7878,19.0881-5.5914l106.5245.0079-90.8989,57.832Zm81.901,84.8323c-7.9491,5.4963-17.1867,8.2626-26.7174,8.0395-.0011,0-153.9167-.0118-153.9209-.0118l130.7193-83.1667c10.6973-6.8053,23.347-8.7898,35.614-5.5898,12.2584,3.1991,22.3382,11.1475,28.3837,22.383,10.6894,19.8665,4.5049,45.495-14.0787,58.3458Z"
+            fill="url(#biosenseBrandGrad)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- NAV -->
+<header class="nav" id="site-nav">
+  <div class="container nav__inner">
+    <a class="nav__brand logo" href="index.html" aria-label="BioSense — home">
+      <img class="logo__img" src="assets/biosense-logotype.svg" alt="BioSense" width="176" height="30" />
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="science.html" aria-current="page">Science</a>
+      <a href="about.html">About</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+    <div class="nav__cta">
+      <a class="btn btn--sm" href="app.html">Sign in <span class="arr" aria-hidden="true">→</span></a>
+    </div>
+    <button class="nav__toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav" id="nav-toggle"><span></span></button>
+  </div>
+  <div class="nav__mobile" id="mobile-nav">
+    <a href="science.html" aria-current="page">Science</a>
+    <a href="about.html">About</a>
+    <a href="index.html#faq">FAQ</a>
+    <a class="btn btn--sm" href="app.html">Sign in <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="reveal" style="max-width: 900px;">
+        <span class="eyebrow">The science</span>
+        <h1 class="display-xxl" style="margin-top:20px;">
+          One system.<br/> <em><span class="grad-text">Every signal</span></em>.
+        </h1>
+        <p class="subheading u-max-ch" style="margin-top:24px;">
+          BioSense unifies continuous wearable data, episodic blood biomarkers,
+          inherited context from your family history, and the nuance only you can
+          report — into a single intelligent layer that turns noise into insight.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW DIAGRAM -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2 class="display">From scattered signals to a single system.</h2>
+      </div>
+
+      <div class="flowdiagram reveal">
+        <div class="flowcol">
+          <h3>Inputs</h3>
+          <ul>
+            <li>Wearables (HR, HRV, sleep, VO₂)</li>
+            <li>Blood biomarkers</li>
+            <li>Family history</li>
+            <li>Genetic tests</li>
+            <li>Self-report</li>
+            <li>Clinical records</li>
+          </ul>
+        </div>
+        <div class="flowdiagram__arrow" aria-hidden="true">→</div>
+        <div class="flowcol flowcol--hub">
+          <h3>Intelligence</h3>
+          <div class="flowcol__title">BioSense core</div>
+          <div class="flowcol__note">
+            Continuous personalisation. Context-aware analytics.
+            Baseline modelling. Pattern surfacing. Right insight, right time.
+          </div>
+        </div>
+        <div class="flowdiagram__arrow" aria-hidden="true">→</div>
+        <div class="flowcol">
+          <h3>Outputs</h3>
+          <ul>
+            <li>Real-time guidance</li>
+            <li>Early-warning pattern alerts</li>
+            <li>Weekly narrative insight</li>
+            <li>Clinician-ready summaries</li>
+            <li>Longevity trajectory</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE PILLARS -->
+  <section class="section">
+    <div class="container">
+      <div class="editorial reveal">
+        <div>
+          <span class="eyebrow">01 — Unification</span>
+          <p class="editorial__lede u-mt-5">One timeline, not ten apps.</p>
+        </div>
+        <div class="editorial__body">
+          <p>
+            Wearables, bloods, genetics, history, self-reports — they all sit on
+            different axes and different time scales. BioSense aligns them onto a
+            single continuous timeline, so a 3&nbsp;a.m. sleep dip connects to
+            tomorrow's training load, which connects to a trending biomarker,
+            which connects to a family history flag.
+          </p>
+          <p>
+            The result is a view of your biology that no single device — and no
+            single clinician — can give you on its own.
+          </p>
+        </div>
+      </div>
+
+      <hr class="hairline u-mt-6"/>
+
+      <div class="editorial reveal" style="margin-top: 64px;">
+        <div>
+          <span class="eyebrow">02 — Context</span>
+          <p class="editorial__lede u-mt-5">A number only matters next to your baseline.</p>
+        </div>
+        <div class="editorial__body">
+          <p>
+            "Normal" isn't a population average. It's what's normal for you. BioSense
+            builds a personal baseline across every signal, then measures meaning
+            against <em>your</em> trend — not someone else's.
+          </p>
+          <p>
+            Context is also temporal. A resting heart rate of 62 is unremarkable
+            on its own, and informative if it's 12 points above your own baseline
+            on the same day your sleep score dropped and inflammation ticked up.
+          </p>
+        </div>
+      </div>
+
+      <hr class="hairline u-mt-6"/>
+
+      <div class="editorial reveal" style="margin-top: 64px;">
+        <div>
+          <span class="eyebrow">03 — Trust &amp; privacy</span>
+          <p class="editorial__lede u-mt-5">Your data is yours. Full stop.</p>
+        </div>
+        <div class="editorial__body">
+          <p>
+            BioSense is built on the principle that your biology should belong to
+            you. Data is encrypted in transit and at rest. It is never sold, never
+            brokered, and never used to train models on anyone else's behalf.
+          </p>
+          <p>
+            You can export, port, or delete your data at any time. Access controls
+            are transparent and revocable. If a clinician needs a picture, you
+            decide what they see.
+          </p>
+          <h3>The short version</h3>
+          <p>
+            We earn access to your biology by making it useful to you — not by
+            monetising it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES STRIP -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="principles reveal">
+        <div class="principle">
+          <div class="principle__num">Baseline</div>
+          <div class="principle__name">Personalised</div>
+          <p class="principle__desc">Every model is calibrated to you, not to a population mean.</p>
+        </div>
+        <div class="principle">
+          <div class="principle__num">Signal</div>
+          <div class="principle__name">Continuous</div>
+          <p class="principle__desc">Wearable streams are processed in near-real-time, not nightly.</p>
+        </div>
+        <div class="principle">
+          <div class="principle__num">Insight</div>
+          <div class="principle__name">Contextual</div>
+          <p class="principle__desc">Guidance considers the full picture — sleep, stress, training, labs.</p>
+        </div>
+        <div class="principle">
+          <div class="principle__num">Trust</div>
+          <div class="principle__name">Yours</div>
+          <p class="principle__desc">Data ownership, encryption, and revocable access by design.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CITATIONS / FOOTNOTES -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="reveal" style="max-width: 860px;">
+        <span class="eyebrow">References &amp; notes</span>
+        <h2 class="heading u-mt-5">The evidence behind the method.</h2>
+        <ol class="citations u-mt-5">
+          <li>Wearable HRV trends as an early indicator of autonomic shift —
+            peer-reviewed literature, 2020–2024. Placeholder citation.</li>
+          <li>Continuous glucose and metabolic-health correlations across
+            free-living populations. Placeholder citation.</li>
+          <li>Polygenic context and personal baselines — clinical relevance
+            of longitudinal personalisation. Placeholder citation.</li>
+          <li>Data minimisation and user-first privacy architectures —
+            engineering overview. Placeholder citation.</li>
+        </ol>
+        <p class="body-sm u-mt-5">
+          BioSense provides insight and guidance. It is not a substitute for
+          medical advice, diagnosis, or treatment.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="waitlist" aria-labelledby="science-cta">
+    <div class="container cta__inner reveal">
+      <span class="eyebrow eyebrow--on-dark" style="justify-content:center;">The waitlist</span>
+      <h2 id="science-cta" class="display-xl">Ready when you are.</h2>
+      <p class="subheading">Join the pilot and see your biology, finally making sense.</p>
+      <form class="cta__form" novalidate onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\u2019re on the list \u2714'; this.querySelector('input').value='';">
+        <label for="cta-email" class="visually-hidden" style="position:absolute;left:-9999px;">Email address</label>
+        <input class="cta__input" id="cta-email" type="email" required placeholder="you@domain.com" autocomplete="email"/>
+        <button class="btn btn--on-dark" type="submit">Join waitlist <span class="arr" aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo logo--on-dark logo--lg" href="index.html" aria-label="BioSense — home">
+          <img class="logo__img" src="assets/biosense-logotype-white.svg" alt="BioSense" width="220" height="38" />
+        </a>
+        <p class="footer__tag">Your daily advantage and your gateway to a smarter, longer life.</p>
+        <div class="footer__url u-mt-5">
+          <img src="assets/biosense-mark-white.svg" alt="" aria-hidden="true" width="22" height="17" />
+          <span>bio-sense.ai</span>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="science.html">Science</a></li>
+          <li><a href="index.html#preview">Preview</a></li>
+          <li><a href="index.html#how">The method</a></li>
+          <li><a href="index.html#waitlist">Request access</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="mailto:hello@bio-sense.ai">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Data ethics</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <span>© 2026 BioSense. All rights reserved.</span>
+      <span>bio-sense.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/main.js" defer></script>
+</body>
+</html>

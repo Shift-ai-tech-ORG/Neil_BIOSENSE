@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BioSense — Member dashboard</title>
+<meta name="description" content="BioSense member dashboard — 20+ biomarkers, CMO-reviewed every draw. Smart report, healthspan journey and Sage AI." />
+<meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+
+<!-- Inter only, per brand guidelines -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" />
+
+<!-- Shared brand tokens first, then app overrides. -->
+<link rel="stylesheet" href="assets/styles.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body class="app">
+
+<!-- ============================================================
+     SHARED SVG DEFS — brand gradient + reusable mark symbol
+     (same gradient definition as the marketing pages so the mark
+     renders identically in the sidebar logo and anywhere else.)
+     ============================================================ -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="biosenseBrandGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F04D4D"/>
+      <stop offset="100%" stop-color="#7625B0"/>
+    </linearGradient>
+    <!-- Horizontal variant used by large hero stats (bio-age ring etc) -->
+    <linearGradient id="biosenseBrandGradH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F04D4D"/>
+      <stop offset="100%" stop-color="#7625B0"/>
+    </linearGradient>
+    <symbol id="biosense-mark" viewBox="0 0 243.367 187.7441">
+      <path d="m235.7728,94.0735c-8.5085-15.8135-22.7169-27.0073-40.0065-31.5192-4.2777-1.1161-8.634-1.7703-12.9951-1.9764l53.8894-34.2889c5.395-3.4325,7.8195-9.8638,6.0314-16.0036C240.9046,4.1448,235.4075.0194,229.0123.0194h-121.041l-.04-.0016c-10.6439-.2813-20.8667,2.7804-29.6698,8.8691-20.8981,14.4496-27.5887,42.2009-15.5628,64.5524,6.6693,12.3951,17.8074,21.1692,31.3629,24.7061,2.0065.5235,4.0351.9126,6.073,1.1795L7.3964,158.332c-6.0345,3.841-8.7458,11.036-6.7455,17.904,2.0002,6.8681,8.1495,11.4822,15.3027,11.4822h162.0679l.0584.0024c.5798.0157,1.1565.0235,1.7339.0235,12.9066,0,25.3582-3.9038,36.1098-11.3376,26.6546-18.4312,35.1874-53.8268,19.8493-82.3331Zm-112.2739-17.7187c-7.4385,4.7319-16.2353,6.1108-24.7659,3.8866-8.5234-2.2242-15.5345-7.7535-19.7401-15.5699-7.4314-13.8116-3.13-31.63,9.7922-40.5652,5.549-3.8371,12.4377-5.7878,19.0881-5.5914l106.5245.0079-90.8989,57.832Zm81.901,84.8323c-7.9491,5.4963-17.1867,8.2626-26.7174,8.0395-.0011,0-153.9167-.0118-153.9209-.0118l130.7193-83.1667c10.6973-6.8053,23.347-8.7898,35.614-5.5898,12.2584,3.1991,22.3382,11.1475,28.3837,22.383,10.6894,19.8665,4.5049,45.495-14.0787,58.3458Z"
+            fill="url(#biosenseBrandGrad)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     APP SHELL — two-column layout (sidebar + main)
+     ============================================================ -->
+<div class="app-shell">
+
+  <!-- ==========================================================
+       SIDEBAR
+       =========================================================  -->
+  <aside class="app-sidebar" aria-label="Member navigation">
+    <a class="app-brand" href="index.html" aria-label="BioSense — back to marketing site">
+      <img class="app-brand__img" src="assets/biosense-logotype-white.svg" alt="BioSense" width="140" height="24" />
+    </a>
+
+    <!-- Member card — who is signed in -->
+    <div class="app-member">
+      <div class="app-avatar" aria-hidden="true">SC</div>
+      <div class="app-member__body">
+        <div class="app-member__name">Sarah Chen</div>
+        <div class="app-member__meta">Longevity member · Oct 2025</div>
+      </div>
+    </div>
+
+    <!-- Primary navigation — section switches driven by app.js -->
+    <nav class="app-nav" aria-label="Dashboard sections">
+      <div class="app-nav__group">
+        <div class="app-nav__label">Overview</div>
+        <button class="app-nav__item is-active" data-target="dashboard">
+          <span class="app-nav__dot" aria-hidden="true">▪</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="app-nav__item" data-target="healthspan">
+          <span class="app-nav__dot" aria-hidden="true">↑</span>
+          <span>Healthspan journey</span>
+        </button>
+      </div>
+
+      <div class="app-nav__group">
+        <div class="app-nav__label">Results</div>
+        <button class="app-nav__item" data-target="biomarkers">
+          <span class="app-nav__dot" aria-hidden="true">◇</span>
+          <span>Biomarkers</span>
+        </button>
+        <button class="app-nav__item" data-target="compare">
+          <span class="app-nav__dot" aria-hidden="true">↔</span>
+          <span>Compare draws</span>
+        </button>
+      </div>
+
+      <div class="app-nav__group">
+        <div class="app-nav__label">Intelligence</div>
+        <button class="app-nav__item" data-target="smart-report">
+          <span class="app-nav__dot" aria-hidden="true">≡</span>
+          <span>Smart report</span>
+          <span class="app-nav__pip" aria-hidden="true"></span>
+        </button>
+        <button class="app-nav__item" data-target="sage">
+          <span class="app-nav__dot" aria-hidden="true">◉</span>
+          <span>Sage AI</span>
+        </button>
+      </div>
+
+      <div class="app-nav__group">
+        <div class="app-nav__label">Account</div>
+        <button class="app-nav__item" data-target="profile">
+          <span class="app-nav__dot" aria-hidden="true">○</span>
+          <span>Profile &amp; goals</span>
+        </button>
+        <button class="app-nav__item" data-target="membership">
+          <span class="app-nav__dot" aria-hidden="true">◆</span>
+          <span>Membership</span>
+        </button>
+        <button class="app-nav__item" data-target="integrity">
+          <span class="app-nav__dot" aria-hidden="true">!</span>
+          <span>Sample integrity</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Clinician card — assigned CMO -->
+    <div class="app-clinician">
+      <div class="app-clinician__label">Your clinician</div>
+      <div class="app-clinician__body">
+        <div class="app-avatar app-avatar--cmo" aria-hidden="true">
+          DM
+          <span class="app-avatar__status" aria-hidden="true"></span>
+        </div>
+        <div>
+          <div class="app-clinician__name">Dr. D. Mitchell</div>
+          <div class="app-clinician__meta">CMO · MBBS, MRCP</div>
+        </div>
+      </div>
+    </div>
+
+    <a class="app-signout" href="index.html">Sign out</a>
+  </aside>
+
+  <!-- Mobile sidebar backdrop -->
+  <button class="app-sidebar-scrim" aria-label="Close menu" hidden></button>
+
+  <!-- ==========================================================
+       MAIN — each section is .app-section, one shown at a time.
+       JS toggles [hidden] based on sidebar click.
+       ==========================================================  -->
+  <main class="app-main">
+
+    <!-- Mobile top bar — only shown below ~960px -->
+    <header class="app-topbar">
+      <button class="app-topbar__toggle" id="app-menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <img class="app-topbar__mark" src="assets/biosense-mark-white.svg" alt="" aria-hidden="true" width="22" height="17" />
+      <span class="app-topbar__title" id="app-current-title">Dashboard</span>
+    </header>
+
+    <!-- ==========================================================
+         SECTION · Dashboard (default)
+         ==========================================================  -->
+    <section class="app-section is-active" data-section="dashboard">
+      <!-- CMO review banner -->
+      <div class="app-banner">
+        <span class="app-banner__icon" aria-hidden="true">✦</span>
+        <div class="app-banner__body">
+          <div class="app-banner__title">Dr. Mitchell reviewed your April panel — 2 Apr 2026</div>
+          <div class="app-banner__sub">All 20 markers processed and cleared. CMO narrative in your smart report.</div>
+        </div>
+        <div class="app-banner__actions">
+          <button class="app-link" data-target="smart-report">Read report →</button>
+          <button class="app-link">Book a call →</button>
+        </div>
+      </div>
+
+      <!-- Page head -->
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Good afternoon, Sarah.</h1>
+          <p class="app-sub">April panel cleared by Dr. Mitchell. Your healthspan score improved since October — here's what matters today.</p>
+        </div>
+        <button class="app-btn app-btn--ghost" data-target="sage">Ask Sage AI</button>
+      </div>
+
+      <!-- Hero focus card — "today's single focus" -->
+      <div class="app-focus">
+        <div class="app-focus__meta">
+          <span class="app-focus__label">Today's single focus</span>
+          <span class="app-focus__system">Cardiovascular</span>
+          <span class="app-focus__score">68<span class="app-focus__score-max">/100</span></span>
+        </div>
+        <h2 class="app-focus__title">ApoB is your most important number right now.</h2>
+        <p class="app-focus__copy">
+          At 91 mg/dL it's moving in the right direction — down 17 points since October. But with
+          your father's cardiovascular event at 55, your longevity-optimal target is &lt;70. Three
+          levers will get you there before October:
+          <em>Zone&nbsp;2 cardio 3&times;/week</em>, <em>saturated fat reduction</em>, and
+          <em>continued Omega-3 protocol</em>.
+        </p>
+        <div class="app-focus__actions">
+          <button class="app-btn" data-target="biomarkers">View biomarkers</button>
+          <button class="app-btn app-btn--ghost" data-target="smart-report">Smart report</button>
+        </div>
+      </div>
+
+      <!-- Headline stats grid -->
+      <div class="app-grid app-grid--3 u-mb-5">
+        <!-- Bio-age ring -->
+        <div class="app-card app-card--ring">
+          <svg class="app-ring" viewBox="0 0 180 180" role="img" aria-label="Biological age 41.2, 6.8 years younger than calendar age">
+            <defs>
+              <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#F04D4D"/>
+                <stop offset="100%" stop-color="#7625B0"/>
+              </linearGradient>
+            </defs>
+            <!-- Track -->
+            <circle cx="90" cy="90" r="72" fill="none"
+                    stroke="rgba(247,247,247,0.08)" stroke-width="10"/>
+            <!-- Progress — ~86% (6.8 yrs younger out of ~8 yr longevity-optimal target) -->
+            <circle cx="90" cy="90" r="72" fill="none"
+                    stroke="url(#ringGrad)" stroke-width="10" stroke-linecap="round"
+                    stroke-dasharray="452.4" stroke-dashoffset="63.3"
+                    transform="rotate(-90 90 90)"/>
+            <text x="90" y="90" text-anchor="middle" class="app-ring__num">41.2</text>
+            <text x="90" y="110" text-anchor="middle" class="app-ring__cap">Biological age</text>
+            <text x="90" y="128" text-anchor="middle" class="app-ring__sub">6.8 yrs younger</text>
+          </svg>
+        </div>
+
+        <div class="app-card app-stat">
+          <div class="app-stat__label">Healthspan score</div>
+          <div class="app-stat__num">80</div>
+          <div class="app-stat__sub">across 7 systems</div>
+        </div>
+
+        <div class="app-card app-stat">
+          <div class="app-stat__label">Since joining</div>
+          <div class="app-stat__num app-stat__num--good">−1.4<span class="app-stat__unit">yr</span></div>
+          <div class="app-stat__sub">of biological age</div>
+        </div>
+      </div>
+
+      <div class="app-grid app-grid--2 u-mb-7">
+        <div class="app-card app-stat">
+          <div class="app-stat__label">Markers improved</div>
+          <div class="app-stat__num app-stat__num--good">9</div>
+          <div class="app-stat__sub">of 20 · since Oct 25</div>
+        </div>
+
+        <div class="app-card app-stat">
+          <div class="app-stat__label">Next home draw</div>
+          <div class="app-stat__num">2<span class="app-stat__unit"> Oct</span></div>
+          <div class="app-stat__sub">kit ships 29 Sep · 12h fast</div>
+        </div>
+      </div>
+
+      <!-- System scores -->
+      <h3 class="app-section-title">System scores <span class="app-section-title__meta">April 2026 · 7 systems</span></h3>
+      <div class="app-grid app-grid--3 u-mb-7" data-system-grid>
+        <!-- Generated inline; each card has a semantic class for colour -->
+        <div class="app-card app-system app-system--warn">
+          <div class="app-system__label">Cardiovascular</div>
+          <div class="app-system__score">68<span>/100</span></div>
+          <div class="app-system__note">3 need attention</div>
+          <div class="app-system__bar"><span style="width: 68%"></span></div>
+        </div>
+        <div class="app-card app-system app-system--warn">
+          <div class="app-system__label">Inflammation</div>
+          <div class="app-system__score">74<span>/100</span></div>
+          <div class="app-system__note">2 need attention</div>
+          <div class="app-system__bar"><span style="width: 74%"></span></div>
+        </div>
+        <div class="app-card app-system app-system--good">
+          <div class="app-system__label">Metabolic</div>
+          <div class="app-system__score">83<span>/100</span></div>
+          <div class="app-system__note">All optimal</div>
+          <div class="app-system__bar"><span style="width: 83%"></span></div>
+        </div>
+        <div class="app-card app-system app-system--good">
+          <div class="app-system__label">Nutrients</div>
+          <div class="app-system__score">74<span>/100</span></div>
+          <div class="app-system__note">All optimal</div>
+          <div class="app-system__bar"><span style="width: 74%"></span></div>
+        </div>
+        <div class="app-card app-system app-system--good">
+          <div class="app-system__label">Thyroid</div>
+          <div class="app-system__score">89<span>/100</span></div>
+          <div class="app-system__note">All optimal</div>
+          <div class="app-system__bar"><span style="width: 89%"></span></div>
+        </div>
+        <div class="app-card app-system app-system--good">
+          <div class="app-system__label">Hormonal</div>
+          <div class="app-system__score">78<span>/100</span></div>
+          <div class="app-system__note">All optimal</div>
+          <div class="app-system__bar"><span style="width: 78%"></span></div>
+        </div>
+        <div class="app-card app-system app-system--good">
+          <div class="app-system__label">Immune</div>
+          <div class="app-system__score">94<span>/100</span></div>
+          <div class="app-system__note">All optimal</div>
+          <div class="app-system__bar"><span style="width: 94%"></span></div>
+        </div>
+      </div>
+
+      <!-- What drives + April highlights -->
+      <div class="app-grid app-grid--2 u-mb-7">
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">What drives your biological age</div>
+          <div class="app-drivers">
+            <div class="app-drivers__col">
+              <div class="app-drivers__title app-drivers__title--good">Making you younger</div>
+              <div class="app-drivers__list">
+                <div><span>hs-CRP</span><b>−0.7</b></div>
+                <div><span>HbA1c</span><b>−0.6</b></div>
+                <div><span>Fasting glucose</span><b>−0.5</b></div>
+                <div><span>Vitamin D</span><b>−0.5</b></div>
+                <div><span>HDL-C</span><b>−0.4</b></div>
+                <div><span>Morning cortisol</span><b>−0.4</b></div>
+                <div><span>Estradiol</span><b>−0.3</b></div>
+                <div><span>Free T3</span><b>−0.2</b></div>
+                <div><span>DHEA-S</span><b>−0.2</b></div>
+              </div>
+            </div>
+            <div class="app-drivers__col">
+              <div class="app-drivers__title app-drivers__title--warn">Adding years</div>
+              <div class="app-drivers__list">
+                <div><span>ApoB</span><b class="is-warn">+1.4</b></div>
+                <div><span>LDL-C</span><b class="is-warn">+0.9</b></div>
+                <div><span>Homocysteine</span><b class="is-warn">+0.4</b></div>
+                <div><span>Lp(a)</span><b class="is-warn">+0.3</b></div>
+                <div><span>IL-6</span><b class="is-warn">+0.2</b></div>
+                <div><span>Fasting insulin</span><b class="is-warn">+0.2</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">April highlights</div>
+          <div class="app-highlights">
+            <div>
+              <span>ApoB</span>
+              <code>108 → 91 mg/dL</code>
+              <span class="app-pill app-pill--warn">Near optimal</span>
+            </div>
+            <div>
+              <span>hs-CRP</span>
+              <code>2.4 → 1.1 mg/L</code>
+              <span class="app-pill app-pill--good">Optimal</span>
+            </div>
+            <div>
+              <span>Vitamin D</span>
+              <code>31 → 52 ng/mL</code>
+              <span class="app-pill app-pill--good">Optimal</span>
+            </div>
+            <div>
+              <span>HbA1c</span>
+              <code>5.4 → 5.2 %</code>
+              <span class="app-pill app-pill--good">Optimal</span>
+            </div>
+            <div>
+              <span>Fasting glucose</span>
+              <code>92 → 84 mg/dL</code>
+              <span class="app-pill app-pill--good">Optimal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="app-card app-card--pad u-mb-6">
+        <div class="app-card__label">Recent updates from BioSense</div>
+        <ol class="app-timeline">
+          <li class="is-good">
+            <div class="app-timeline__title">Your hs-CRP crossed into longevity-optimal for the first time</div>
+            <div class="app-timeline__date">2 Apr 2026</div>
+          </li>
+          <li class="is-good">
+            <div class="app-timeline__title">HbA1c and fasting glucose both reached longevity threshold — first time</div>
+            <div class="app-timeline__date">2 Apr 2026</div>
+          </li>
+          <li class="is-good">
+            <div class="app-timeline__title">Dr. Mitchell left a note on your cortisol improvement</div>
+            <div class="app-timeline__date">4 Apr 2026</div>
+          </li>
+          <li class="is-pending">
+            <div class="app-timeline__title">October draw kit ships 29 Sep — 12h fast reminder set</div>
+            <div class="app-timeline__date">Upcoming</div>
+          </li>
+          <li>
+            <div class="app-timeline__title">Biological age improved by 1.4 years since October</div>
+            <div class="app-timeline__date">Apr 2026</div>
+          </li>
+        </ol>
+      </div>
+
+      <p class="app-disclaimer">
+        All values are illustrative demo data. BioSense is not a substitute for medical advice.
+        Consult your clinician before making changes to medication or treatment.
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Healthspan journey
+         ==========================================================  -->
+    <section class="app-section" data-section="healthspan" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Healthspan journey</h1>
+          <p class="app-sub">Your biology over time. Every data point tied to a real home draw, reviewed by Dr. Mitchell.</p>
+        </div>
+      </div>
+
+      <div class="app-grid app-grid--4 u-mb-6">
+        <div class="app-card app-stat app-stat--sm">
+          <div class="app-stat__label">Biological age</div>
+          <div class="app-stat__num app-stat__num--good">41.2</div>
+          <div class="app-stat__sub">−1.4 yr since joining</div>
+        </div>
+        <div class="app-card app-stat app-stat--sm">
+          <div class="app-stat__label">Months enrolled</div>
+          <div class="app-stat__num">6</div>
+          <div class="app-stat__sub">5 home draws completed</div>
+        </div>
+        <div class="app-card app-stat app-stat--sm">
+          <div class="app-stat__label">Markers to optimal</div>
+          <div class="app-stat__num app-stat__num--good">+5</div>
+          <div class="app-stat__sub">since draw 1</div>
+        </div>
+        <div class="app-card app-stat app-stat--sm">
+          <div class="app-stat__label">Protocol adherence</div>
+          <div class="app-stat__num">91<span class="app-stat__unit">%</span></div>
+          <div class="app-stat__sub">30-day rolling</div>
+        </div>
+      </div>
+
+      <!-- ApoB trajectory chart -->
+      <div class="app-card app-card--pad u-mb-5">
+        <div class="app-card__label">ApoB trajectory (mg/dL) — longevity optimal &lt;70</div>
+        <svg class="app-chart" viewBox="0 0 720 220" role="img" aria-label="ApoB trajectory from October 2025 to April 2026, declining from 108 to 91 mg/dL">
+          <defs>
+            <linearGradient id="chartFillWarn" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#F04D4D" stop-opacity="0.32"/>
+              <stop offset="100%" stop-color="#F04D4D" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Longevity-optimal zone (<70) -->
+          <rect x="60" y="138" width="640" height="60" fill="rgba(118,37,176,0.10)"/>
+          <text x="72" y="158" class="app-chart__band">Longevity optimal (&lt;70 mg/dL)</text>
+          <!-- Grid -->
+          <g class="app-chart__grid">
+            <line x1="60" y1="40"  x2="700" y2="40"/>
+            <line x1="60" y1="88"  x2="700" y2="88"/>
+            <line x1="60" y1="136" x2="700" y2="136"/>
+            <line x1="60" y1="184" x2="700" y2="184"/>
+          </g>
+          <!-- Axes -->
+          <g class="app-chart__axis">
+            <text x="52" y="44"  text-anchor="end">120</text>
+            <text x="52" y="92"  text-anchor="end">100</text>
+            <text x="52" y="140" text-anchor="end">80</text>
+            <text x="52" y="188" text-anchor="end">60</text>
+          </g>
+          <!-- Data area fill -->
+          <path d="M 92,60 L 212,74 L 332,90 L 452,100 L 572,108 L 692,116 L 692,200 L 92,200 Z"
+                fill="url(#chartFillWarn)"/>
+          <!-- Data line -->
+          <path d="M 92,60 L 212,74 L 332,90 L 452,100 L 572,108 L 692,116"
+                fill="none" stroke="#F04D4D" stroke-width="2.5"/>
+          <!-- Data points -->
+          <g fill="#F04D4D">
+            <circle cx="92" cy="60" r="3.5"/>
+            <circle cx="212" cy="74" r="3.5"/>
+            <circle cx="332" cy="90" r="3.5"/>
+            <circle cx="452" cy="100" r="3.5"/>
+            <circle cx="572" cy="108" r="3.5"/>
+            <circle cx="692" cy="116" r="5" stroke="#F7F7F7" stroke-width="1.5"/>
+          </g>
+          <!-- X labels -->
+          <g class="app-chart__axis">
+            <text x="92"  y="212" text-anchor="middle">Oct 25</text>
+            <text x="212" y="212" text-anchor="middle">Nov 25</text>
+            <text x="332" y="212" text-anchor="middle">Dec 25</text>
+            <text x="452" y="212" text-anchor="middle">Feb 26</text>
+            <text x="572" y="212" text-anchor="middle">Mar 26</text>
+            <text x="692" y="212" text-anchor="middle">Apr 26</text>
+          </g>
+        </svg>
+        <p class="app-chart__caption">
+          Clear downward trajectory. 2–3 draws from longevity-optimal at current rate of change.
+        </p>
+      </div>
+
+      <!-- Biological age over time chart -->
+      <div class="app-card app-card--pad u-mb-5">
+        <div class="app-card__label">Biological age over time — target below calendar age</div>
+        <svg class="app-chart" viewBox="0 0 720 220" role="img" aria-label="Biological age over time, declining from 43.2 to 41.2 while calendar age held as reference.">
+          <defs>
+            <linearGradient id="chartFillGood" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7625B0" stop-opacity="0.32"/>
+              <stop offset="100%" stop-color="#7625B0" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Calendar age reference band (above the line is "older than you") -->
+          <rect x="60" y="30" width="640" height="72" fill="rgba(247,247,247,0.03)"/>
+          <text x="692" y="44" text-anchor="end" class="app-chart__band">Calendar age: 48</text>
+          <!-- Grid -->
+          <g class="app-chart__grid">
+            <line x1="60" y1="40"  x2="700" y2="40"/>
+            <line x1="60" y1="88"  x2="700" y2="88"/>
+            <line x1="60" y1="136" x2="700" y2="136"/>
+            <line x1="60" y1="184" x2="700" y2="184"/>
+          </g>
+          <g class="app-chart__axis">
+            <text x="52" y="44"  text-anchor="end">48</text>
+            <text x="52" y="92"  text-anchor="end">46</text>
+            <text x="52" y="140" text-anchor="end">44</text>
+            <text x="52" y="188" text-anchor="end">42</text>
+          </g>
+          <!-- Area -->
+          <path d="M 92,112 L 212,120 L 332,138 L 452,156 L 572,172 L 692,180 L 692,200 L 92,200 Z"
+                fill="url(#chartFillGood)"/>
+          <!-- Line -->
+          <path d="M 92,112 L 212,120 L 332,138 L 452,156 L 572,172 L 692,180"
+                fill="none" stroke="#7625B0" stroke-width="2.5"/>
+          <!-- Points -->
+          <g fill="#7625B0">
+            <circle cx="92" cy="112" r="3.5"/>
+            <circle cx="212" cy="120" r="3.5"/>
+            <circle cx="332" cy="138" r="3.5"/>
+            <circle cx="452" cy="156" r="3.5"/>
+            <circle cx="572" cy="172" r="3.5"/>
+            <circle cx="692" cy="180" r="5" stroke="#F7F7F7" stroke-width="1.5"/>
+          </g>
+          <g class="app-chart__axis">
+            <text x="92"  y="212" text-anchor="middle">Oct 25</text>
+            <text x="212" y="212" text-anchor="middle">Nov 25</text>
+            <text x="332" y="212" text-anchor="middle">Dec 25</text>
+            <text x="452" y="212" text-anchor="middle">Feb 26</text>
+            <text x="572" y="212" text-anchor="middle">Mar 26</text>
+            <text x="692" y="212" text-anchor="middle">Apr 26</text>
+          </g>
+        </svg>
+        <p class="app-chart__caption">
+          Biological age moving consistently below the longevity-optimal reference line.
+          6.8 years younger than calendar age.
+        </p>
+      </div>
+
+      <p class="app-disclaimer">
+        Biological age projections are illustrative for this proof of concept.
+        Validated methodology required before production launch.
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Biomarkers
+         ==========================================================  -->
+    <section class="app-section" data-section="biomarkers" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Biomarkers</h1>
+          <p class="app-sub">
+            Latest draw: 2 Apr 2026. Range bars show lab reference range (dimmed) and
+            longevity-optimal zone (grape). The pin is your value.
+          </p>
+        </div>
+      </div>
+
+      <!-- Teaching callout -->
+      <aside class="app-callout u-mb-6">
+        <b>Why longevity-optimal is different from lab normal.</b> Standard lab ranges are
+        designed to detect disease — not to optimise for decades of health. We use
+        longevity-optimised targets derived from the peer-reviewed literature on healthspan
+        extension. These are shown as the grape zone on every range bar.
+      </aside>
+
+      <!-- CARDIOVASCULAR -->
+      <div class="app-panel u-mb-6">
+        <div class="app-panel__head">
+          <div class="app-panel__title">
+            <span class="app-panel__pin app-panel__pin--warn" aria-hidden="true"></span>
+            Cardiovascular
+          </div>
+          <div class="app-panel__score app-panel__score--warn">68<span>/100</span></div>
+        </div>
+        <table class="app-table">
+          <thead>
+            <tr><th>Marker</th><th>Value + range</th><th>Status</th><th>vs Oct 25</th><th>Trend</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ApoB</td>
+              <td>
+                <div class="app-val"><b>91</b><em>mg/dL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%;  width:54%"></span><span class="app-range__pin app-range__pin--warn" style="left:70%"></span><em class="app-range__min">0</em><em class="app-range__max">130</em></div>
+              </td>
+              <td><span class="app-pill app-pill--warn">Needs attention</span></td>
+              <td class="app-delta app-delta--good">−17</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,6 L 18,9 L 32,12 L 46,15 L 60,18 L 76,20" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="20" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>LDL-C</td>
+              <td>
+                <div class="app-val"><b>188</b><em>mg/dL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%;  width:50%"></span><span class="app-range__pin app-range__pin--bad" style="left:94%"></span><em class="app-range__min">0</em><em class="app-range__max">200</em></div>
+              </td>
+              <td><span class="app-pill app-pill--bad">Out of range</span></td>
+              <td class="app-delta app-delta--good">−24</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,4 L 18,7 L 32,10 L 46,13 L 60,16 L 76,18" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="18" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>HDL-C</td>
+              <td>
+                <div class="app-val"><b>65</b><em>mg/dL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:50%; width:40%"></span><span class="app-range__pin app-range__pin--warn" style="left:65%"></span><em class="app-range__min">0</em><em class="app-range__max">100</em></div>
+              </td>
+              <td><span class="app-pill app-pill--warn">Near optimal</span></td>
+              <td class="app-delta app-delta--good">+7</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,16 L 18,15 L 32,13 L 46,11 L 60,9 L 76,7" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="7" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>Lp(a)</td>
+              <td>
+                <div class="app-val"><b>53</b><em>nmol/L</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:40%"></span><span class="app-range__pin app-range__pin--warn" style="left:70%"></span><em class="app-range__min">0</em><em class="app-range__max">75</em></div>
+              </td>
+              <td><span class="app-pill app-pill--warn">Needs attention</span></td>
+              <td class="app-delta">−2</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,10 L 18,11 L 32,10 L 46,11 L 60,10 L 76,10" fill="none" stroke="rgba(247,247,247,0.45)" stroke-width="1.8"/>
+                  <circle cx="76" cy="10" r="2.4" fill="rgba(247,247,247,0.45)"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>Triglycerides</td>
+              <td>
+                <div class="app-val"><b>78</b><em>mg/dL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:50%"></span><span class="app-range__pin app-range__pin--good" style="left:39%"></span><em class="app-range__min">0</em><em class="app-range__max">200</em></div>
+              </td>
+              <td><span class="app-pill app-pill--good">Optimal</span></td>
+              <td class="app-delta app-delta--good">−22</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,6 L 18,8 L 32,10 L 46,13 L 60,15 L 76,17" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="17" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- INFLAMMATION -->
+      <div class="app-panel u-mb-6">
+        <div class="app-panel__head">
+          <div class="app-panel__title">
+            <span class="app-panel__pin app-panel__pin--warn" aria-hidden="true"></span>
+            Inflammation
+          </div>
+          <div class="app-panel__score app-panel__score--warn">74<span>/100</span></div>
+        </div>
+        <table class="app-table">
+          <thead>
+            <tr><th>Marker</th><th>Value + range</th><th>Status</th><th>vs Oct 25</th><th>Trend</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>hs-CRP</td>
+              <td>
+                <div class="app-val"><b>1.1</b><em>mg/L</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:33%"></span><span class="app-range__pin app-range__pin--good" style="left:22%"></span><em class="app-range__min">0</em><em class="app-range__max">5</em></div>
+              </td>
+              <td><span class="app-pill app-pill--good">Optimal</span></td>
+              <td class="app-delta app-delta--good">−1.3</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,4 L 18,7 L 32,10 L 46,13 L 60,16 L 76,18" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="18" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>Homocysteine</td>
+              <td>
+                <div class="app-val"><b>11.8</b><em>µmol/L</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:42%"></span><span class="app-range__pin app-range__pin--warn" style="left:59%"></span><em class="app-range__min">0</em><em class="app-range__max">20</em></div>
+              </td>
+              <td><span class="app-pill app-pill--warn">Needs attention</span></td>
+              <td class="app-delta">+0.4</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,12 L 18,11 L 32,12 L 46,12 L 60,11 L 76,10" fill="none" stroke="rgba(247,247,247,0.45)" stroke-width="1.8"/>
+                  <circle cx="76" cy="10" r="2.4" fill="rgba(247,247,247,0.45)"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>IL-6</td>
+              <td>
+                <div class="app-val"><b>1.4</b><em>pg/mL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:33%"></span><span class="app-range__pin app-range__pin--warn" style="left:28%"></span><em class="app-range__min">0</em><em class="app-range__max">5</em></div>
+              </td>
+              <td><span class="app-pill app-pill--warn">Near optimal</span></td>
+              <td class="app-delta">+0.2</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,14 L 18,13 L 32,12 L 46,12 L 60,11 L 76,10" fill="none" stroke="rgba(247,247,247,0.45)" stroke-width="1.8"/>
+                  <circle cx="76" cy="10" r="2.4" fill="rgba(247,247,247,0.45)"/>
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- METABOLIC -->
+      <div class="app-panel u-mb-6">
+        <div class="app-panel__head">
+          <div class="app-panel__title">
+            <span class="app-panel__pin app-panel__pin--good" aria-hidden="true"></span>
+            Metabolic
+          </div>
+          <div class="app-panel__score app-panel__score--good">83<span>/100</span></div>
+        </div>
+        <table class="app-table">
+          <thead>
+            <tr><th>Marker</th><th>Value + range</th><th>Status</th><th>vs Oct 25</th><th>Trend</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HbA1c</td>
+              <td>
+                <div class="app-val"><b>5.2</b><em>%</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:44%"></span><span class="app-range__pin app-range__pin--good" style="left:32%"></span><em class="app-range__min">4.0</em><em class="app-range__max">7.5</em></div>
+              </td>
+              <td><span class="app-pill app-pill--good">Optimal</span></td>
+              <td class="app-delta app-delta--good">−0.2</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,6 L 18,8 L 32,10 L 46,13 L 60,16 L 76,18" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="18" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>Fasting glucose</td>
+              <td>
+                <div class="app-val"><b>84</b><em>mg/dL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:20%; width:40%"></span><span class="app-range__pin app-range__pin--good" style="left:42%"></span><em class="app-range__min">60</em><em class="app-range__max">120</em></div>
+              </td>
+              <td><span class="app-pill app-pill--good">Optimal</span></td>
+              <td class="app-delta app-delta--good">−8</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,6 L 18,9 L 32,12 L 46,15 L 60,17 L 76,18" fill="none" stroke="#7625B0" stroke-width="1.8"/>
+                  <circle cx="76" cy="18" r="2.4" fill="#7625B0"/>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>Fasting insulin</td>
+              <td>
+                <div class="app-val"><b>7.2</b><em>µIU/mL</em></div>
+                <div class="app-range"><span class="app-range__opt" style="left:0%; width:36%"></span><span class="app-range__pin app-range__pin--warn" style="left:36%"></span><em class="app-range__min">0</em><em class="app-range__max">20</em></div>
+              </td>
+              <td><span class="app-pill app-pill--warn">Near optimal</span></td>
+              <td class="app-delta">+0.2</td>
+              <td>
+                <svg class="app-spark" viewBox="0 0 80 24" aria-hidden="true">
+                  <path d="M 4,12 L 18,11 L 32,11 L 46,11 L 60,10 L 76,10" fill="none" stroke="rgba(247,247,247,0.45)" stroke-width="1.8"/>
+                  <circle cx="76" cy="10" r="2.4" fill="rgba(247,247,247,0.45)"/>
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="app-disclaimer">
+        Longevity-optimal ranges are based on published literature. In production, ranges are
+        personalised by age, sex, activity and genetic profile. These are illustrative.
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Compare draws
+         ==========================================================  -->
+    <section class="app-section" data-section="compare" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Compare draws</h1>
+          <p class="app-sub">Hold any two panels side-by-side. The delta column shows longevity-impact direction, not just statistical change.</p>
+        </div>
+      </div>
+
+      <div class="app-card app-card--pad u-mb-5">
+        <div class="app-compare__picker">
+          <label>
+            <span>Baseline</span>
+            <select class="app-select">
+              <option>Oct 2025 · draw 1</option>
+              <option>Nov 2025 · draw 2</option>
+              <option>Dec 2025 · draw 3</option>
+              <option>Feb 2026 · draw 4</option>
+              <option>Mar 2026 · draw 5</option>
+            </select>
+          </label>
+          <span class="app-compare__vs">vs</span>
+          <label>
+            <span>Latest</span>
+            <select class="app-select">
+              <option>Apr 2026 · draw 6</option>
+              <option>Mar 2026 · draw 5</option>
+              <option>Feb 2026 · draw 4</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="app-panel u-mb-5">
+        <div class="app-panel__head">
+          <div class="app-panel__title">Cardiovascular</div>
+          <div class="app-panel__score app-panel__score--warn">68<span>/100</span></div>
+        </div>
+        <table class="app-table app-table--compare">
+          <thead>
+            <tr><th>Marker</th><th>Oct 25</th><th>Apr 26</th><th>Δ</th><th>Direction</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ApoB</td><td>108 mg/dL</td><td>91 mg/dL</td><td class="app-delta app-delta--good">−17</td><td><span class="app-pill app-pill--good">Improving</span></td></tr>
+            <tr><td>LDL-C</td><td>212 mg/dL</td><td>188 mg/dL</td><td class="app-delta app-delta--good">−24</td><td><span class="app-pill app-pill--good">Improving</span></td></tr>
+            <tr><td>HDL-C</td><td>58 mg/dL</td><td>65 mg/dL</td><td class="app-delta app-delta--good">+7</td><td><span class="app-pill app-pill--good">Improving</span></td></tr>
+            <tr><td>Lp(a)</td><td>55 nmol/L</td><td>53 nmol/L</td><td class="app-delta">−2</td><td><span class="app-pill">Stable (genetic)</span></td></tr>
+            <tr><td>Triglycerides</td><td>100 mg/dL</td><td>78 mg/dL</td><td class="app-delta app-delta--good">−22</td><td><span class="app-pill app-pill--good">Improving</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="app-panel u-mb-5">
+        <div class="app-panel__head">
+          <div class="app-panel__title">Inflammation &amp; metabolic</div>
+        </div>
+        <table class="app-table app-table--compare">
+          <thead>
+            <tr><th>Marker</th><th>Oct 25</th><th>Apr 26</th><th>Δ</th><th>Direction</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>hs-CRP</td><td>2.4 mg/L</td><td>1.1 mg/L</td><td class="app-delta app-delta--good">−1.3</td><td><span class="app-pill app-pill--good">Optimal — first time</span></td></tr>
+            <tr><td>HbA1c</td><td>5.4 %</td><td>5.2 %</td><td class="app-delta app-delta--good">−0.2</td><td><span class="app-pill app-pill--good">Improving</span></td></tr>
+            <tr><td>Fasting glucose</td><td>92 mg/dL</td><td>84 mg/dL</td><td class="app-delta app-delta--good">−8</td><td><span class="app-pill app-pill--good">Improving</span></td></tr>
+            <tr><td>Vitamin D</td><td>31 ng/mL</td><td>52 ng/mL</td><td class="app-delta app-delta--good">+21</td><td><span class="app-pill app-pill--good">Protocol working</span></td></tr>
+            <tr><td>Homocysteine</td><td>11.4 µmol/L</td><td>11.8 µmol/L</td><td class="app-delta app-delta--warn">+0.4</td><td><span class="app-pill app-pill--warn">Slight regression</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Smart report
+         ==========================================================  -->
+    <section class="app-section" data-section="smart-report" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Smart report</h1>
+          <p class="app-sub">Generated every draw. Ranked by effort and impact against your objectives. Dr. Mitchell reviewed before release.</p>
+        </div>
+        <button class="app-btn app-btn--ghost">Email PDF report (demo)</button>
+      </div>
+
+      <div class="app-tabs u-mb-5">
+        <button class="app-tab is-active">Smart report</button>
+        <button class="app-tab">Custom reports</button>
+      </div>
+
+      <div class="app-panel u-mb-5">
+        <div class="app-panel__head app-panel__head--sub">
+          <div class="app-panel__meta">Smart report · April 2026 · CMO cleared · Profile-aware</div>
+        </div>
+
+        <aside class="app-callout app-callout--flush">
+          <b>Allergy filter active.</b> Tree nut allergy on file. No nut-sourced supplements
+          appear anywhere in this report, regardless of clinical benefit. Penicillin noted —
+          no antibiotics referenced.
+        </aside>
+
+        <div class="app-quadrants">
+          <div class="app-quad">
+            <div class="app-quad__label">High impact · low effort</div>
+            <ul class="app-quad__list">
+              <li><span class="app-bullet app-bullet--good"></span><div><b>Vitamin D</b> — maintain protocol, retest October.</div></li>
+              <li><span class="app-bullet app-bullet--good"></span><div><b>Homocysteine</b> — methylated B12 + folate (8 weeks).</div></li>
+              <li><span class="app-bullet app-bullet--good"></span><div><b>Sleep</b> — 7h target directly improves ApoB trajectory.</div></li>
+              <li><span class="app-bullet app-bullet--good"></span><div><b>Algae DHA/EPA</b> 2 g/day (safe, non-nut source).</div></li>
+            </ul>
+          </div>
+          <div class="app-quad">
+            <div class="app-quad__label">High impact · requires effort</div>
+            <ul class="app-quad__list">
+              <li><span class="app-bullet app-bullet--warn"></span><div><b>ApoB</b> — saturated fat &lt;7% daily kcal + Zone 2 3&times;/week.</div></li>
+              <li><span class="app-bullet app-bullet--warn"></span><div><b>LDL-C</b> — CMO note: statin discussion warranted at October review.</div></li>
+            </ul>
+          </div>
+          <div class="app-quad">
+            <div class="app-quad__label">Optimal · maintain</div>
+            <ul class="app-quad__list">
+              <li><span class="app-bullet"></span><div><b>hs-CRP</b> — now optimal. Continue anti-inflammatory diet.</div></li>
+              <li><span class="app-bullet"></span><div><b>HbA1c, Fasting glucose</b> — at longevity threshold.</div></li>
+              <li><span class="app-bullet"></span><div><b>Thyroid &amp; immune panels</b> — all within optimal.</div></li>
+            </ul>
+          </div>
+          <div class="app-quad">
+            <div class="app-quad__label">Genetic · annual CMO watch</div>
+            <ul class="app-quad__list">
+              <li><span class="app-bullet app-bullet--warn"></span><div><b>Lp(a) 53 nmol/L</b> — genetic, no lifestyle intervention modifies this significantly. CMO review annually.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <p class="app-disclaimer">
+        Every recommendation in this report is filtered by your allergy, family-history and
+        medication profile before release. Always discuss significant changes with Dr. Mitchell.
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Sage AI
+         ==========================================================  -->
+    <section class="app-section" data-section="sage" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Sage AI</h1>
+          <p class="app-sub">Your personal health intelligence. Knows your full profile, panel history, allergies, and objectives. Not a generic chatbot.</p>
+        </div>
+      </div>
+
+      <!-- Prompt chips -->
+      <div class="app-chips u-mb-5" id="sage-chips">
+        <button class="app-chip" data-prompt="Give me a status check on my April panel.">Status check</button>
+        <button class="app-chip" data-prompt="What are my fastest wins before October?">Fastest wins</button>
+        <button class="app-chip" data-prompt="Explain my biological age calculation.">Bio age</button>
+        <button class="app-chip" data-prompt="Draft my supplement protocol for the next 90 days.">Supplement protocol</button>
+        <button class="app-chip" data-prompt="How do I think about my cardiovascular risk given my family history?">Cardiovascular risk</button>
+        <button class="app-chip" data-prompt="Anything I should flag to Dr. Mitchell about cancer context?">Cancer context</button>
+        <button class="app-chip" data-prompt="Summarise my smart report in three bullets.">Smart report</button>
+        <button class="app-chip" data-prompt="How should I prep for my October home draw?">Next draw prep</button>
+      </div>
+
+      <!-- Chat window -->
+      <div class="app-chat app-card">
+        <div class="app-chat__head">
+          <div class="app-avatar app-avatar--sage" aria-hidden="true">
+            S
+            <span class="app-avatar__status" aria-hidden="true"></span>
+          </div>
+          <div>
+            <div class="app-chat__name">Sage</div>
+            <div class="app-chat__meta">BioSense AI · Knows your profile &amp; panel history</div>
+          </div>
+        </div>
+        <div class="app-chat__log" id="sage-log">
+          <div class="app-msg app-msg--ai">Hello Sarah. I'm Sage — I have your complete panel history, objectives, allergy profile, and family history loaded. What would you like to explore today?</div>
+        </div>
+        <form class="app-chat__input" id="sage-form" autocomplete="off">
+          <input type="text" name="q" placeholder="Message Sage…" aria-label="Message Sage" />
+          <button type="submit" class="app-btn">Send</button>
+        </form>
+      </div>
+
+      <div class="app-chat__actions">
+        <button class="app-btn app-btn--ghost app-btn--sm" id="sage-clear">Clear conversation</button>
+      </div>
+
+      <p class="app-disclaimer">
+        Sage responds in this demo from a curated script. In production, every response is
+        grounded in your real data and allergen-filtered before display.
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Profile & goals
+         ==========================================================  -->
+    <section class="app-section" data-section="profile" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Profile &amp; goals</h1>
+          <p class="app-sub">Everything Sage and Dr. Mitchell see when interpreting your results.</p>
+        </div>
+      </div>
+
+      <div class="app-grid app-grid--2 u-mb-5">
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">About you</div>
+          <dl class="app-kv">
+            <dt>Name</dt><dd>Sarah Chen</dd>
+            <dt>Age</dt><dd>48</dd>
+            <dt>Sex at birth</dt><dd>Female</dd>
+            <dt>Height / weight</dt><dd>168 cm · 63 kg</dd>
+            <dt>Activity</dt><dd>Structured training 4×/week</dd>
+            <dt>Based in</dt><dd>Dubai, UAE</dd>
+          </dl>
+        </div>
+
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">Objectives</div>
+          <ul class="app-check">
+            <li><span class="app-check__dot" aria-hidden="true">✓</span> Reduce cardiovascular event risk (family history)</li>
+            <li><span class="app-check__dot" aria-hidden="true">✓</span> Maintain cognitive performance through 60s</li>
+            <li><span class="app-check__dot" aria-hidden="true">✓</span> Preserve bone density through menopause transition</li>
+            <li><span class="app-check__dot" aria-hidden="true">✓</span> Biological age 5+ years below calendar age</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="app-grid app-grid--2 u-mb-5">
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">Allergies &amp; medications</div>
+          <ul class="app-kv app-kv--flags">
+            <li><span class="app-flag app-flag--warn">Allergy</span> Tree nuts — all supplements filtered</li>
+            <li><span class="app-flag app-flag--warn">Allergy</span> Penicillin — no β-lactams referenced</li>
+            <li><span class="app-flag">Medication</span> Levothyroxine 50 µg · daily</li>
+            <li><span class="app-flag">Supplement</span> Algae DHA/EPA 2 g · Vitamin D3 4000 IU</li>
+          </ul>
+        </div>
+
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">Family history</div>
+          <ul class="app-kv app-kv--flags">
+            <li><span class="app-flag app-flag--warn">Father</span> Cardiovascular event — age 55</li>
+            <li><span class="app-flag app-flag--warn">Mother</span> Breast cancer — age 62 · in remission</li>
+            <li><span class="app-flag">Maternal GM</span> Dementia — age 78</li>
+            <li><span class="app-flag">Paternal GF</span> Type 2 diabetes — age 64</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="app-disclaimer">
+        Your profile filters every recommendation. Update any field and Sage, your smart report
+        and the biomarker ranges update within 24 hours.
+      </p>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Membership
+         ==========================================================  -->
+    <section class="app-section" data-section="membership" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Membership</h1>
+          <p class="app-sub">Your plan, upcoming draws, and billing.</p>
+        </div>
+      </div>
+
+      <div class="app-card app-card--pad u-mb-5">
+        <div class="app-plan">
+          <div>
+            <div class="app-card__label">Current plan</div>
+            <div class="app-plan__name">Longevity · Quarterly panel</div>
+            <div class="app-plan__meta">Renewed Oct 2025 · next billing 1 Oct 2026</div>
+          </div>
+          <div class="app-plan__price">
+            <span class="app-plan__price-num">£480</span>
+            <span class="app-plan__price-cad">/ quarter</span>
+          </div>
+        </div>
+        <ul class="app-check app-check--tight">
+          <li><span class="app-check__dot" aria-hidden="true">✓</span> 20+ biomarker home panel every quarter</li>
+          <li><span class="app-check__dot" aria-hidden="true">✓</span> CMO review before every result release</li>
+          <li><span class="app-check__dot" aria-hidden="true">✓</span> Sage AI, smart report and compare tools</li>
+          <li><span class="app-check__dot" aria-hidden="true">✓</span> Two clinician calls / year included</li>
+        </ul>
+      </div>
+
+      <div class="app-grid app-grid--2 u-mb-5">
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">Upcoming</div>
+          <ul class="app-stack">
+            <li><b>Oct 2026 draw kit</b><span>Ships 29 Sep · 12h fast reminder set</span></li>
+            <li><b>Clinician call with Dr. Mitchell</b><span>Suggested 10 Oct, post-results review</span></li>
+          </ul>
+        </div>
+        <div class="app-card app-card--pad">
+          <div class="app-card__label">Billing history</div>
+          <ul class="app-stack">
+            <li><b>1 Apr 2026</b><span>Quarterly renewal · £480</span></li>
+            <li><b>1 Jan 2026</b><span>Quarterly renewal · £480</span></li>
+            <li><b>1 Oct 2025</b><span>Onboarding + first panel · £480</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         SECTION · Sample integrity
+         ==========================================================  -->
+    <section class="app-section" data-section="integrity" hidden>
+      <div class="app-head">
+        <div>
+          <h1 class="app-h1">Sample integrity</h1>
+          <p class="app-sub">Chain of custody for every draw. If anything is out of spec the panel is re-run at no cost.</p>
+        </div>
+      </div>
+
+      <div class="app-card app-card--pad u-mb-5">
+        <div class="app-card__label">Latest panel · 2 Apr 2026</div>
+        <ol class="app-steps">
+          <li class="is-done">
+            <div class="app-steps__title">Kit shipped from lab</div>
+            <div class="app-steps__meta">28 Mar · Tracking · Cambridge DHL hub</div>
+          </li>
+          <li class="is-done">
+            <div class="app-steps__title">Received &amp; fast confirmed</div>
+            <div class="app-steps__meta">31 Mar · 13h 10m fasted</div>
+          </li>
+          <li class="is-done">
+            <div class="app-steps__title">Home draw complete</div>
+            <div class="app-steps__meta">1 Apr 07:42 · All 6 tubes filled · photographs archived</div>
+          </li>
+          <li class="is-done">
+            <div class="app-steps__title">Courier pickup</div>
+            <div class="app-steps__meta">1 Apr 09:15 · Cold chain logged</div>
+          </li>
+          <li class="is-done">
+            <div class="app-steps__title">Lab received — 6 h 42 m transit (under 24 h target)</div>
+            <div class="app-steps__meta">1 Apr 16:57 · All tubes within temperature spec</div>
+          </li>
+          <li class="is-done">
+            <div class="app-steps__title">Panel run &amp; CMO review</div>
+            <div class="app-steps__meta">2 Apr 11:24 · Dr. Mitchell cleared release</div>
+          </li>
+          <li class="is-current">
+            <div class="app-steps__title">Results visible to you</div>
+            <div class="app-steps__meta">2 Apr 11:30 · 47 minutes after CMO sign-off</div>
+          </li>
+        </ol>
+      </div>
+
+      <p class="app-disclaimer">
+        Every sample has a time- and temperature-signed chain of custody. If a tube ever falls
+        out of spec the panel is automatically re-run and a new kit is shipped, no charge.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/app.js" defer></script>
+</body>
+</html>

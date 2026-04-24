@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BioSense favicon / app icon.
+
+  This is the standalone brand mark (the "ai" ligature) in full color,
+  supplied by the brand team (Web/Logo Mark/Full Color). Using the mark
+  rather than the full lock-up because it renders cleanly at tiny favicon
+  sizes (16×16, 32×32) where the wordmark would turn to mud.
+
+  Source: biosense.ai-logo-mark-full-color-rgb.svg
+  Brand rules honoured:
+    1. Brand gradient (Imperial Red #F04D4D ? Grape #7625B0) on the mark.
+    2. No recoloring, no filters, no shadow, no rotation.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 243.367 187.7441" role="img" aria-label="BioSense">
+  <defs>
+    <linearGradient id="biosenseBrandGrad" x1="3.0876" y1="116.0272" x2="253.9574" y2="76.5067" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f04d4d"/>
+      <stop offset=".9986" stop-color="#7625b0"/>
+    </linearGradient>
+  </defs>
+  <path d="m235.7728,94.0735c-8.5085-15.8135-22.7169-27.0073-40.0065-31.5192-4.2777-1.1161-8.634-1.7703-12.9951-1.9764l53.8894-34.2889c5.395-3.4325,7.8195-9.8638,6.0314-16.0036C240.9046,4.1448,235.4075.0194,229.0123.0194h-121.041l-.04-.0016c-10.6439-.2813-20.8667,2.7804-29.6698,8.8691-20.8981,14.4496-27.5887,42.2009-15.5628,64.5524,6.6693,12.3951,17.8074,21.1692,31.3629,24.7061,2.0065.5235,4.0351.9126,6.073,1.1795L7.3964,158.332c-6.0345,3.841-8.7458,11.036-6.7455,17.904,2.0002,6.8681,8.1495,11.4822,15.3027,11.4822h162.0679l.0584.0024c.5798.0157,1.1565.0235,1.7339.0235,12.9066,0,25.3582-3.9038,36.1098-11.3376,26.6546-18.4312,35.1874-53.8268,19.8493-82.3331Zm-112.2739-17.7187c-7.4385,4.7319-16.2353,6.1108-24.7659,3.8866-8.5234-2.2242-15.5345-7.7535-19.7401-15.5699-7.4314-13.8116-3.13-31.63,9.7922-40.5652,5.549-3.8371,12.4377-5.7878,19.0881-5.5914l106.5245.0079-90.8989,57.832Zm81.901,84.8323c-7.9491,5.4963-17.1867,8.2626-26.7174,8.0395-.0011,0-153.9167-.0118-153.9209-.0118l130.7193-83.1667c10.6973-6.8053,23.347-8.7898,35.614-5.5898,12.2584,3.1991,22.3382,11.1475,28.3837,22.383,10.6894,19.8665,4.5049,45.495-14.0787,58.3458Z" fill="url(#biosenseBrandGrad)"/>
+</svg>
