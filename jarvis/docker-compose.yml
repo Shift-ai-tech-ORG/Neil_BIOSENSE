@@ -1,0 +1,31 @@
+services:
+  jarvis:
+    build: .
+    container_name: jarvis-health-os
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_PATH=/data/health.db
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - NODE_ENV=production
+    volumes:
+      # SQLite database persists here — NEVER delete this volume
+      - jarvis_data:/data
+      # Mount app code so changes take effect on restart without rebuild
+      - ./server.js:/app/server.js
+      - ./db.js:/app/db.js
+      - ./jarvis.js:/app/jarvis.js
+      - ./public:/app/public
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/snapshot"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  jarvis_data:
+    driver: local
