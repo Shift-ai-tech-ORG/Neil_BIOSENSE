@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BioSense — Investor Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#030508;--s1:#0a0f0d;--s2:#0f1812;--s3:#162018;
+  --b0:rgba(255,255,255,.055);--b1:rgba(255,255,255,.1);--b2:rgba(255,255,255,.18);
+  --t1:#eff4f0;--t2:#90ae9a;--t3:#4f6b57;--t4:#2a3d30;
+  --a:#4dc88c;--adim:#3ba870;--abg:rgba(77,200,140,.08);--aring:rgba(77,200,140,.2);
+  --warn:#c89840;--warnbg:rgba(200,152,64,.08);
+  --font:'Inter',system-ui,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--font);background:var(--bg);color:var(--t1);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;height:100vh;width:100vw;}
+button{cursor:pointer;font-family:inherit;}
+
+/* ── Deck shell ── */
+#deck{position:relative;width:100vw;height:100vh;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;padding:60px 80px;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+  transform:translateY(20px);
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0);}
+.slide.out{opacity:0;transform:translateY(-20px);}
+
+/* background grid */
+.slide::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.12;
+  background-image:radial-gradient(circle,rgba(255,255,255,.3) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+/* accent gradient per slide */
+.slide::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 85% 10%,rgba(77,200,140,.04),transparent 60%),
+             radial-gradient(ellipse 50% 50% at 10% 90%,rgba(77,200,140,.03),transparent 55%);
+}
+
+/* ── Nav ── */
+#nav{position:fixed;bottom:32px;right:44px;display:flex;align-items:center;gap:16px;z-index:100;}
+.nav-btn{
+  width:40px;height:40px;border-radius:50%;background:var(--s2);border:1px solid var(--b1);
+  color:var(--t2);font-size:16px;display:flex;align-items:center;justify-content:center;
+  transition:all 150ms;
+}
+.nav-btn:hover{background:var(--s3);border-color:var(--b2);color:var(--t1);}
+.nav-btn:disabled{opacity:.25;cursor:default;}
+#slide-count{font-size:11px;color:var(--t3);font-family:var(--mono);letter-spacing:.08em;}
+
+/* ── Progress bar ── */
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--a);transition:width .4s var(--ease);z-index:100;}
+
+/* ── Wordmark header ── */
+.deck-mark{
+  position:fixed;top:28px;left:44px;
+  display:flex;align-items:center;gap:9px;z-index:100;
+}
+.dm-logo{width:26px;height:26px;border-radius:6px;background:var(--abg);border:1px solid var(--aring);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;font-weight:700;color:var(--a);}
+.dm-name{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--t1);}
+
+/* ── Slide nav dots ── */
+#dots{position:fixed;bottom:38px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:100;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--b1);transition:all 200ms;cursor:pointer;}
+.dot.on{background:var(--a);width:18px;border-radius:3px;}
+
+/* ── Common type ── */
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:20px;}
+.headline{font-family:var(--serif);font-size:clamp(36px,4.5vw,58px);font-weight:700;letter-spacing:-.025em;line-height:1.05;color:var(--t1);margin-bottom:18px;}
+.headline em{font-style:italic;color:var(--a);}
+.subline{font-size:16px;color:var(--t2);max-width:54ch;line-height:1.75;}
+.subline strong{color:var(--t1);}
+.section-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+.card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:22px 24px;position:relative;z-index:1;}
+.pill{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--abg);color:var(--a);border:1px solid var(--aring);}
+
+/* ── Slide 1: Title ── */
+#s1{background:radial-gradient(ellipse 90% 80% at 30% 60%,rgba(77,200,140,.06),transparent 65%);}
+#s1 .big{font-family:var(--serif);font-size:clamp(58px,8vw,100px);font-weight:700;letter-spacing:-.035em;line-height:1;color:var(--t1);margin-bottom:8px;}
+#s1 .big em{font-style:italic;color:var(--a);}
+#s1 .tag{font-size:14px;color:var(--t2);letter-spacing:.01em;margin-top:24px;max-width:50ch;line-height:1.7;}
+#s1 .start-btn{
+  margin-top:40px;display:inline-flex;align-items:center;gap:10px;
+  padding:13px 28px;background:var(--a);color:#02130a;border:none;border-radius:8px;
+  font-size:14px;font-weight:700;letter-spacing:.02em;
+  transition:filter 150ms,transform 120ms;
+}
+#s1 .start-btn:hover{filter:brightness(1.07);}
+#s1 .start-btn:active{transform:scale(.98);}
+#s1 .stat-row{display:flex;gap:44px;margin-top:48px;padding-top:40px;border-top:1px solid var(--b0);}
+#s1 .st-v{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--t1);}
+#s1 .st-l{font-size:11.5px;color:var(--t3);margin-top:4px;}
+
+/* ── Slide 2: Problem ── */
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px;max-width:900px;}
+.prob-card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:22px 24px;}
+.prob-card h3{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:10px;}
+.prob-card p,.prob-card li{font-size:13px;color:var(--t2);line-height:1.7;}
+.prob-card ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.prob-card ul li::before{content:'·';color:var(--a);margin-right:8px;font-weight:700;}
+.big-stat{font-family:var(--mono);font-size:52px;font-weight:500;color:var(--a);line-height:1;}
+.big-stat-lbl{font-size:12px;color:var(--t3);margin-top:4px;}
+
+/* ── Slide 3: Gap ── */
+.gap-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px;max-width:880px;}
+.gap-col-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.gap-col-title.bad{color:var(--warn);}
+.gap-col-title.good{color:var(--a);}
+.gap-item{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--t2);padding:10px 0;border-bottom:1px solid var(--b0);line-height:1.55;}
+.gap-item:last-child{border-bottom:none;}
+.gap-item .ico{font-size:14px;flex-shrink:0;margin-top:1px;}
+
+/* ── Slide 4: Solution ── */
+#s4 .big-sol{font-family:var(--serif);font-size:clamp(22px,3vw,32px);font-weight:600;color:var(--t1);margin-bottom:8px;line-height:1.3;}
+.sol-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px;max-width:960px;}
+.sol-card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:20px 20px 18px;}
+.sol-icon{font-size:22px;margin-bottom:12px;}
+.sol-card h3{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px;}
+.sol-card p{font-size:12px;color:var(--t2);line-height:1.6;}
+
+/* ── Slide 5: How it works ── */
+.loop-wrap{display:flex;align-items:center;justify-content:center;margin-top:32px;position:relative;z-index:1;}
+.loop-nodes{display:flex;align-items:center;gap:0;}
+.loop-node{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:var(--s1);border:1px solid var(--b0);border-radius:12px;
+  padding:22px 20px;width:155px;position:relative;
+  transition:border-color 200ms;
+}
+.loop-node:hover{border-color:var(--aring);}
+.loop-node-icon{font-size:24px;}
+.loop-node-n{font-family:var(--mono);font-size:10px;color:var(--a);font-weight:700;letter-spacing:.08em;}
+.loop-node-label{font-size:13px;font-weight:600;color:var(--t1);text-align:center;}
+.loop-node-sub{font-size:11px;color:var(--t3);text-align:center;line-height:1.5;}
+.loop-arrow{font-size:20px;color:var(--a);opacity:.6;padding:0 4px;flex-shrink:0;}
+.loop-note{text-align:center;font-size:12px;color:var(--t3);margin-top:28px;max-width:60ch;margin-left:auto;margin-right:auto;}
+
+/* ── Slide 6: Built Around You ── */
+.bau-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px;max-width:960px;}
+.bau-card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:18px 20px;}
+.bau-card-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--a);margin-bottom:12px;}
+.bau-item{font-size:12.5px;color:var(--t2);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);line-height:1.5;}
+.bau-item:last-child{border-bottom:none;}
+.bau-item::before{content:'·';color:var(--a);margin-right:7px;font-weight:700;}
+.bau-impact{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.bau-impact:last-child{border-bottom:none;}
+.bau-impact-name{font-size:12.5px;color:var(--t2);}
+.bau-impact-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;}
+.hi{background:var(--abg);color:var(--a);}
+.med{background:var(--warnbg);color:var(--warn);}
+.bau-edit-note{font-size:11px;color:var(--t3);margin-top:16px;padding-top:14px;border-top:1px solid var(--b0);}
+.bau-edit-note span{color:var(--a);}
+
+/* ── Slide 7: Product experience ── */
+.prod-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;max-width:960px;}
+.pf-card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:20px 20px 18px;}
+.pf-icon{font-size:22px;margin-bottom:12px;}
+.pf-card h3{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:6px;}
+.pf-card p{font-size:12px;color:var(--t2);line-height:1.6;}
+.pf-card .pill{margin-top:12px;}
+
+/* ── Slide 8: Weekly report ── */
+.report-wrap{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;margin-top:24px;max-width:960px;position:relative;z-index:1;}
+.score-hero{text-align:center;background:var(--s1);border:1px solid var(--b0);border-radius:16px;padding:32px 40px;}
+.score-num{font-family:var(--mono);font-size:96px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--a);line-height:1;}
+.score-delta{font-family:var(--mono);font-size:16px;color:var(--a);margin-top:4px;}
+.score-label{font-size:11px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-top:8px;}
+.report-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.report-col{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:18px 20px;}
+.report-col-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:14px;}
+.ritem{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--t2);padding:6px 0;line-height:1.5;}
+.ritem::before{content:'·';color:var(--a);font-weight:700;margin-top:1px;}
+.report-footer{font-size:11px;color:var(--t4);text-align:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--b0);}
+.notif-badge{background:var(--s2);border:1px solid var(--b0);border-radius:10px;padding:12px 16px;margin-top:20px;display:flex;align-items:center;gap:12px;font-size:12.5px;}
+.notif-badge .ni{font-size:18px;}
+
+/* ── Slide 9: Blood analysis ── */
+.blood-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px;max-width:880px;}
+.blood-card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:18px 20px;}
+.blood-card h3{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px;}
+.blood-card p{font-size:12.5px;color:var(--t2);line-height:1.65;}
+.blood-card .icon{font-size:22px;margin-bottom:10px;}
+
+/* ── Slide 10: Blood example ── */
+.bm-cards{display:flex;flex-direction:column;gap:16px;margin-top:24px;max-width:760px;position:relative;z-index:1;}
+.bm-card{background:var(--s1);border:1px solid var(--b0);border-left:3px solid;border-radius:0 12px 12px 0;padding:18px 22px;}
+.bm-card.down{border-left-color:var(--warn);}
+.bm-card.low{border-left-color:#c05050;}
+.bm-top{display:flex;align-items:center;gap:16px;margin-bottom:10px;}
+.bm-name{font-size:15px;font-weight:600;color:var(--t1);}
+.bm-val{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--t1);}
+.bm-arrow{font-size:14px;}
+.bm-arrow.down{color:var(--warn);}
+.bm-meaning{font-size:12.5px;color:var(--t2);margin-bottom:8px;line-height:1.6;}
+.bm-actions{font-size:11.5px;color:var(--t3);display:flex;flex-direction:column;gap:3px;}
+.bm-actions span::before{content:'→ ';color:var(--a);}
+
+/* ── Slide 11: Health score ── */
+.hs-grid{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;margin-top:28px;max-width:900px;position:relative;z-index:1;}
+.hs-ring-wrap{background:var(--s1);border:1px solid var(--b0);border-radius:16px;padding:36px 40px;text-align:center;}
+.hs-ring-num{font-family:var(--mono);font-size:86px;font-weight:500;color:var(--a);line-height:1;}
+.hs-ring-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-top:8px;}
+.hs-weights{display:flex;flex-direction:column;gap:10px;}
+.hs-w{display:flex;align-items:center;gap:12px;}
+.hs-w-label{width:110px;font-size:13px;color:var(--t2);}
+.hs-w-bar{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;}
+.hs-w-fill{height:100%;border-radius:999px;background:var(--a);}
+.hs-w-pct{width:32px;font-family:var(--mono);font-size:11.5px;color:var(--t3);text-align:right;}
+.hs-personal{background:var(--s1);border:1px solid var(--b0);border-left:3px solid var(--a);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:16px;font-size:13px;color:var(--t2);line-height:1.65;}
+.hs-personal strong{color:var(--t1);}
+
+/* ── Slide 12: Ask Anything ── */
+.ask-layout{display:grid;grid-template-columns:1fr 420px;gap:32px;margin-top:24px;max-width:980px;position:relative;z-index:1;}
+.ask-points{display:flex;flex-direction:column;gap:12px;}
+.ask-point{display:flex;align-items:flex-start;gap:12px;background:var(--s1);border:1px solid var(--b0);border-radius:10px;padding:14px 16px;}
+.ask-point-icon{font-size:18px;flex-shrink:0;}
+.ask-point-body h4{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px;}
+.ask-point-body p{font-size:12px;color:var(--t2);line-height:1.55;}
+.chat-shell{background:var(--s1);border:1px solid var(--b0);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.chat-head{padding:14px 16px;border-bottom:1px solid var(--b0);display:flex;align-items:center;gap:10px;}
+.chat-av{width:30px;height:30px;border-radius:50%;background:var(--abg);border:1px solid var(--aring);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--a);}
+.chat-name{font-size:13px;font-weight:600;color:var(--t1);}
+.chat-role{font-size:10.5px;color:var(--t3);}
+.online{width:6px;height:6px;border-radius:50%;background:var(--a);margin-left:auto;box-shadow:0 0 5px rgba(77,200,140,.5);}
+.chat-msgs{padding:16px;display:flex;flex-direction:column;gap:10px;}
+.msg{padding:10px 13px;border-radius:9px;font-size:12.5px;line-height:1.6;max-width:88%;}
+.msg-u{align-self:flex-end;background:var(--abg);border:1px solid var(--aring);color:var(--t1);}
+.msg-a{align-self:flex-start;background:var(--s2);border:1px solid var(--b0);color:var(--t1);}
+.msg-a .action-items{margin-top:8px;display:flex;flex-direction:column;gap:3px;}
+.msg-a .action-items span{font-size:11.5px;color:var(--t3);}
+.msg-a .action-items span::before{content:'→ ';color:var(--a);}
+.chat-bar{padding:10px 12px;border-top:1px solid var(--b0);display:flex;gap:8px;}
+.chat-input-mock{flex:1;padding:8px 12px;background:var(--s2);border:1px solid var(--b0);border-radius:7px;font-size:12px;color:var(--t3);}
+.chat-send{padding:8px 14px;background:var(--a);color:#02130a;border:none;border-radius:7px;font-size:12px;font-weight:600;}
+
+/* ── Slide 13: Daily check-in ── */
+.checkin-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;max-width:880px;position:relative;z-index:1;}
+.checkin-left{display:flex;flex-direction:column;gap:20px;}
+.slider-row{background:var(--s1);border:1px solid var(--b0);border-radius:11px;padding:16px 20px;}
+.slider-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+.slider-track{position:relative;height:6px;background:rgba(255,255,255,.06);border-radius:999px;margin-bottom:6px;}
+.slider-fill{position:absolute;left:0;height:100%;border-radius:999px;background:var(--a);}
+.slider-pin{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--a);border:2px solid #fff;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(77,200,140,.25);}
+.slider-ends{display:flex;justify-content:space-between;font-size:10px;color:var(--t4);}
+.checkin-right{display:flex;flex-direction:column;gap:14px;justify-content:center;}
+.streak-card{background:var(--s1);border:1px solid var(--b0);border-radius:11px;padding:18px 20px;text-align:center;}
+.streak-num{font-family:var(--mono);font-size:48px;font-weight:500;color:var(--a);line-height:1;}
+.streak-lbl{font-size:11px;color:var(--t3);margin-top:6px;text-transform:uppercase;letter-spacing:.08em;}
+.logged-badge{background:var(--abg);border:1px solid var(--aring);border-radius:8px;padding:12px 16px;text-align:center;font-size:13px;color:var(--a);font-weight:600;}
+.notif-item{background:var(--s1);border:1px solid var(--b0);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--t2);line-height:1.55;}
+.notif-item strong{color:var(--t1);}
+.notif-time{font-size:10.5px;color:var(--t3);margin-top:4px;}
+
+/* ── Slide 14: Why wins ── */
+.wins-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px;max-width:860px;}
+.win-card{background:var(--s1);border:1px solid var(--b0);border-radius:12px;padding:22px 22px 18px;}
+.win-num{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--a);margin-bottom:8px;}
+.win-card h3{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:8px;}
+.win-card p{font-size:13px;color:var(--t2);line-height:1.65;}
+
+/* ── Slide 15: Who it's for ── */
+.who-list{display:flex;flex-direction:column;gap:12px;margin-top:28px;max-width:660px;}
+.who-item{display:flex;align-items:flex-start;gap:14px;background:var(--s1);border:1px solid var(--b0);border-radius:11px;padding:16px 20px;}
+.who-icon{font-size:20px;flex-shrink:0;}
+.who-item p{font-size:13.5px;color:var(--t2);line-height:1.6;}
+.who-item strong{color:var(--t1);}
+.who-cta{font-family:var(--serif);font-size:22px;font-weight:600;font-style:italic;color:var(--a);margin-top:28px;}
+
+/* ── Slide 16: What it replaces ── */
+.replace-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;max-width:920px;}
+.rep-item{display:flex;align-items:flex-start;gap:12px;background:var(--s1);border:1px solid var(--b0);border-radius:11px;padding:14px 16px;font-size:13px;color:var(--t2);line-height:1.55;}
+.rep-icon{font-size:18px;flex-shrink:0;}
+.rep-x{color:rgba(192,80,80,.7);font-size:14px;margin-right:4px;}
+
+/* ── Slide 17: Pricing ── */
+.price-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px;max-width:780px;position:relative;z-index:1;}
+.price-card{background:var(--s1);border:1px solid var(--b0);border-radius:14px;padding:32px 28px;}
+.price-card.best{border-color:var(--aring);}
+.price-period{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;}
+.price-num{font-family:var(--mono);font-size:56px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t1);line-height:1;}
+.price-num span{font-size:20px;color:var(--t3);}
+.price-sub{font-size:12px;color:var(--t3);margin-top:6px;margin-bottom:20px;}
+.price-feats{list-style:none;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--b0);padding-top:18px;}
+.price-feats li{font-size:12.5px;color:var(--t2);display:flex;gap:8px;align-items:baseline;}
+.price-feats li::before{content:'✓';color:var(--a);font-weight:700;font-size:11px;flex-shrink:0;}
+.price-note{font-size:12px;color:var(--t3);margin-top:24px;}
+.price-callout{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--a);margin-top:28px;}
+
+/* ── Slide 18: Final ── */
+#s18{background:radial-gradient(ellipse 80% 70% at 35% 55%,rgba(77,200,140,.07),transparent 60%);}
+#s18 .big-final{font-family:var(--serif);font-size:clamp(42px,5.5vw,68px);font-weight:700;letter-spacing:-.03em;line-height:1.06;color:var(--t1);}
+#s18 .big-final em{font-style:italic;color:var(--a);}
+#s18 .sub-final{font-size:16px;color:var(--t2);max-width:52ch;line-height:1.8;margin-top:22px;}
+#s18 .trio{display:flex;gap:20px;margin-top:36px;}
+#s18 .trio-item{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--a);}
+#s18 .trio-sep{color:var(--b2);margin:0 4px;}
+#s18 .disc{font-size:11px;color:var(--t4);margin-top:48px;max-width:70ch;line-height:1.65;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--a);display:inline-block;animation:pulse 2s infinite;margin-right:8px;}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div id="progress"></div>
+
+<!-- Wordmark -->
+<div class="deck-mark">
+  <div class="dm-logo">B</div>
+  <div class="dm-name">BioSense</div>
+</div>
+
+<!-- Slide dots -->
+<div id="dots"></div>
+
+<!-- Navigation -->
+<div id="nav">
+  <button class="nav-btn" id="prev">←</button>
+  <span id="slide-count">01 / 18</span>
+  <button class="nav-btn" id="next">→</button>
+</div>
+
+<div id="deck">
+
+<!-- ─── SLIDE 1: Title ─── -->
+<div class="slide" id="s1">
+  <div class="big">Bio<em>Sense</em></div>
+  <div style="font-size:16px;color:var(--t2);max-width:48ch;line-height:1.75;margin-top:8px;">
+    Personalised health insights, powered by your data.<br>
+    <span style="color:var(--t3)">A continuous, intelligent system that turns your health data into clear actions.</span>
+  </div>
+  <div class="stat-row">
+    <div><div class="st-v">5+</div><div class="st-l">Wearable integrations</div></div>
+    <div><div class="st-v">20+</div><div class="st-l">Biomarkers tracked</div></div>
+    <div><div class="st-v">100%</div><div class="st-l">Personalised to you</div></div>
+    <div><div class="st-v">AED 149</div><div class="st-l">Per month</div></div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 2: The Problem ─── -->
+<div class="slide" id="s2">
+  <div class="eyebrow">The Problem</div>
+  <h1 class="headline">Health data is everywhere.<br><em>Understanding it isn't.</em></h1>
+  <p class="subline">Data has increased. Clarity has not.</p>
+  <div class="prob-grid">
+    <div class="prob-card">
+      <h3>What exists today</h3>
+      <ul>
+        <li>Wearables generating constant streams of data</li>
+        <li>Blood tests returned with numbers and no context</li>
+        <li>Health apps that track without explaining</li>
+        <li>Generic advice not built for your body</li>
+      </ul>
+    </div>
+    <div class="prob-card">
+      <h3>What's missing</h3>
+      <ul>
+        <li>A system that connects all of your data</li>
+        <li>Personalised guidance based on your history</li>
+        <li>Clear actions — not more numbers</li>
+        <li>Something that learns and improves over time</li>
+      </ul>
+    </div>
+    <div class="prob-card" style="border-left:3px solid var(--warn);border-radius:0 12px 12px 0">
+      <div class="big-stat">73%</div>
+      <div class="big-stat-lbl">of people don't understand their blood results</div>
+    </div>
+    <div class="prob-card" style="border-left:3px solid var(--a);border-radius:0 12px 12px 0">
+      <div class="big-stat" style="color:var(--t1)">3.5B</div>
+      <div class="big-stat-lbl">wearable devices in use globally — and growing</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 3: The Gap ─── -->
+<div class="slide" id="s3">
+  <div class="eyebrow">The Gap</div>
+  <h1 class="headline">Data exists.<br><em>Personalised guidance doesn't.</em></h1>
+  <div class="gap-cols">
+    <div class="card">
+      <div class="gap-col-title bad">What generic AI gives you</div>
+      <div class="gap-item"><span class="ico">✗</span>Answers based on the internet, not your data</div>
+      <div class="gap-item"><span class="ico">✗</span>No memory of who you are or what you've tried</div>
+      <div class="gap-item"><span class="ico">✗</span>No connection between your wearables and your blood results</div>
+      <div class="gap-item"><span class="ico">✗</span>No understanding of your goals, habits or history</div>
+      <div class="gap-item"><span class="ico">✗</span>Starts from zero every single conversation</div>
+    </div>
+    <div class="card">
+      <div class="gap-col-title good">What BioSense gives you</div>
+      <div class="gap-item"><span class="ico" style="color:var(--a)">✓</span>Insights built entirely from your own data</div>
+      <div class="gap-item"><span class="ico" style="color:var(--a)">✓</span>Continuous memory — learns what works for you</div>
+      <div class="gap-item"><span class="ico" style="color:var(--a)">✓</span>Connects sleep, HRV, blood results, activity and mood</div>
+      <div class="gap-item"><span class="ico" style="color:var(--a)">✓</span>Goal-aware — your triathlon changes every answer</div>
+      <div class="gap-item"><span class="ico" style="color:var(--a)">✓</span>Improves the longer you use it</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 4: The Solution ─── -->
+<div class="slide" id="s4">
+  <div class="eyebrow">The Solution</div>
+  <h1 class="headline">Introducing <em>BioSense</em></h1>
+  <p class="subline">A continuous, personalised health system that turns your data into clear actions.</p>
+  <div class="sol-pillars">
+    <div class="sol-card">
+      <div class="sol-icon">⌚</div>
+      <h3>Real data integration</h3>
+      <p>Apple Watch, Whoop, Oura, Garmin, Samsung Health — all connected via native APIs. No manual input.</p>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">🧬</div>
+      <h3>Blood result analysis</h3>
+      <p>Upload any PDF. BioSense explains what each biomarker means for you, tracks trends, and connects them to how you feel.</p>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">🧠</div>
+      <h3>Living health profile</h3>
+      <p>Builds a picture of your preferences, habits and patterns. Updates continuously. Always in your control.</p>
+    </div>
+    <div class="sol-card">
+      <div class="sol-icon">🎯</div>
+      <h3>Goal-driven output</h3>
+      <p>Everything — reports, insights, actions — shaped around what you're working towards. Not generic. Not guesswork.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 5: How It Works ─── -->
+<div class="slide" id="s5">
+  <div class="eyebrow">How It Works</div>
+  <h1 class="headline">From data <em>to action</em></h1>
+  <div class="loop-wrap" style="flex-direction:column;gap:24px;">
+    <div class="loop-nodes">
+      <div class="loop-node">
+        <div class="loop-node-icon">📡</div>
+        <div class="loop-node-n">01</div>
+        <div class="loop-node-label">Measure</div>
+        <div class="loop-node-sub">Wearables, blood tests, daily check-ins</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node">
+        <div class="loop-node-icon">🔍</div>
+        <div class="loop-node-n">02</div>
+        <div class="loop-node-label">Analyse</div>
+        <div class="loop-node-sub">Find patterns, correlations, trends</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node">
+        <div class="loop-node-icon">💡</div>
+        <div class="loop-node-n">03</div>
+        <div class="loop-node-label">Inform</div>
+        <div class="loop-node-sub">Clear, personalised, goal-aware insights</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node">
+        <div class="loop-node-icon">📈</div>
+        <div class="loop-node-n">04</div>
+        <div class="loop-node-label">Track</div>
+        <div class="loop-node-sub">Monitor progress over time across draws</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node" style="border-color:var(--aring)">
+        <div class="loop-node-icon">🔄</div>
+        <div class="loop-node-n" style="color:var(--a)">05</div>
+        <div class="loop-node-label" style="color:var(--a)">Adjust</div>
+        <div class="loop-node-sub">System improves with every data point</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:860px;">
+      <div class="card" style="padding:14px 18px"><div class="section-lbl">Data in</div><p style="font-size:12.5px;color:var(--t2)">Wearables · Blood PDFs · Daily check-ins · Goals · Preferences</p></div>
+      <div class="card" style="padding:14px 18px"><div class="section-lbl">Understanding</div><p style="font-size:12.5px;color:var(--t2)">Preferences · Habits · Patterns · What impacts you most</p></div>
+      <div class="card" style="padding:14px 18px"><div class="section-lbl">Output</div><p style="font-size:12.5px;color:var(--t2)">Weekly &amp; monthly reports · Health score · Ask Anything · Actions</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 6: Built Around You ─── -->
+<div class="slide" id="s6">
+  <div class="eyebrow">Built Around You</div>
+  <h1 class="headline">Personalised <em>from day one</em></h1>
+  <p class="subline" style="margin-bottom:4px">A living profile built from your data — you can edit this anytime.</p>
+  <div class="bau-grid">
+    <div class="bau-card">
+      <div class="bau-card-title">Preferences</div>
+      <div class="bau-item">Avoids fish</div>
+      <div class="bau-item">Prefers light exercise</div>
+      <div class="bau-item">Drinks coffee daily</div>
+      <div class="bau-item">Prefers morning workouts</div>
+    </div>
+    <div class="bau-card">
+      <div class="bau-card-title">Habits</div>
+      <div class="bau-item">Exercises 2× per week</div>
+      <div class="bau-item">Sleeps after 11pm on weekdays</div>
+      <div class="bau-item">High caffeine intake mid-afternoon</div>
+      <div class="bau-item">Inconsistent sleep schedule</div>
+    </div>
+    <div class="bau-card">
+      <div class="bau-card-title">Patterns discovered</div>
+      <div class="bau-item">Energy tends to drop mid-week</div>
+      <div class="bau-item">Sleep quality declines after late nights</div>
+      <div class="bau-item">Stress increases on low sleep days</div>
+      <div class="bau-item">Recovery improves after light activity</div>
+    </div>
+    <div class="bau-card">
+      <div class="bau-card-title">What impacts you most</div>
+      <div class="bau-impact"><span class="bau-impact-name">Sleep consistency</span><span class="bau-impact-tag hi">High impact</span></div>
+      <div class="bau-impact"><span class="bau-impact-name">Stress levels</span><span class="bau-impact-tag med">Moderate impact</span></div>
+      <div class="bau-impact"><span class="bau-impact-name">Activity balance</span><span class="bau-impact-tag med">Moderate impact</span></div>
+      <div class="bau-edit-note"><span>Updated based on your last 30 days</span> · Tap anything to edit</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 7: Product Experience ─── -->
+<div class="slide" id="s7">
+  <div class="eyebrow">Product Experience</div>
+  <h1 class="headline">Designed for <em>clarity and consistency</em></h1>
+  <div class="prod-feats">
+    <div class="pf-card">
+      <div class="pf-icon">📊</div>
+      <h3>Weekly &amp; monthly reports</h3>
+      <p>Clear insights. Personal actions. Real progress. Delivered on a schedule, built around your data.</p>
+      <div class="pill">Every draw</div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-icon">🧬</div>
+      <h3>Blood analysis</h3>
+      <p>Upload any lab result PDF. BioSense explains every biomarker in context of your goals and history.</p>
+      <div class="pill">Upload any PDF</div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-icon">⭐</div>
+      <h3>Health Score</h3>
+      <p>A single number that captures your health across sleep, recovery, stress, activity and biomarkers. Updates continuously.</p>
+      <div class="pill">Personalised</div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-icon">💬</div>
+      <h3>Ask Anything</h3>
+      <p>Your personal health conversation tool. Answers built on your data — not the internet. Remembers everything.</p>
+      <div class="pill">Context-aware</div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-icon">✅</div>
+      <h3>Daily check-in</h3>
+      <p>Four quick inputs — energy, sleep quality, mood, stress. Under 15 seconds. Builds a richer picture over time.</p>
+      <div class="pill">Under 15 seconds</div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-icon">🔔</div>
+      <h3>Smart notifications</h3>
+      <p>Triggered by your data. Positive trends celebrated. Negative trends explained. Always actionable.</p>
+      <div class="pill">Data-triggered</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 8: Weekly / Monthly Reports ─── -->
+<div class="slide" id="s8">
+  <div class="eyebrow">Weekly &amp; Monthly Reports</div>
+  <h1 class="headline">Clear insights. <em>Real progress.</em></h1>
+  <div class="report-wrap">
+    <div>
+      <div class="score-hero">
+        <div class="score-label">Health Score</div>
+        <div class="score-num" id="score-anim">78</div>
+        <div class="score-delta">↑ +4 this week</div>
+      </div>
+      <div class="notif-badge" style="margin-top:14px">
+        <div class="ni">🔔</div>
+        <div><div style="font-weight:600;font-size:12.5px;color:var(--t1)">7:00am Sunday</div><div style="font-size:11.5px;color:var(--t3)">Your weekly plan is ready — 3 ways to improve this week</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="report-cols">
+        <div class="report-col">
+          <div class="report-col-title" style="color:var(--a)">What's changing</div>
+          <div class="ritem">Sleep consistency improving over 5 days</div>
+          <div class="ritem">Iron levels trending down — may impact energy</div>
+          <div class="ritem">Training load increasing faster than recovery</div>
+        </div>
+        <div class="report-col">
+          <div class="report-col-title" style="color:var(--warn)">What to do next</div>
+          <div class="ritem">Improve sleep consistency by 30 mins/night</div>
+          <div class="ritem">Increase iron-rich foods this week</div>
+          <div class="ritem">Maintain current training intensity for now</div>
+        </div>
+      </div>
+      <div class="card" style="padding:16px 18px">
+        <div class="section-lbl" style="margin-bottom:8px">This month</div>
+        <p style="font-size:13px;color:var(--t2);line-height:1.65">Health score trending upward. Sleep improving, recovery still inconsistent. <strong style="color:var(--t1)">Your biological age improved by 8 months.</strong></p>
+      </div>
+      <div class="card" style="padding:14px 18px;border-left:3px solid var(--a);border-radius:0 12px 12px 0">
+        <p style="font-size:12.5px;color:var(--t2);line-height:1.65">"Your energy tends to drop <strong style="color:var(--t1)">2 days after disrupted sleep</strong>, not immediately — the impact shows up later, not the next day."</p>
+        <div style="font-size:10.5px;color:var(--a);margin-top:6px;font-weight:600">✦ New insight discovered</div>
+      </div>
+      <div class="report-footer">Updated continuously based on your data, behaviour and goals · Educational insights only — not medical advice</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 9: Blood Analysis ─── -->
+<div class="slide" id="s9">
+  <div class="eyebrow">Blood Analysis</div>
+  <h1 class="headline">Understanding <em>your biology</em></h1>
+  <p class="subline">BioSense translates complex blood test results into clear, personalised insights.</p>
+  <div class="blood-grid">
+    <div class="blood-card">
+      <div class="blood-card icon">📄</div>
+      <h3>Upload any PDF</h3>
+      <p>Works with any lab format — NHS, private clinic, international. No proprietary testing required.</p>
+    </div>
+    <div class="blood-card">
+      <div class="blood-card icon">🔬</div>
+      <h3>Explains what it means for you</h3>
+      <p>Not a generic description. What this marker means given your goals, history and how you've been feeling.</p>
+    </div>
+    <div class="blood-card">
+      <div class="blood-card icon">📈</div>
+      <h3>Tracks trends over time</h3>
+      <p>Every upload is stored. BioSense shows you whether markers are improving, stable or drifting — across months and years.</p>
+    </div>
+    <div class="blood-card">
+      <div class="blood-card icon">🎯</div>
+      <h3>Connects to how you feel</h3>
+      <p>Correlates biomarkers with your energy, sleep and mood scores. "Your iron decline likely explains the energy drop mid-week."</p>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--t4);margin-top:20px;position:relative;z-index:1">Educational insights only — not medical advice. If a marker triggers a concern threshold, BioSense will suggest speaking with a healthcare professional.</p>
+</div>
+
+<!-- ─── SLIDE 10: Blood Example ─── -->
+<div class="slide" id="s10">
+  <div class="eyebrow">Blood Analysis</div>
+  <h1 class="headline">From lab result <em>to action</em></h1>
+  <p class="subline" style="margin-bottom:20px">Clear. Personal. Actionable.</p>
+  <div class="bm-cards">
+    <div class="bm-card down">
+      <div class="bm-top">
+        <div>
+          <div class="bm-name">Ferritin</div>
+          <div style="font-size:11px;color:var(--t3)">Iron storage marker</div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="bm-val">35 <span class="bm-arrow down">↓</span> 28 <span style="font-size:13px;color:var(--t3)">µg/L</span></div>
+        </div>
+      </div>
+      <div class="bm-meaning">Iron levels are trending down and may be contributing to the energy decline you've been logging this week.</div>
+      <div class="bm-actions">
+        <span>Increase iron-rich foods — spinach, lentils, red meat</span>
+        <span>Consider retesting in 6–8 weeks</span>
+      </div>
+    </div>
+    <div class="bm-card low">
+      <div class="bm-top">
+        <div>
+          <div class="bm-name">Vitamin D</div>
+          <div style="font-size:11px;color:var(--t3)">Immune and mood support</div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="bm-val">42 <span class="bm-arrow down">↓</span> 30 <span style="font-size:13px;color:var(--t3)">nmol/L</span></div>
+        </div>
+      </div>
+      <div class="bm-meaning">Low levels may be impacting mood and recovery. Given your training load for the triathlon, this is worth addressing now.</div>
+      <div class="bm-actions">
+        <span>Increase sunlight exposure — 20 min daily where possible</span>
+        <span>Consider supplementation — speak to your GP about dosage</span>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--t4);margin-top:16px;position:relative;z-index:1">This information is for educational purposes only and is not medical advice.</p>
+</div>
+
+<!-- ─── SLIDE 11: Health Score ─── -->
+<div class="slide" id="s11">
+  <div class="eyebrow">Health Score</div>
+  <h1 class="headline">A simple way to <em>understand your health</em></h1>
+  <div class="hs-grid">
+    <div>
+      <div class="hs-ring-wrap">
+        <div class="hs-ring-num">75</div>
+        <div style="font-size:12px;color:var(--a);margin-top:4px;font-family:var(--mono)">↑ +7 this month</div>
+        <div class="hs-ring-lbl">BioSense Score</div>
+      </div>
+    </div>
+    <div>
+      <div class="hs-weights">
+        <div class="section-lbl" style="margin-bottom:14px">How your score is calculated</div>
+        <div class="hs-w"><div class="hs-w-label">Sleep</div><div class="hs-w-bar"><div class="hs-w-fill" style="width:30%"></div></div><div class="hs-w-pct">30%</div></div>
+        <div class="hs-w"><div class="hs-w-label">Recovery</div><div class="hs-w-bar"><div class="hs-w-fill" style="width:25%"></div></div><div class="hs-w-pct">25%</div></div>
+        <div class="hs-w"><div class="hs-w-label">Stress</div><div class="hs-w-bar"><div class="hs-w-fill" style="width:20%"></div></div><div class="hs-w-pct">20%</div></div>
+        <div class="hs-w"><div class="hs-w-label">Activity</div><div class="hs-w-bar"><div class="hs-w-fill" style="width:15%"></div></div><div class="hs-w-pct">15%</div></div>
+        <div class="hs-w"><div class="hs-w-label">Biomarkers</div><div class="hs-w-bar"><div class="hs-w-fill" style="width:10%"></div></div><div class="hs-w-pct">10%</div></div>
+      </div>
+      <div class="hs-personal">
+        <strong>Your score is personalised to you.</strong> BioSense learns which signals impact your health most and continuously adjusts how your score is calculated — so it reflects your body, not a generic population average.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 12: Ask Anything ─── -->
+<div class="slide" id="s12">
+  <div class="eyebrow">Ask Anything</div>
+  <h1 class="headline">Answers that <em>understand you</em></h1>
+  <div class="ask-layout">
+    <div class="ask-points">
+      <div class="ask-point">
+        <div class="ask-point-icon">🧠</div>
+        <div class="ask-point-body"><h4>Context-aware by default</h4><p>Every answer is built from your sleep data, recent activity, biomarkers, and behaviour patterns — not the internet.</p></div>
+      </div>
+      <div class="ask-point">
+        <div class="ask-point-icon">🎯</div>
+        <div class="ask-point-body"><h4>Goal-aware</h4><p>"What should I eat today?" gets a completely different answer if you're training for a triathlon vs. losing weight.</p></div>
+      </div>
+      <div class="ask-point">
+        <div class="ask-point-icon">💾</div>
+        <div class="ask-point-body"><h4>Memory over time</h4><p>Remembers past conversations, learns preferences, improves answers. This is where generic AI falls short.</p></div>
+      </div>
+      <div class="ask-point">
+        <div class="ask-point-icon">⚡</div>
+        <div class="ask-point-body"><h4>Action-led responses</h4><p>Every answer ends with what it means and what to do next. Not essays. Not generic advice.</p></div>
+      </div>
+    </div>
+    <div class="chat-shell">
+      <div class="chat-head">
+        <div class="chat-av">B</div>
+        <div><div class="chat-name">BioSense AI</div><div class="chat-role">Knows your data &amp; history</div></div>
+        <div class="online"></div>
+      </div>
+      <div class="chat-msgs">
+        <div class="msg msg-u">Why am I feeling more tired this week?</div>
+        <div class="msg msg-a">
+          Your sleep consistency has dropped over the past 5 days and your iron levels are trending down — both are likely contributing.
+          <div class="action-items">
+            <span>Aim for 30 extra minutes of sleep</span>
+            <span>Increase iron-rich foods this week</span>
+            <span>View your full weekly report</span>
+          </div>
+        </div>
+        <div class="msg msg-u">What about the triathlon — am I on track?</div>
+        <div class="msg msg-a">
+          Recovery is your main risk right now. Training load increased 18% but recovery hasn't kept pace. Focus on sleep and 2 light sessions this week before pushing intensity again.
+        </div>
+      </div>
+      <div class="chat-bar">
+        <div class="chat-input-mock">Ask anything about your health…</div>
+        <button class="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 13: Daily Check-in ─── -->
+<div class="slide" id="s13">
+  <div class="eyebrow">Daily Check-in</div>
+  <h1 class="headline">Simple inputs.<br><em>Smarter insights.</em></h1>
+  <p class="subline" style="margin-bottom:20px">Your health isn't just numbers — it's how you feel. Logged in under 15 seconds.</p>
+  <div class="checkin-wrap">
+    <div class="checkin-left">
+      <div class="slider-row">
+        <div class="slider-label">Energy Levels</div>
+        <div class="slider-track"><div class="slider-fill" style="width:72%"></div><div class="slider-pin" style="left:72%"></div></div>
+        <div class="slider-ends"><span>Low</span><span>High</span></div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Sleep Quality</div>
+        <div class="slider-track"><div class="slider-fill" style="width:45%"></div><div class="slider-pin" style="left:45%"></div></div>
+        <div class="slider-ends"><span>Low</span><span>High</span></div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Mood</div>
+        <div class="slider-track"><div class="slider-fill" style="width:80%"></div><div class="slider-pin" style="left:80%"></div></div>
+        <div class="slider-ends"><span>Low</span><span>High</span></div>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Stress</div>
+        <div class="slider-track"><div class="slider-fill" style="width:30%;background:var(--warn)"></div><div class="slider-pin" style="left:30%;background:var(--warn)"></div></div>
+        <div class="slider-ends"><span>Low</span><span>High</span></div>
+      </div>
+    </div>
+    <div class="checkin-right">
+      <div class="streak-card">
+        <div class="streak-num">12</div>
+        <div class="streak-lbl">Day streak</div>
+        <div style="display:flex;justify-content:center;gap:5px;margin-top:14px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--a)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--a)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--a)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--a)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--a)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
+        </div>
+      </div>
+      <div class="logged-badge">✅ Logged in 9 seconds</div>
+      <div class="notif-item">
+        <strong>8:30am daily prompt</strong>
+        <div style="font-size:12px;color:var(--t2);margin-top:4px">"How are you feeling today? Check in takes under 15 seconds."</div>
+        <div class="notif-time">Customisable time</div>
+      </div>
+      <div class="card" style="padding:14px 16px;position:relative;z-index:1">
+        <div class="section-lbl" style="margin-bottom:6px">Pattern discovered</div>
+        <p style="font-size:12px;color:var(--t2);line-height:1.6">Energy tends to drop mid-week when sleep scores are below 5 for 2+ days. <span style="color:var(--a);font-size:10.5px;font-weight:600">High confidence</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 14: Why BioSense Wins ─── -->
+<div class="slide" id="s14">
+  <div class="eyebrow">Why BioSense Wins</div>
+  <h1 class="headline">Built different.<br><em>Works differently.</em></h1>
+  <div class="wins-grid">
+    <div class="win-card">
+      <div class="win-num">01</div>
+      <h3>Continuous tracking</h3>
+      <p>Not a snapshot. Not a once-a-year check. A system that watches your data every day and spots trends before you feel them.</p>
+    </div>
+    <div class="win-card">
+      <div class="win-num">02</div>
+      <h3>Combines subjective and objective data</h3>
+      <p>Wearable data + blood results + how you actually feel. No other tool does this. The combination is where the real insight lives.</p>
+    </div>
+    <div class="win-card">
+      <div class="win-num">03</div>
+      <h3>Goal-driven, not generic</h3>
+      <p>Training for a triathlon changes every insight, every action, every answer. BioSense always knows what you're working towards.</p>
+    </div>
+    <div class="win-card">
+      <div class="win-num">04</div>
+      <h3>Learns and adapts</h3>
+      <p>The longer you use it, the smarter it gets. It learns what actually works for you — not what works for the average person.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 15: Who it's for ─── -->
+<div class="slide" id="s15">
+  <div class="eyebrow">Who It's For</div>
+  <h1 class="headline">Built for <em>people like you</em></h1>
+  <div class="who-list">
+    <div class="who-item">
+      <div class="who-icon">⚡</div>
+      <p><strong>People who want to feel better and understand their body</strong> — and are tired of data that raises more questions than it answers.</p>
+    </div>
+    <div class="who-item">
+      <div class="who-icon">⌚</div>
+      <p><strong>Those already tracking health but lacking clarity</strong> — wearing a Whoop or Oura, seeing the numbers, but not knowing what to do with them.</p>
+    </div>
+    <div class="who-item">
+      <div class="who-icon">🏃</div>
+      <p><strong>Anyone focused on energy, performance or longevity</strong> — from the person training for a triathlon to the executive who wants to be sharper at 50 than they were at 40.</p>
+    </div>
+  </div>
+  <div class="who-cta">For those who want to feel better, perform better and live better.</div>
+</div>
+
+<!-- ─── SLIDE 16: What It Replaces ─── -->
+<div class="slide" id="s16">
+  <div class="eyebrow">What This Replaces</div>
+  <h1 class="headline">Replace <em>the guesswork</em></h1>
+  <p class="subline" style="margin-bottom:20px">One system that brings everything together.</p>
+  <div class="replace-grid">
+    <div class="rep-item"><div class="rep-icon">🔍</div><div><span class="rep-x">✗</span>Searching, scrolling and second-guessing — replaced with one clear answer built on your data</div></div>
+    <div class="rep-item"><div class="rep-icon">💬</div><div><span class="rep-x">✗</span>Advice that sounds right but isn't built for you — replaced with insights that know your allergies, history and goals</div></div>
+    <div class="rep-item"><div class="rep-icon">🧾</div><div><span class="rep-x">✗</span>Blood results that raise more questions than answers — replaced with plain-language explanations and clear next steps</div></div>
+    <div class="rep-item"><div class="rep-icon">🧩</div><div><span class="rep-x">✗</span>Trying to connect sleep, diet and performance yourself — BioSense finds the connections automatically</div></div>
+    <div class="rep-item"><div class="rep-icon">🔁</div><div><span class="rep-x">✗</span>Starting from scratch every time you look for answers — BioSense remembers everything and improves over time</div></div>
+    <div class="rep-item"><div class="rep-icon">🤷</div><div><span class="rep-x">✗</span>Not knowing whether what you're doing is actually working — replaced with a score that tells you every week</div></div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 17: Pricing ─── -->
+<div class="slide" id="s17">
+  <div class="eyebrow">Pricing</div>
+  <h1 class="headline">Simple, <em>transparent pricing</em></h1>
+  <p class="subline" style="margin-bottom:24px">Less than AED 5 per day to understand what actually impacts your health.</p>
+  <div class="price-wrap">
+    <div class="price-card">
+      <div class="price-period">Monthly</div>
+      <div class="price-num">149 <span>AED</span></div>
+      <div class="price-sub">Billed monthly · Cancel anytime</div>
+      <ul class="price-feats">
+        <li>All wearable integrations</li>
+        <li>Blood result analysis</li>
+        <li>Weekly &amp; monthly reports</li>
+        <li>Ask Anything</li>
+        <li>Daily check-in &amp; streak tracking</li>
+        <li>Health Score</li>
+      </ul>
+    </div>
+    <div class="price-card best">
+      <div class="pill" style="margin-bottom:14px">Best value</div>
+      <div class="price-period">Annual</div>
+      <div class="price-num">1,499 <span>AED</span></div>
+      <div class="price-sub">AED 125/month · Save AED 289</div>
+      <ul class="price-feats">
+        <li>Everything in monthly</li>
+        <li>Priority support</li>
+        <li>Early access to new features</li>
+      </ul>
+      <div class="price-note">≈ £325/year · $415/year</div>
+    </div>
+  </div>
+  <div class="price-callout">Stop guessing. Start improving.</div>
+</div>
+
+<!-- ─── SLIDE 18: Final ─── -->
+<div class="slide" id="s18">
+  <div class="big-final">What happens next<br>is <em>up to you</em></div>
+  <div class="sub-final">
+    The small decisions you make every day shape how you feel.<br>
+    Your energy. Your performance. Your health over time.<br>
+    <span style="color:var(--t3)">This is about more than data — this is about how you live.</span>
+  </div>
+  <div class="trio">
+    <span class="trio-item">Understand your body</span>
+    <span class="trio-sep">·</span>
+    <span class="trio-item">Take control</span>
+    <span class="trio-sep">·</span>
+    <span class="trio-item">Live better</span>
+  </div>
+  <div style="margin-top:44px;display:flex;align-items:center;gap:14px">
+    <div style="display:flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--b0);border-radius:9px;padding:12px 18px">
+      <span class="pulse-dot"></span>
+      <span style="font-size:13px;color:var(--t2)">Private beta — limited places available</span>
+    </div>
+  </div>
+  <div class="disc">
+    BioSense provides educational health insights only. It does not provide medical advice, diagnoses, or treatment. You should always consult a qualified healthcare professional before making changes to your health, medication, or lifestyle. Insights are generated using AI and may not always be accurate or complete.
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const dots=document.getElementById('dots');
+const prev=document.getElementById('prev');
+const next=document.getElementById('next');
+const count=document.getElementById('slide-count');
+const progress=document.getElementById('progress');
+let cur=0;
+const total=slides.length;
+
+/* Build dots */
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot';
+  d.onclick=()=>go(i);
+  dots.appendChild(d);
+});
+
+function go(n){
+  if(n<0||n>=total)return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('out');
+  setTimeout(()=>slides[cur<total?cur:0].classList.remove('out'),460);
+  cur=n;
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  count.textContent=String(cur+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
+  progress.style.width=((cur+1)/total*100)+'%';
+  prev.disabled=cur===0;
+  next.disabled=cur===total-1;
+}
+
+prev.onclick=()=>go(cur-1);
+next.onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')go(cur+1);
+  if(e.key==='ArrowLeft')go(cur-1);
+});
+
+/* Touch swipe */
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=tx-e.changedTouches[0].clientX;
+  if(Math.abs(dx)>50){dx>0?go(cur+1):go(cur-1);}
+},{passive:true});
+
+go(0);
+</script>
+</body>
+</html>
